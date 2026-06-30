@@ -1,0 +1,3 @@
+docs/architecture.md
+docs/cometchat-dashboard-setup.md
+README.md

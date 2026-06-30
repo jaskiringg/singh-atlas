@@ -1,0 +1,2 @@
+resources/piku only.png
+resources/image.png

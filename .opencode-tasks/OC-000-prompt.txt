@@ -1,0 +1,11 @@
+Execute OC-000-evidence-extraction.md in this directory (.opencode-tasks/).
+
+Repo clones: /tmp/atlas-research/piku, relive-cure-dashboard, relive-cure-backend, salesrep-ai, sellina-api-proxy, mitra-friend-only-messaging, lasik-whatsapp-bot, lead-intelligence
+
+Write deliverables to:
+- content/evidence/repos.json
+- content/evidence/patterns.json (40+ patterns, infer from repos only)
+- content/evidence/timeline-implicit.json
+- docs/REPO-ANALYSIS.md
+
+No secrets. No React yet. When done, print "OC-000 COMPLETE" and list files created.
