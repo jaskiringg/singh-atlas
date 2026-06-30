@@ -84,3 +84,289 @@ Wrote file successfully.
 Wrote file successfully.
 [0m
 Now I'll create all the files in parallel. Starting with config files and app structure:
+Now install deps and init git:
+[0m$ [0mgit init && git add -A && git commit -m "chore: scaffold Next.js 15 app router project"
+hint: Using 'master' as the name for the initial branch. This default branch name
+hint: will change to "main" in Git 3.0. To configure the initial branch name
+hint: to use in all of your new repositories, which will suppress this warning,
+hint: call:
+hint:
+hint: 	git config --global init.defaultBranch <name>
+hint:
+hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+hint: 'development'. The just-created branch can be renamed via this command:
+hint:
+hint: 	git branch -m <name>
+hint:
+hint: Disable this message with "git config set advice.defaultBranchName false"
+Initialized empty Git repository in /Users/jaskiring/Projects/singh-atlas/.git/
+[master (root-commit) 09ccfec] chore: scaffold Next.js 15 app router project
+ 77 files changed, 1179 insertions(+)
+ create mode 100644 .gitignore
+ create mode 100644 .opencode-tasks/OC-000-evidence-extraction.md
+ create mode 100644 .opencode-tasks/OC-000-prompt.txt
+ create mode 100644 .opencode-tasks/OC-000-run.log
+ create mode 100644 .opencode-tasks/OC-001-run.log
+ create mode 100644 Dockerfile
+ create mode 100644 app/globals.css
+ create mode 100644 app/layout.tsx
+ create mode 100644 app/os/page.tsx
+ create mode 100644 app/page.tsx
+ create mode 100644 app/postcss.config.mjs
+ create mode 100644 components/.gitkeep
+ create mode 100644 content/evidence/.gitkeep
+ create mode 100644 content/evidence/raw/lasik-whatsapp-bot-branches.json
+ create mode 100644 content/evidence/raw/lasik-whatsapp-bot-commits.json
+ create mode 100644 content/evidence/raw/lasik-whatsapp-bot-docs.txt
+ create mode 100644 content/evidence/raw/lasik-whatsapp-bot-languages.json
+ create mode 100644 content/evidence/raw/lasik-whatsapp-bot-media.txt
+ create mode 100644 content/evidence/raw/lasik-whatsapp-bot-meta.json
+ create mode 100644 content/evidence/raw/lead-intelligence-branches.json
+ create mode 100644 content/evidence/raw/lead-intelligence-commits.json
+ create mode 100644 content/evidence/raw/lead-intelligence-docs.txt
+ create mode 100644 content/evidence/raw/lead-intelligence-languages.json
+ create mode 100644 content/evidence/raw/lead-intelligence-media.txt
+ create mode 100644 content/evidence/raw/lead-intelligence-meta.json
+ create mode 100644 content/evidence/raw/mitra-friend-only-messaging-branches.json
+ create mode 100644 content/evidence/raw/mitra-friend-only-messaging-commits.json
+ create mode 100644 content/evidence/raw/mitra-friend-only-messaging-docs.txt
+ create mode 100644 content/evidence/raw/mitra-friend-only-messaging-languages.json
+ create mode 100644 content/evidence/raw/mitra-friend-only-messaging-media.txt
+ create mode 100644 content/evidence/raw/mitra-friend-only-messaging-meta.json
+ create mode 100644 content/evidence/raw/piku-branches.json
+ create mode 100644 content/evidence/raw/piku-commits.json
+ create mode 100644 content/evidence/raw/piku-docs.txt
+ create mode 100644 content/evidence/raw/piku-languages.json
+ create mode 100644 content/evidence/raw/piku-media.txt
+ create mode 100644 content/evidence/raw/piku-meta.json
+ create mode 100644 content/evidence/raw/relive-cure-backend-branches.json
+ create mode 100644 content/evidence/raw/relive-cure-backend-commits.json
+ create mode 100644 content/evidence/raw/relive-cure-backend-docs.txt
+ create mode 100644 content/evidence/raw/relive-cure-backend-languages.json
+ create mode 100644 content/evidence/raw/relive-cure-backend-media.txt
+ create mode 100644 content/evidence/raw/relive-cure-backend-meta.json
+ create mode 100644 content/evidence/raw/relive-cure-dashboard-branches.json
+ create mode 100644 content/evidence/raw/relive-cure-dashboard-commits.json
+ create mode 100644 content/evidence/raw/relive-cure-dashboard-docs.txt
+ create mode 100644 content/evidence/raw/relive-cure-dashboard-languages.json
+ create mode 100644 content/evidence/raw/relive-cure-dashboard-media.txt
+ create mode 100644 content/evidence/raw/relive-cure-dashboard-meta.json
+ create mode 100644 content/evidence/raw/salesrep-ai-branches.json
+ create mode 100644 content/evidence/raw/salesrep-ai-commits.json
+ create mode 100644 content/evidence/raw/salesrep-ai-docs.txt
+ create mode 100644 content/evidence/raw/salesrep-ai-languages.json
+ create mode 100644 content/evidence/raw/salesrep-ai-media.txt
+ create mode 100644 content/evidence/raw/salesrep-ai-meta.json
+ create mode 100644 content/evidence/raw/sellina-api-proxy-branches.json
+ create mode 100644 content/evidence/raw/sellina-api-proxy-commits.json
+ create mode 100644 content/evidence/raw/sellina-api-proxy-docs.txt
+ create mode 100644 content/evidence/raw/sellina-api-proxy-languages.json
+ create mode 100644 content/evidence/raw/sellina-api-proxy-media.txt
+ create mode 100644 content/evidence/raw/sellina-api-proxy-meta.json
+ create mode 100644 docs/ARD-001.md
+ create mode 100644 docs/EXECUTION-CONTRACT.md
+ create mode 100644 docs/MODEL-ROUTING.md
+ create mode 100644 lib/evidence.ts
+ create mode 100644 lib/types.ts
+ create mode 100644 next.config.ts
+ create mode 100644 nginx.conf
+ create mode 100644 opencode.jsonc
+ create mode 100644 package.json
+ create mode 100644 postcss.config.mjs
+ create mode 100644 railway.json
+ create mode 100755 scripts/extract-deterministic.sh
+ create mode 100755 scripts/ollama-run.sh
+ create mode 100755 scripts/run-opencode.sh
+ create mode 100644 tsconfig.json
+ create mode 100644 types/evidence.ts
+[0m
+[0m$ [0mnpm install
+added 46 packages, and audited 47 packages in 18s
+
+11 packages are looking for funding
+  run `npm fund` for details
+
+2 moderate severity vulnerabilities
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+npm warn allow-scripts 1 package has install scripts not yet covered by allowScripts:
+npm warn allow-scripts   sharp@0.34.5 (install: node install/check.js || npm run build)
+npm warn allow-scripts
+npm warn allow-scripts Run `npm approve-scripts --allow-scripts-pending` to review, or `npm approve-scripts <pkg>` to allow.
+[0m
+Let me verify the build works:
+[0m$ [0mnpm run build 2>&1
+> singh-atlas@0.1.0 build
+> next build
+
+   ▲ Next.js 15.5.19
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 4.5s
+   Linting and checking validity of types ...
+Failed to compile.
+
+./lib/evidence.ts:2:22
+Type error: Cannot find module '@/content/evidence/atlas.json' or its corresponding type declarations.
+
+[0m [90m 1 |[39m [36mimport[39m type { [33mAtlasEvidence[39m } [36mfrom[39m [32m"./types"[39m[33m;[39m
+[31m[1m>[22m[39m[90m 2 |[39m [36mimport[39m evidence [36mfrom[39m [32m"@/content/evidence/atlas.json"[39m[33m;[39m
+ [90m   |[39m                      [31m[1m^[22m[39m
+ [90m 3 |[39m
+ [90m 4 |[39m [36mexport[39m [36mfunction[39m getEvidence()[33m:[39m [33mAtlasEvidence[39m {
+ [90m 5 |[39m   [36mreturn[39m evidence [36mas[39m [33mAtlasEvidence[39m[33m;[39m[0m
+Next.js build worker exited with code: 1 and signal: null
+[0m
+[0m→ [0mRead lib/evidence.ts
+[0m→ [0mRead lib/types.ts
+Pre-existing `lib/` files reference a missing JSON. Let me fix:
+[0m
+[0m← [0mWrite content/evidence/atlas.json
+Wrote file successfully.
+[0m
+I'll create a stub `atlas.json` so the build passes:
+[0m→ [0mRead postcss.config.mjs
+[0m
+[0m$ [0mrm /Users/jaskiring/Projects/singh-atlas/app/postcss.config.mjs
+(no output)
+[0m
+Root-level postcss config already exists. Let me remove the duplicate I created in `app/`:
+[0m$ [0mnpm run build 2>&1
+> singh-atlas@0.1.0 build
+> next build
+
+   ▲ Next.js 15.5.19
+
+   Creating an optimized production build ...
+Failed to compile.
+
+./app/layout.tsx
+Module not found: Can't resolve 'geist/font/sans'
+
+https://nextjs.org/docs/messages/module-not-found
+
+./app/layout.tsx
+Module not found: Can't resolve 'geist/font/mono'
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+> Build failed because of webpack errors
+[0m
+[0m→ [0mRead app/layout.tsx
+The pre-existing layout uses `geist` as a package. Let me install it and keep that pattern:
+[0m
+[0m$ [0mnpm install geist 2>&1
+added 1 package, and audited 48 packages in 5s
+
+11 packages are looking for funding
+  run `npm fund` for details
+
+2 moderate severity vulnerabilities
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+npm warn allow-scripts 1 package has install scripts not yet covered by allowScripts:
+npm warn allow-scripts   sharp@0.34.5 (install: (install scripts present))
+npm warn allow-scripts
+npm warn allow-scripts Run `npm approve-scripts --allow-scripts-pending` to review, or `npm approve-scripts <pkg>` to allow.
+[0m
+[0m→ [0mRead app/globals.css
+The existing files are already correct. Let me rebuild:
+[0m
+[0m$ [0mnpm run build 2>&1
+> singh-atlas@0.1.0 build
+> next build
+
+   ▲ Next.js 15.5.19
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 6.5s
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/5) ...
+   Generating static pages (1/5) 
+   Generating static pages (2/5) 
+   Generating static pages (3/5) 
+ ✓ Generating static pages (5/5)
+   Finalizing page optimization ...
+   Collecting build traces ...
+   Exporting (0/2) ...
+ ✓ Exporting (2/2)
+
+Route (app)                                 Size  First Load JS
+┌ ○ /                                      162 B         106 kB
+├ ○ /_not-found                            996 B         103 kB
+└ ○ /os                                  1.09 kB         107 kB
++ First Load JS shared by all             102 kB
+  ├ chunks/255-eb4aecc3ff015961.js       46.3 kB
+  ├ chunks/4bd1b696-c023c6e3521b1417.js  54.2 kB
+  └ other shared chunks (total)          1.92 kB
+
+
+○  (Static)  prerendered as static content
+[0m
+[0m$ [0mls -la /Users/jaskiring/Projects/singh-atlas/out/
+total 112
+drwxr-xr-x@  8 jaskiring  staff    256 Jun 30 13:24 .
+drwxr-xr-x@ 25 jaskiring  staff    800 Jun 30 13:24 ..
+-rw-r--r--@  1 jaskiring  staff   7828 Jun 30 13:24 404.html
+drwxr-xr-x@  4 jaskiring  staff    128 Jun 30 13:24 _next
+-rw-r--r--@  1 jaskiring  staff  12394 Jun 30 13:24 index.html
+-rw-r--r--@  1 jaskiring  staff   6939 Jun 30 13:24 index.txt
+-rw-r--r--@  1 jaskiring  staff  14755 Jun 30 13:24 os.html
+-rw-r--r--@  1 jaskiring  staff   5996 Jun 30 13:24 os.txt
+[0m
+Build passes. Let me verify the static export output:
+[0m# [0mTodos
+[✓] Check current directory state and existing files
+[✓] Create package.json with Next.js 15 deps
+[✓] Create tsconfig.json
+[✓] Create next.config.ts with output: 'export'
+[✓] Configure Tailwind v4 with ARD-001 colors
+[✓] Create app/layout.tsx, app/page.tsx, app/os/page.tsx
+[✓] Create components folder
+[✓] Create content/evidence types
+[✓] Create railway.json and nginx Dockerfile
+[✓] Initialize git if missing
+[•] Commit latest changes
+[0m
+[0m$ [0mgit status && git diff --stat
+On branch master
+Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   .opencode-tasks/OC-001-run.log
+	modified:   app/globals.css
+	modified:   app/layout.tsx
+	modified:   app/os/page.tsx
+	modified:   app/page.tsx
+	deleted:    app/postcss.config.mjs
+	modified:   lib/evidence.ts
+	modified:   package.json
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	app/os/apps/
+	app/os/layout.tsx
+	components/os/
+	components/ui.tsx
+	content/evidence/atlas.json
+	package-lock.json
+
+no changes added to commit (use "git add" and/or "git commit -a")
+ .opencode-tasks/OC-001-run.log | 252 +++++++++++++++++++++++++++++++++++++++++
+ app/globals.css                |  85 +++++++-------
+ app/layout.tsx                 |  20 +++-
+ app/os/page.tsx                | 101 ++++++-----------
+ app/page.tsx                   | 140 +++++++++++++----------
+ app/postcss.config.mjs         |   7 --
+ lib/evidence.ts                |   6 +-
+ package.json                   |   1 +
+ 8 files changed, 429 insertions(+), 183 deletions(-)
+[0m

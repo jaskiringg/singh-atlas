@@ -1,4 +1,4 @@
-import type { AtlasEvidence } from "./types";
+import type { AtlasEvidence, Pattern } from "./types";
 import evidence from "@/content/evidence/atlas.json";
 
 export function getEvidence(): AtlasEvidence {
@@ -13,4 +13,6 @@ export function getPatternsByCategory(category: Pattern["category"]) {
   return getEvidence().patterns.filter((p) => p.category === category);
 }
 
-import type { Pattern } from "./types";
+export function getPatternsForRepo(slug: string) {
+  return getEvidence().patterns.filter((p) => p.evidence.includes(slug));
+}
