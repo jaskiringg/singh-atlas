@@ -6,6 +6,12 @@
   },
   "deploy": {
     "numReplicas": 1,
-    "restartPolicyType": "ON_FAILURE"
+    "restartPolicyType": "ON_FAILURE",
+    "limitOverride": {
+      "containers": {
+        "cpu": 1,
+        "memoryBytes": 536870912
+      }
+    }
   }
 }

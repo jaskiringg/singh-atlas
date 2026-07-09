@@ -36,7 +36,7 @@ type Motif = {
   data: MotifData;
   box?: { x: number; y: number; w: number; h: number };
   touch?: Partial<Record<PersonaKey, boolean>>;
-  /** Locks lens reshape until the motif wraps off-screen */
+  /** Last persona that reshaped this motif (resets when motif wraps) */
   shapedBy?: PersonaKey | null;
 };
 
@@ -391,7 +391,7 @@ function onMotifBallHit(m: Motif, ball: Ball, wasInside: boolean) {
     discoBarsHit(m, ball);
     return;
   }
-  if (!m.shapedBy) reshapeMotif(m, ball);
+  reshapeMotif(m, ball);
 }
 
 function collideBallWithMotif(b: Ball, m: Motif, pad: number, physical = true) {

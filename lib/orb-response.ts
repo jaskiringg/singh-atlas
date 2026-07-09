@@ -1,5 +1,6 @@
 import type { OrbMode } from "@/lib/orb-modes";
 import { isSimpleGreeting } from "@/lib/orb-modes";
+import { CONTACT_EMAIL, CONTACT_PHONE } from "@/lib/contact";
 
 export type OrbLens = "engineer" | "consultant" | "founder";
 export type OrbConfidence = "very high" | "high" | "medium" | "low";
@@ -44,6 +45,20 @@ const EMOJI_RE = /[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}]/gu;
 /** Deterministic reply for hi/hello — free models won't nail voice; we will. */
 export function greetingReplyAsMe(): string {
   return "Hey. What are you building — or where are you stuck?";
+}
+
+/** Email / phone / reach-me questions — always give both. */
+export function isContactInfoRequest(text: string): boolean {
+  const t = text.toLowerCase();
+  if (/\bhow (can|do) i (reach|contact|call) you\b/.test(t)) return true;
+  if (/\bgive me your\b/.test(t) && /\b(email|phone|number|contact|mobile)\b/.test(t)) return true;
+  if (/\b(your|you)\b/.test(t) && /\b(email|e-mail|phone|mobile|number|whatsapp)\b/.test(t)) return true;
+  if (/\b(email and (phone|number)|phone and email)\b/.test(t)) return true;
+  return false;
+}
+
+export function contactReplyAsMe(): string {
+  return `Email ${CONTACT_EMAIL} or call ${CONTACT_PHONE}. Connect in this panel works too — leave your details and I'll follow up.`;
 }
 
 export function shouldShowMeta(userText: string, replyText: string, mode: OrbMode): boolean {

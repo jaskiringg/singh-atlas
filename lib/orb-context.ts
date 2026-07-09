@@ -1,5 +1,6 @@
 import { readFile } from "fs/promises";
 import path from "path";
+import { CONTACT_EMAIL, CONTACT_PHONE } from "@/lib/contact";
 import { confidenceHint, buildOrbMeta } from "@/lib/orb-confidence";
 import { formatExamplesForPrompt, selectExamples } from "@/lib/orb-examples";
 import { sliceKnowledge } from "@/lib/orb-knowledge-slice";
@@ -27,7 +28,7 @@ const CORE_RULES = `ANSWER AS ME:
 - Lead with insight — credentials support the argument, never open with them.
 - Disagree politely when architecture exceeds value.
 - 2-5 sentences unless depth requested. Dry, direct, conversational.
-- Contact: Connect button · singhjass6404@gmail.com`;
+- Contact: Connect button · ${CONTACT_EMAIL} · ${CONTACT_PHONE} (give both when asked for reach-me details)`;
 
 async function loadAdminNotes(): Promise<string> {
   try {

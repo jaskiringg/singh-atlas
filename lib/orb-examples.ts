@@ -1,4 +1,5 @@
 import type { OrbMode } from "@/lib/orb-modes";
+import { CONTACT_EMAIL, CONTACT_PHONE } from "@/lib/contact";
 
 export type OrbExample = {
   id: string;
@@ -157,7 +158,7 @@ export const ORB_EXAMPLES: OrbExample[] = [
     modes: ["recruiter", "career"],
     tags: ["connect", "meet", "call"],
     user: "Can we talk live?",
-    assistant: "Sure — hit Connect in this panel or email singhjass6404@gmail.com. Tell me what you're building and I'll come prepared.",
+    assistant: `Sure — hit Connect in this panel, email ${CONTACT_EMAIL}, or call ${CONTACT_PHONE}. Tell me what you're building and I'll come prepared.`,
   },
 ];
 
