@@ -4,7 +4,14 @@ import { detectOrbExtras } from "@/lib/orb-extras";
 import { buildOrbSystemPrompt } from "@/lib/orb-context";
 import { detectOrbMode, isSimpleGreeting } from "@/lib/orb-modes";
 import { maybeAppendMemoryCard } from "@/lib/orb-memory-cards";
-import { greetingReplyAsMe, contactReplyAsMe, isContactInfoRequest, sanitizeOrbReply, shouldShowMeta } from "@/lib/orb-response";
+import {
+  greetingReplyAsMe,
+  contactReplyAsMe,
+  isContactInfoRequest,
+  sanitizeOrbReply,
+  shouldShowMeta,
+} from "@/lib/orb-response";
+import { isPrivateInfoRequest, privateInfoReplyAsMe } from "@/lib/orb-privacy";
 import { chatOpenRouter } from "@/lib/openrouter";
 
 type OrbMessage = { role: "user" | "assistant"; text: string };
@@ -67,6 +74,20 @@ export async function POST(req: Request) {
 
   if (isContactInfoRequest(userText)) {
     const text = contactReplyAsMe();
+    if (sessionId && visitorId) {
+      await appendEvent({
+        type: "orb_message",
+        sessionId,
+        visitorId,
+        role: "assistant",
+        text,
+      });
+    }
+    return Response.json({ text, extras: { suggestBooking: true } });
+  }
+
+  if (isPrivateInfoRequest(userText)) {
+    const text = privateInfoReplyAsMe();
     if (sessionId && visitorId) {
       await appendEvent({
         type: "orb_message",

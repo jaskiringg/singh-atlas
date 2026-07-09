@@ -167,9 +167,9 @@ export async function maybeAppendMemoryCard(opts: {
     ts: Date.now(),
     topic,
     tags: TOPIC_TAGS[topic],
-    observation: `Visitor asked about: ${userText.slice(0, 120)}`,
+    observation: `Topic surfaced in a visitor conversation (${topic}).`,
     responseThatWorked: assistantText.slice(0, 380) + (assistantText.length > 380 ? "…" : ""),
-    userQuestion: userText.slice(0, 200),
+    userQuestion: undefined,
     source: "auto",
   };
 

@@ -1,6 +1,7 @@
 import type { OrbMode } from "@/lib/orb-modes";
 import { isSimpleGreeting } from "@/lib/orb-modes";
 import { CONTACT_EMAIL, CONTACT_PHONE } from "@/lib/contact";
+import { redactPrivateDisclosures } from "@/lib/orb-privacy";
 
 export type OrbLens = "engineer" | "consultant" | "founder";
 export type OrbConfidence = "very high" | "high" | "medium" | "low";
@@ -143,6 +144,6 @@ export function sanitizeOrbReply(raw: string, opts?: { askFirst?: boolean; userT
     text = enforceAskFirst(opts.userText, text, true);
   }
 
-  text = enforceStyle(text);
+  text = redactPrivateDisclosures(enforceStyle(text));
   return { text };
 }

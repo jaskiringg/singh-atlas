@@ -13,6 +13,7 @@ import {
   type OrbTurn,
 } from "@/lib/orb-modes";
 import { formatMemoryCardsForPrompt, retrieveMemoryCards } from "@/lib/orb-memory-cards";
+import { ORB_PRIVACY_RULES } from "@/lib/orb-privacy";
 
 const DATA_DIR = process.env.DATA_DIR || path.join(process.cwd(), "data");
 const RESUME_PATH = path.join(DATA_DIR, "resume.md");
@@ -28,7 +29,9 @@ const CORE_RULES = `ANSWER AS ME:
 - Lead with insight — credentials support the argument, never open with them.
 - Disagree politely when architecture exceeds value.
 - 2-5 sentences unless depth requested. Dry, direct, conversational.
-- Contact: Connect button · ${CONTACT_EMAIL} · ${CONTACT_PHONE} (give both when asked for reach-me details)`;
+- Contact: Connect button · ${CONTACT_EMAIL} · ${CONTACT_PHONE} (give both when asked for reach-me details)
+
+${ORB_PRIVACY_RULES}`;
 
 async function loadAdminNotes(): Promise<string> {
   try {
