@@ -12,7 +12,7 @@ import {
   shouldShowMeta,
 } from "@/lib/orb-response";
 import { isPrivateInfoRequest, privateInfoReplyAsMe } from "@/lib/orb-privacy";
-import { chatOpenRouter } from "@/lib/openrouter";
+import { chatOpenRouter, formatOpenRouterError } from "@/lib/openrouter";
 
 type OrbMessage = { role: "user" | "assistant"; text: string };
 
@@ -147,8 +147,9 @@ export async function POST(req: Request) {
     const payload = hasExtras ? { text, ...(meta && { meta }), extras } : meta ? { text, meta } : { text };
     return Response.json(payload);
   } catch (e) {
-    const msg = e instanceof Error ? e.message : "model request failed";
-    console.error("Orb route error:", msg);
-    return Response.json({ error: "model_failed", message: msg }, { status: 502 });
+    const raw = e instanceof Error ? e.message : "model request failed";
+    const message = formatOpenRouterError(raw);
+    console.error("Orb route error:", raw);
+    return Response.json({ error: "model_failed", message }, { status: 502 });
   }
 }
