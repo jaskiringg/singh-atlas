@@ -1,9 +1,13 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: "export",
+  output: "standalone",
+  compress: true,
   images: {
     unoptimized: true,
+  },
+  experimental: {
+    optimizePackageImports: ["@/lib/prototype-data"],
   },
 };
 

@@ -1,5 +1,0 @@
-app/public/file.svg
-app/public/vercel.svg
-app/public/next.svg
-app/public/globe.svg
-app/public/window.svg

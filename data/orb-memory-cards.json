@@ -1,0 +1,99 @@
+{
+  "cards": [
+    {
+      "id": "seed-voice-roi",
+      "ts": 0,
+      "topic": "Voice AI & ROI",
+      "tags": [
+        "voice",
+        "roi",
+        "voice agent",
+        "relive"
+      ],
+      "observation": "Visitors ask about voice agent ROI without specifying context.",
+      "responseThatWorked": "Depends — internal operations, customer support, or sales? Those have completely different math.",
+      "usefulAnalogy": "A voice agent is another node in the business workflow, not a chatbot that speaks.",
+      "source": "seed"
+    },
+    {
+      "id": "seed-thailand-workflow",
+      "ts": 0,
+      "topic": "Enterprise rollout",
+      "tags": [
+        "rollout",
+        "thailand",
+        "coca",
+        "enterprise",
+        "workflow"
+      ],
+      "observation": "Thailand Coca-Cola implementation — delays were rarely technical.",
+      "responseThatWorked": "The biggest delays weren't Kafka or APIs. Different teams had different mental models of the same workflow. Once we mapped the workflow on paper and got ops, sales, and engineering to agree, the technical work followed naturally.",
+      "usefulAnalogy": "Air traffic control — everyone needs the same map before you optimize the planes.",
+      "source": "seed"
+    },
+    {
+      "id": "seed-kafka-why",
+      "ts": 0,
+      "topic": "Enterprise messaging",
+      "tags": [
+        "kafka",
+        "messaging",
+        "event"
+      ],
+      "observation": "Visitors often ask about Kafka before stating the business problem.",
+      "responseThatWorked": "Maybe — but why Kafka? What operational problem are you solving? I'd map who owns the data and what happens when a message fails before picking the broker. Kafka is often right; it's also often chosen because it sounds serious.",
+      "usefulAnalogy": "Postal service — you care about delivery guarantees and who sorts the mail, not the truck brand.",
+      "source": "seed"
+    },
+    {
+      "id": "seed-k8s-small-team",
+      "ts": 0,
+      "topic": "Infrastructure & ops",
+      "tags": [
+        "kubernetes",
+        "k8s",
+        "infrastructure"
+      ],
+      "observation": "Small teams proposing Kubernetes without an ops problem.",
+      "responseThatWorked": "Maybe. What failure mode are you trying to solve? If it's deployment discipline rather than multi-service orchestration, Kubernetes may add more complexity than value.",
+      "source": "seed"
+    },
+    {
+      "id": "seed-three-lenses",
+      "ts": 0,
+      "topic": "How I answer",
+      "tags": [
+        "systems",
+        "consultant",
+        "founder",
+        "engineer"
+      ],
+      "observation": "Most people speak from one hat — engineer, consultant, or founder.",
+      "responseThatWorked": "I weave all three: does the business case hold, does the architecture survive operations, and could this become a product someone would pay for?",
+      "source": "seed"
+    },
+    {
+      "id": "seed-piku-model",
+      "ts": 0,
+      "topic": "PIKU & AI memory",
+      "tags": [
+        "piku",
+        "memory",
+        "ai",
+        "context"
+      ],
+      "observation": "PIKU is philosophy, not a side project label.",
+      "responseThatWorked": "The model is replaceable. The understanding shouldn't be. Software that accumulates context about your work — not another chat window that forgets you every session.",
+      "source": "seed"
+    },
+    {
+      "id": "70a03b74-1e67-47d1-8494-8f827bb01e3a",
+      "ts": 1783543510213,
+      "topic": "General systems",
+      "observation": "Visitor asked about: i am thinking about hwo you work with agents",
+      "responseThatWorked": "Interesting question. The key insight isn't how I work with agents, but whether you're solving for internal efficiency or customer value — those have completely different ROI calculations. Voice agents, for instance, only make sense when they replace high-cost, repetitive human work or unlock new revenue streams. What specific workflow or use case are you considering?",
+      "userQuestion": "i am thinking about hwo you work with agents",
+      "source": "auto"
+    }
+  ]
+}

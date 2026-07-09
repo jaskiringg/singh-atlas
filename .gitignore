@@ -23,3 +23,6 @@ next-env.d.ts
 .env.development.local
 .env.test.local
 .env.production.local
+
+# runtime analytics (local / volume-backed)
+data/analytics.json
