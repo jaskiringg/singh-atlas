@@ -362,10 +362,11 @@ export const interests = [
 export type RepoCard = { name: string; group: string; purpose: string; shows: string; stack: string; featured?: boolean };
 export const repoCards: RepoCard[] = [
   { name: "piku", group: "AI", purpose: "Ambient AI operating system — local-first, persistent memory.", shows: "World models, retrieval, agent orchestration", stack: "Tauri · Rust · Ollama", featured: true },
-  { name: "relive-cure", group: "Product", purpose: "Agent-driven organic marketing + CRM for a clinic I operate daily.", shows: "AI agents, content pipeline, production ops", stack: "Node · Supabase · Gemini", featured: true },
-  { name: "mitra-friend-only-messaging", group: "Product", purpose: "Friend-request-only messaging with backend-enforced moderation.", shows: "Trust boundaries, CometChat, API enforcement", stack: "TypeScript · CometChat" },
-  { name: "lasik-consultation-bot", group: "Systems", purpose: "Trilingual WhatsApp consultation qualifier — precursor to Relive.", shows: "Messaging as a production channel", stack: "Node · WhatsApp" },
-  { name: "lead-scoring-dashboard", group: "Systems", purpose: "Lead-scoring engine with the logic as the product.", shows: "Business rules in code, SLA bands", stack: "Python · Streamlit" },
+  { name: "relive-cure", group: "Product", purpose: "Agent Console for organic marketing + CRM Analytics for clinic lead ops — both in production.", shows: "AI agents, content pipeline, funnel & rep performance", stack: "React · Node · Postgres · Gemini", featured: true },
+  { name: "mandibhai", group: "Product", purpose: "B2B wholesaler–retailer ordering — architecture showcase.", shows: "Inventory, pricing, order workflows", stack: "NestJS · Next.js", featured: true },
+  { name: "mitra-friend-only-messaging", group: "Product", purpose: "Friend-request-only messaging with backend-enforced moderation.", shows: "Trust boundaries, API enforcement", stack: "TypeScript · CometChat" },
+  { name: "lasik-consultation-bot", group: "Systems", purpose: "WhatsApp consultation qualifier — ReliveCure stack.", shows: "Messaging as a production channel", stack: "Node · WhatsApp" },
+  { name: "lead-scoring-dashboard", group: "Systems", purpose: "Lead-scoring + SLA assignment — ReliveCure adjacent.", shows: "Business rules in code, SLA bands", stack: "Python · Streamlit" },
 ];
 
 /* ── PERSONAL — Explorations of how I think ──────────────────────────── */

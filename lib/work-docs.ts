@@ -71,10 +71,11 @@ export const WORK_INDEX: {
   title: string;
   blurb: string;
   lane: "build" | "operate" | "consult" | "essay";
+  github?: string | null;
 }[] = [
-  { slug: "piku", title: "PIKU", blurb: "Local-first AI workspace — world model, memory, agents.", lane: "build" },
-  { slug: "relivecure", title: "ReliveCure", blurb: "Clinic ops — WhatsApp, CRM, Agent Console, voice app layer.", lane: "operate" },
-  { slug: "mandibhai", title: "MandiBhai", blurb: "B2B ordering — inventory, pricing, admin SKU ops.", lane: "build" },
-  { slug: "salescode", title: "Salescode", blurb: "Enterprise implementation lifecycle — discovery → hypercare.", lane: "consult" },
-  { slug: "voice-agent", title: "Voice agent", blurb: "Infra vs application layer when deploying enterprise voice AI.", lane: "essay" },
+  { slug: "piku", title: "PIKU", blurb: "Local-first AI workspace — world model, memory, agents.", lane: "build", github: "https://github.com/jaskiringg/piku" },
+  { slug: "relivecure", title: "ReliveCure", blurb: "Clinic ops — WhatsApp, CRM, Agent Console, voice app layer.", lane: "operate", github: "https://github.com/jaskiringg/relive-cure" },
+  { slug: "mandibhai", title: "MandiBhai", blurb: "B2B ordering — inventory, pricing, admin SKU ops.", lane: "build", github: "https://github.com/jaskiringg/mandibhai" },
+  { slug: "salescode", title: "Salescode", blurb: "Enterprise implementation lifecycle — discovery → hypercare.", lane: "consult", github: null },
+  { slug: "voice-agent", title: "Voice agent", blurb: "Infra vs application layer when deploying enterprise voice AI.", lane: "essay", github: "https://github.com/jaskiringg/relive-cure" },
 ];

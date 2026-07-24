@@ -57,7 +57,7 @@ export const CASES: CaseStudy[] = [
       "Designed voice-agent application layer (conversation, RAG roles, escalation) without claiming STT/LLM/TTS infra ownership.",
     ],
     outcome: "Production daily ops for clinic lead flow; public case study is anti-clone redacted.",
-    tags: ["WhatsApp", "CRM", "Gemini", "Railway", "Supabase"],
+    tags: ["WhatsApp", "CRM", "Gemini", "Railway", "Ops"],
     shot: "/shots/relive-analytics.png",
     shotLabel: "CRM Analytics",
     docHref: "/work/relivecure",
@@ -247,13 +247,79 @@ export const DOCS: DocItem[] = [
 
 export const GITHUB_USER = "jaskiringg";
 
-export const REPOS = [
-  { name: "piku", group: "AI", purpose: "Ambient AI operating system — local-first, persistent memory.", shows: "World models, retrieval, agent orchestration", stack: "Tauri · Rust · Ollama", featured: true },
-  { name: "relive-cure", group: "Product", purpose: "Agent Console for organic marketing + CRM Analytics for clinic lead ops — both in production.", shows: "AI agents, content pipeline, funnel & rep performance", stack: "React · Node · Supabase · Gemini", featured: true },
-  { name: "mandibhai", group: "Product", purpose: "B2B wholesaler–retailer ordering — architecture showcase (docs only).", shows: "Inventory, pricing, SKU admin, order workflows", stack: "NestJS · Next.js", featured: true },
-  { name: "mitra-friend-only-messaging", group: "Product", purpose: "Friend-request-only messaging with backend-enforced moderation.", shows: "Trust boundaries, CometChat, API enforcement", stack: "TypeScript · CometChat", featured: false },
-  { name: "lasik-consultation-bot", group: "Systems", purpose: "Trilingual WhatsApp consultation qualifier — precursor to Relive.", shows: "Messaging as a production channel", stack: "Node · WhatsApp", featured: false },
-  { name: "lead-scoring-dashboard", group: "Systems", purpose: "Lead-scoring engine with the logic as the product.", shows: "Business rules in code, SLA bands", stack: "Python · Streamlit", featured: false },
+export type RepoCard = {
+  name: string;
+  group: string;
+  purpose: string;
+  shows: string;
+  stack: string;
+  featured: boolean;
+  /** Primary click → Atlas case study / design doc */
+  docHref?: string;
+  /** Public showcase repo under jaskiringg (omit if docs-only / no public repo) */
+  githubRepo?: string;
+};
+
+export const REPOS: RepoCard[] = [
+  {
+    name: "piku",
+    group: "AI",
+    purpose: "Ambient AI operating system — local-first, persistent memory.",
+    shows: "World models, retrieval, agent orchestration",
+    stack: "Tauri · Rust · Ollama",
+    featured: true,
+    docHref: "/work/piku",
+    githubRepo: "piku",
+  },
+  {
+    name: "relive-cure",
+    group: "Product",
+    purpose: "Agent Console for organic marketing + CRM Analytics for clinic lead ops — both in production.",
+    shows: "AI agents, content pipeline, funnel & rep performance",
+    stack: "React · Node · Postgres · Gemini",
+    featured: true,
+    docHref: "/work/relivecure",
+    githubRepo: "relive-cure",
+  },
+  {
+    name: "mandibhai",
+    group: "Product",
+    purpose: "B2B wholesaler–retailer ordering — architecture showcase (docs only).",
+    shows: "Inventory, pricing, SKU admin, order workflows",
+    stack: "NestJS · Next.js",
+    featured: true,
+    docHref: "/work/mandibhai",
+    githubRepo: "mandibhai",
+  },
+  {
+    name: "lasik-consultation-bot",
+    group: "Systems",
+    purpose: "WhatsApp consultation qualifier — part of ReliveCure ops stack.",
+    shows: "Messaging as a production channel",
+    stack: "Node · WhatsApp",
+    featured: false,
+    docHref: "/work/relivecure",
+    githubRepo: "lasik-consultation-bot",
+  },
+  {
+    name: "lead-scoring-dashboard",
+    group: "Systems",
+    purpose: "Lead-scoring + SLA assignment layer — ReliveCure ops adjacent.",
+    shows: "Business rules in code, SLA bands",
+    stack: "Python · Streamlit",
+    featured: false,
+    docHref: "/work/relivecure",
+    githubRepo: "lead-scoring-dashboard",
+  },
+  {
+    name: "mitra-friend-only-messaging",
+    group: "Product",
+    purpose: "Friend-request-only messaging with backend-enforced moderation.",
+    shows: "Trust boundaries, API enforcement",
+    stack: "TypeScript · CometChat",
+    featured: false,
+    githubRepo: "mitra-friend-only-messaging",
+  },
 ];
 
 export type BuildShot = { label: string; src: string };
@@ -264,6 +330,8 @@ export const BUILDS = [
     status: "Building",
     body: "I got tired of re-explaining myself to a chatbot every session, so I'm building the opposite: something local-first that actually remembers — a running model of what I'm doing, thinking about, and learning.",
     shots: [{ label: "PIKU · ambient OS home", src: "/shots/piku-home.png" }],
+    docHref: "/work/piku",
+    githubHref: "https://github.com/jaskiringg/piku",
   },
   {
     name: "Relive Cure",
@@ -273,6 +341,8 @@ export const BUILDS = [
       { label: "Agent console", src: "/shots/relive-agent-console.png" },
       { label: "CRM analytics", src: "/shots/relive-analytics.png" },
     ],
+    docHref: "/work/relivecure",
+    githubHref: "https://github.com/jaskiringg/relive-cure",
   },
   {
     name: "MandiBhai",
@@ -282,6 +352,8 @@ export const BUILDS = [
       { label: "Retailer catalogue", src: "/shots/mandibhai-catalogue.png" },
       { label: "Wholesaler orders", src: "/shots/mandibhai-wholesaler.png" },
     ],
+    docHref: "/work/mandibhai",
+    githubHref: "https://github.com/jaskiringg/mandibhai",
   },
 ];
 

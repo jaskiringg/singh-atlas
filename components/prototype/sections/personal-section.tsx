@@ -19,7 +19,7 @@ function PersonalSection({ revealed, metricsVals }: PersonalSectionProps) {
           <h2 className="pt-h2" style={{ maxWidth: "20ch" }}>
             I build the systems I wish existed.
           </h2>
-          <p className="pt-body" style={{ maxWidth: "66ch", margin: "14px auto 0" }}>
+          <p className="pt-body" data-hero-block style={{ maxWidth: "66ch", margin: "14px auto 0" }}>
             Each one started as a specific itch, and I kept going until it covered the whole use case — not a
             side-project sketch.
           </p>
@@ -71,7 +71,13 @@ function PersonalSection({ revealed, metricsVals }: PersonalSectionProps) {
                   </div>
                   <div style={{ order: i % 2 === 1 ? 1 : 2 }}>
                     <h4 style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: 20, letterSpacing: "-0.01em" }}>
-                      {b.name}{" "}
+                      {b.docHref ? (
+                        <a href={b.docHref} style={{ color: "inherit", textDecoration: "none" }}>
+                          {b.name}
+                        </a>
+                      ) : (
+                        b.name
+                      )}{" "}
                       <span
                         style={{
                           fontFamily: "var(--font-mono)",
@@ -85,6 +91,44 @@ function PersonalSection({ revealed, metricsVals }: PersonalSectionProps) {
                       </span>
                     </h4>
                     <p style={{ fontSize: "14.5px", color: "var(--ink2)", marginTop: 10, lineHeight: 1.6 }}>{b.body}</p>
+                    {(b.docHref || b.githubHref) && (
+                      <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 16 }}>
+                        {b.docHref ? (
+                          <a
+                            href={b.docHref}
+                            style={{
+                              fontFamily: "var(--font-mono)",
+                              fontSize: 12,
+                              color: "var(--bg)",
+                              background: "var(--accent)",
+                              padding: "9px 14px",
+                              borderRadius: 8,
+                              textDecoration: "none",
+                            }}
+                          >
+                            Docs
+                          </a>
+                        ) : null}
+                        {b.githubHref ? (
+                          <a
+                            href={b.githubHref}
+                            target="_blank"
+                            rel="noreferrer"
+                            style={{
+                              fontFamily: "var(--font-mono)",
+                              fontSize: 12,
+                              color: "var(--ink2)",
+                              border: "1px solid var(--line2)",
+                              padding: "9px 14px",
+                              borderRadius: 8,
+                              textDecoration: "none",
+                            }}
+                          >
+                            GitHub
+                          </a>
+                        ) : null}
+                      </div>
+                    )}
                   </div>
                 </article>
               );

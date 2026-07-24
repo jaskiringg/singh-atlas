@@ -1328,3 +1328,22 @@ body {
   font-size: 13.5px;
   color: var(--ink3, #8b93a7);
 }
+
+.work-lane li {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.work-lane-gh {
+  align-self: flex-start;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink3, #8b93a7);
+  text-decoration: none;
+  margin: -2px 0 0 16px;
+}
+
+.work-lane-gh:hover {
+  color: var(--accent, #ff7a1a);
+}

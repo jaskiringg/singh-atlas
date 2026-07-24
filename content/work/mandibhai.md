@@ -71,7 +71,7 @@ Role picker is the first screen after brand. Phone OTP is the intended auth path
 
 | Domain | Feature | Status | Notes |
 |--------|---------|--------|-------|
-| **Auth** | Role-first login (Retailer / Wholesaler / Admin) | Live (demo) | OTP path wired; demo bypass for fixed test phones |
+| **Auth** | Role-first login (Retailer / Wholesaler / Admin) | Live (demo) | OTP path wired; demo bypass for walkthroughs |
 | **Auth** | Location gate for retailer/wholesaler | Live | Admin skips location; demo retailers can skip gate |
 | **Retailer** | Geo-filtered marketplace feed | Live | ~20 km Haversine; active wholesalers only |
 | **Retailer** | Search + category/brand filters | Live | |
@@ -98,7 +98,7 @@ Role picker is the first screen after brand. Phone OTP is the intended auth path
 | **Admin** | Global orders monitor + PDF export | Partial | Fetch/export unwired |
 | **Platform** | Dark mode (retailer/wholesaler) | Live | localStorage preference |
 | **Platform** | Payment | Label only | Cash on delivery |
-| **Platform** | NestJS backend repo | Scaffold | Present as `MandiBhai-BACKEND`; primary data path today is Supabase client + RPC |
+| **Platform** | NestJS backend repo | Scaffold | Present as `backend service scaffold`; primary data path today is Supabase client + RPC |
 
 ---
 
@@ -111,7 +111,7 @@ sequenceDiagram
   participant R as Retailer app
   participant Feed as Marketplace feed
   participant Cart as Cart (client)
-  participant RPC as place_order_atomic (per wholesaler)
+  participant RPC as atomic place-order RPC (per wholesaler)
   participant DB as Postgres (Supabase)
 
   R->>Feed: browse/search (geo + dedup rules)
@@ -234,7 +234,7 @@ Wholesaler ◄──fulfills───┘
 
 ### Stack (high level)
 
-Next.js (App Router) · React · TypeScript · Tailwind · Supabase (Auth, Postgres, Storage, Realtime) · Capacitor Android wrapper · NestJS backend repo (`MandiBhai-BACKEND`) as parallel/forward path
+Next.js (App Router) · React · TypeScript · Tailwind · Supabase (Auth, Postgres, Storage, Realtime) · Capacitor Android wrapper · NestJS backend repo (`backend service scaffold`) as parallel/forward path
 
 Legacy Vite + React codebase exists under `_legacy_vite_code`; current product shell is Next.js (`MandiBhai-FRONTEND`).
 
@@ -250,7 +250,7 @@ Single large client store (`StoreContext`) holds auth, catalogue, cart, orders, 
 
 ### Backend/data path
 
-Primary write path for orders: Supabase client → Postgres RPC `place_order_atomic` (atomic stock deduct + order insert per wholesaler). Auth via Supabase phone OTP (demo bypass for fixed test accounts).
+Primary write path for orders: Supabase client → Postgres RPC atomic place-order RPC (atomic stock deduct + order insert per wholesaler). Auth via Supabase phone OTP (demo bypass for fixed test accounts).
 
 NestJS backend is present as a scaffolded service layer; it is not the sole production path in the demo build described here. Treat Supabase RPC + RLS as the load-bearing contract until NestJS modules are fully wired.
 
@@ -264,7 +264,7 @@ Supabase channels can push order status and listing updates to connected clients
 
 ### ADR-001: Per-wholesaler atomic RPC vs global cart transaction
 
-**Decision:** One `place_order_atomic` call per wholesaler group, not a single multi-supplier transaction.
+**Decision:** One atomic place-order RPC call per wholesaler group, not a single multi-supplier transaction.
 
 **Why:** MOQ, stock, and fulfilment are wholesaler-scoped. A global two-phase commit adds complexity without matching how mandi suppliers actually invoice and deliver.
 
@@ -280,7 +280,7 @@ Supabase channels can push order status and listing updates to connected clients
 
 ### ADR-003: Demo mode OTP bypass
 
-**Decision:** Fixed demo phones skip OTP and optionally skip location gate for stakeholder demos.
+**Decision:** Demo bypass skips OTP/location gate for stakeholder walkthroughs.
 
 **Why:** MSG91/Twilio OTP integration was scheduled post-demo; stakeholders needed a frictionless walkthrough.
 
@@ -306,7 +306,7 @@ Supabase channels can push order status and listing updates to connected clients
 2. **Wholesaler:** incoming orders → lifecycle to Delivered → verify inventory deduction
 3. **Admin:** dashboard → moderation queue → master catalogue browse
 
-Demo accounts use role-specific phone numbers with Dev Bypass (No OTP). Amber banner indicates demo mode.
+Demo mode uses role bypass for stakeholder walkthroughs — credentials not published.
 
 ### Production readiness gaps (as of demo build)
 
@@ -403,7 +403,7 @@ Use before publishing externally. Tick when verified.
 ### Anti-clone redaction
 
 - [ ] No Supabase project URLs, anon keys, or service role secrets
-- [ ] No full RPC source or DDL for `place_order_atomic`
+- [ ] No full RPC source or DDL for atomic place-order RPC
 - [ ] No demo phone numbers copied as "production accounts"
 - [ ] No step-by-step rebuild or clone recipe
 - [ ] No exact geo radius tuning constants presented as contractual SLA

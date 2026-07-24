@@ -74,7 +74,13 @@ function WorkSection({ revealed, activeCase, pickCase }: WorkSectionProps) {
                       {cd.kicker}
                     </div>
                     <h3 style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "clamp(22px,2.6vw,30px)", margin: "10px 0 0" }}>
-                      {cd.title}
+                      {cd.docHref ? (
+                        <a href={cd.docHref} style={{ color: "inherit", textDecoration: "none" }}>
+                          {cd.title}
+                        </a>
+                      ) : (
+                        cd.title
+                      )}
                     </h3>
                     <p style={{ fontSize: "15.5px", color: "var(--ink2)", lineHeight: 1.62, marginTop: 14, maxWidth: "56ch" }}>
                       {cd.context}

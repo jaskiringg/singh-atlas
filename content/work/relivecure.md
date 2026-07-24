@@ -16,8 +16,8 @@ download: /docs/relivecure.md
 | Surface | URL | Role |
 |---------|-----|------|
 | CRM Dashboard | [relive-cure-dashboard-production.up.railway.app](https://relive-cure-dashboard-production.up.railway.app) | Sales ops command center |
-| Backend API | [relive-cure-backend-production.up.railway.app](https://relive-cure-backend-production.up.railway.app) | WhatsApp engine, sync, webhooks |
-| Marketing site | [relivecure.com](https://relivecure.com) / [relivecure-web-production.up.railway.app](https://relivecure-web-production.up.railway.app) | Public clinic web presence |
+| Backend API | Private Railway service | WhatsApp engine, sync, webhooks |
+| Marketing site | [relivecure-web-production.up.railway.app](https://relivecure-web-production.up.railway.app) | Public clinic web presence |
 | Agent Console | Separate deploy (linked from CRM footer) | Growth engine — content, organic leads |
 
 **Showcase repo:** [github.com/jaskiringg/relive-cure](https://github.com/jaskiringg/relive-cure) — blurred screenshots only; application source is private.
@@ -210,7 +210,7 @@ Medical-safe by design: agents draft and analyze; **founder approval is required
 
 Entities and field **purpose** only — no DDL.
 
-### Pre-CRM lead (`leads_surgery`)
+### Pre-CRM lead (pre-CRM leads table)
 
 | Field group | Purpose |
 |-------------|---------|
@@ -220,7 +220,7 @@ Entities and field **purpose** only — no DDL.
 | CRM bridge | Pushed flag, Refrens URL/ID, CRM outcome writeback |
 | Scoring | Composite intent band (weighted signals: channel, latency, field completeness — tuned from ops, not published) |
 
-### Post-CRM mirror (`refrens_leads`)
+### Post-CRM mirror (post-CRM mirror table)
 
 | Field group | Purpose |
 |-------------|---------|
@@ -229,30 +229,30 @@ Entities and field **purpose** only — no DDL.
 | Performance | Response time, SLA breach flag, conversion timestamp |
 | Attribution | Campaign/source when available from sync |
 
-### WhatsApp (`whatsapp_conversations`, `whatsapp_messages`)
+### WhatsApp (conversation table, message table)
 
 | Purpose |
 |---------|
 | Thread metadata: unread count, bot paused, last message timestamp |
 | Message store: direction, body, media refs, WA timestamp (24h window calc) |
 
-### Lead memory (`lead_events`, `lead_signals`)
+### Lead memory (lead events, lead signals)
 
 | Entity | Purpose |
 |--------|---------|
-| `lead_events` | Append-only timeline: WhatsApp in/out, bot signals, calls, organic touchpoints |
-| `lead_signals` | Field diff events for Pulse "recent changes" feed |
+| lead events | Append-only timeline: WhatsApp in/out, bot signals, calls, organic touchpoints |
+| lead signals | Field diff events for Pulse "recent changes" feed |
 
 ### Growth engine (Agent Console)
 
 | Entity | Purpose |
 |--------|---------|
-| `agents` | Cron registry: schedule, enabled, agent key |
-| `agent_runs` | Execution log per run |
-| `approvals` | Draft queue: content type, body, status, publish target |
-| `organic_leads` | Social inbound captured from WhatsApp messages |
-| `competitors`, `competitor_signals` | Market monitoring inputs |
-| `content_ideas`, `content_insights`, `briefs` | Pipeline from research to draft |
+| agents registry | Cron registry: schedule, enabled, agent key |
+| agent runs | Execution log per run |
+| approvals | Draft queue: content type, body, status, publish target |
+| organic leads | Social inbound captured from WhatsApp messages |
+| competitors, competitor signals | Market monitoring inputs |
+| content ideas, content insights, briefs | Pipeline from research to draft |
 
 ### Relationships (conceptual)
 
@@ -289,26 +289,26 @@ Agents **never touch frozen CRM automation code.** They use service-role DB acce
 
 | Module | Role | Status |
 |--------|------|--------|
-| `index.js` | God node: 58+ routes, embedded bot, schedulers | Live — refactor candidate |
-| `ingestion.js` | Append-only lead merge contract | Live — do not break |
-| `whatsapp-store.js` | Message/conversation persistence | Live |
-| `llm-agent.js` | Gemini extraction chain for bot | Live |
-| `crm-automation.js` | Refrens form push | Live, **frozen** |
-| `refrens-sync.js` | Refrens CSV scrape | Live, **frozen** |
-| `meta-marketing.js` | OAuth, campaigns, leadgen webhook | Live |
-| `operator-routes.js` | Founder assistant + dev queue | Live |
-| `organic-wa-routes.js` | Organic leads, multi-line WA | Live (tables may lag) |
+| API entry | God node: 58+ routes, embedded bot, schedulers | Live — refactor candidate |
+| ingestion module | Append-only lead merge contract | Live — do not break |
+| WhatsApp store module | Message/conversation persistence | Live |
+| LLM agent module | Gemini extraction chain for bot | Live |
+| CRM push module | Refrens form push | Live, **frozen** |
+| CRM sync module | Refrens CSV scrape | Live, **frozen** |
+| Meta marketing module | OAuth, campaigns, leadgen webhook | Live |
+| operator routes | Founder assistant + dev queue | Live |
+| organic WhatsApp routes | Organic leads, multi-line WA | Live (tables may lag) |
 
 ### Dashboard architecture note
 
-The CRM is a single `App.jsx` monolith (~8.8k LOC) with all tab state in one React tree. No Context — shared parent state couples Pulse, Chatbot, Marketing, and Analytics. Redesign plan: route-based code split, unified lead drawer, URL query filters instead of shared `dashboardFilter` state.
+The CRM is a single dashboard shell monolith (large monolith) with all tab state in one React tree. No Context — shared parent state couples Pulse, Chatbot, Marketing, and Analytics. Redesign plan: route-based code split, unified lead drawer, URL query filters instead of shared `dashboardFilter` state.
 
 ### Auth model
 
 | Pattern | Used for |
 |---------|----------|
 | Supabase anon client + RLS | Direct read/write on leads, WhatsApp, signals, HR |
-| Backend session (`x-crm-key` from login) | Refrens, Meta, push, send, operator, admin |
+| Backend session (session header from login) | Refrens, Meta, push, send, operator, admin |
 
 Two auth paths — a known scaling debt. BFF or consistent API gateway is the long-term fix.
 
@@ -374,7 +374,7 @@ This section describes **what we built at the application layer** (conversation 
 
 **Publish path:** Approve → shared publish service → WordPress (blog/doctor pages) or backend WhatsApp send API.
 
-**Parallel registry problem:** Backend also has a legacy `agent_jobs` table for marketing toggles. Two registries, one IA word ("Automations") — consolidation deferred.
+**Parallel registry problem:** Backend also has a legacy legacy agent jobs table for marketing toggles. Two registries, one IA word ("Automations") — consolidation deferred.
 
 ### Voice agent — designed, not shipped
 
@@ -421,7 +421,7 @@ sequenceDiagram
 | P2 | Concurrency scaling + India DLT/DND compliance |
 | P3 | Call-intelligence reporting — AI vs rep coaching |
 
-**What already ships for calls:** Rep Android app uploads recordings; M4 local transcribe job writes to `call_recordings` + `lead_events`. Lore reads these. Full AI voice loop is not live.
+**What already ships for calls:** Rep Android app uploads recordings; M4 local transcribe job writes to call recordings + lead events. Lore reads these. Full AI voice loop is not live.
 
 ---
 
@@ -481,14 +481,14 @@ sequenceDiagram
 
 | Problem | Cause | Mitigation |
 |---------|-------|------------|
-| Bot sessions split across replicas | `sessions.json` on disk, not shared | Single Railway instance or Redis session store |
+| Bot sessions across replicas | Local session store not shared | Sticky instance or shared session store |
 | Puppeteer contention | Push singleton vs sync fresh browser | Serialize or queue |
 | Marketing → Chatbot coupling | Shared `dashboardFilter` parent state | URL query params (`?filter=stuck`) |
 | Global "AI product" feel | Operator orb + bot mode in shell | Redesign: demote to Settings |
 | Dark tabs in codebase | Organic, Rep App, WA Lines built but not in nav | Ship behind flag or delete |
-| `organic_leads` migration lag | Table may not exist in prod | Agents capture/responder fail until applied |
+| organic leads migration lag | Table may not exist in prod | Agents capture/responder fail until applied |
 | Rep devices 404 | Route module exists but not registered | Wire or remove |
-| Hardcoded Supabase anon key | Dashboard client | Move to env + RLS audit |
+| Secrets hygiene | Client config drift risk | Env-only secrets · RLS audit |
 
 ---
 
@@ -561,7 +561,7 @@ All metrics require founder validation before external use.
 ### Medium-term
 
 - Unified leads API (`/api/leads/unified`) for desktop + mobile parity
-- Consolidate agent registries (`agents` vs `agent_jobs`)
+- Consolidate agent registries (agents registry vs legacy agent jobs)
 - Redis-backed bot sessions for multi-instance backend
 - Per-tab ErrorBoundary (one chart throw currently kills app)
 
@@ -648,8 +648,8 @@ Use this before publishing externally. Tick when verified.
 ### Production URLs
 
 - [ ] Dashboard live at `relive-cure-dashboard-production.up.railway.app`
-- [ ] Backend live at `relive-cure-backend-production.up.railway.app`
-- [ ] Marketing site live at `relivecure.com` or Railway alias
+- [ ] Backend private; not linked from portfolio docs
+- [ ] Marketing LP live on Railway (no customer domain published here)
 - [ ] Agent Console is separate deploy (URL accurate if listed)
 
 ### Metrics
@@ -687,7 +687,6 @@ Use this before publishing externally. Tick when verified.
 
 - [ ] Showcase repo link works: github.com/jaskiringg/relive-cure
 - [ ] Private repo names accurate (dashboard, backend, agents)
-- [ ] Collaborator credit if mentioned: @siddharth555555
 
 **Anti-clone pass:** [ ] yes  
 **Reviewer:** ________________  

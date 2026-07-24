@@ -76,6 +76,11 @@ export default function WorkIndexPage() {
                     <strong>{w.title}</strong>
                     <span>{w.blurb}</span>
                   </Link>
+                  {w.github ? (
+                    <a className="work-lane-gh" href={w.github} target="_blank" rel="noreferrer">
+                      GitHub ↗
+                    </a>
+                  ) : null}
                 </li>
               ))}
             </ul>
