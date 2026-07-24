@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
-import { marked } from "marked";
+import { Marked } from "marked";
 
 export type WorkMeta = {
   title: string;
@@ -22,6 +22,28 @@ const WORK_DIR = path.join(process.cwd(), "content", "work");
 
 const SLUGS = ["piku", "relivecure", "mandibhai", "salescode", "voice-agent"] as const;
 export type WorkSlug = (typeof SLUGS)[number];
+
+function escapeHtml(text: string): string {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+const marked = new Marked();
+marked.use({
+  renderer: {
+    code({ text, lang }) {
+      const language = (lang ?? "").trim();
+      if (language === "mermaid") {
+        return `<pre class="mermaid">${escapeHtml(text)}</pre>\n`;
+      }
+      const cls = language ? ` class="language-${escapeHtml(language)}"` : "";
+      return `<pre><code${cls}>${escapeHtml(text)}</code></pre>\n`;
+    },
+  },
+});
 
 export function listWorkSlugs(): WorkSlug[] {
   return [...SLUGS];
@@ -48,10 +70,11 @@ export const WORK_INDEX: {
   slug: WorkSlug;
   title: string;
   blurb: string;
+  lane: "build" | "operate" | "consult" | "essay";
 }[] = [
-  { slug: "piku", title: "PIKU", blurb: "Local-first AI workspace — world model, memory, agents." },
-  { slug: "relivecure", title: "ReliveCure", blurb: "Clinic ops — WhatsApp, CRM, Agent Console, voice app layer." },
-  { slug: "mandibhai", title: "MandiBhai", blurb: "B2B ordering — inventory, pricing, admin SKU ops." },
-  { slug: "salescode", title: "Salescode", blurb: "Enterprise implementation lifecycle — discovery → hypercare." },
-  { slug: "voice-agent", title: "Voice agent", blurb: "Infra vs application layer when deploying enterprise voice AI." },
+  { slug: "piku", title: "PIKU", blurb: "Local-first AI workspace — world model, memory, agents.", lane: "build" },
+  { slug: "relivecure", title: "ReliveCure", blurb: "Clinic ops — WhatsApp, CRM, Agent Console, voice app layer.", lane: "operate" },
+  { slug: "mandibhai", title: "MandiBhai", blurb: "B2B ordering — inventory, pricing, admin SKU ops.", lane: "build" },
+  { slug: "salescode", title: "Salescode", blurb: "Enterprise implementation lifecycle — discovery → hypercare.", lane: "consult" },
+  { slug: "voice-agent", title: "Voice agent", blurb: "Infra vs application layer when deploying enterprise voice AI.", lane: "essay" },
 ];

@@ -22,7 +22,10 @@ function WorkSection({ revealed, activeCase, pickCase }: WorkSectionProps) {
             What that looks like in practice.
           </h2>
           <p className="pt-body" style={{ margin: "14px auto 0" }}>
-            Case studies with Docs / GitHub / Live — click a title to switch.
+            Case studies with Docs / GitHub / Live — click a title to switch.{" "}
+            <a href="/work" style={{ color: "var(--accent)" }}>
+              Full system map →
+            </a>
           </p>
 
           <div data-work-tabs style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 8, marginTop: 30 }}>

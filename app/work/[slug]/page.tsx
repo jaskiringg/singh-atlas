@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import MermaidBoot from "@/components/site/mermaid-boot";
 import { getWorkDoc, listWorkSlugs, WORK_INDEX, type WorkSlug } from "@/lib/work-docs";
 
 type Props = { params: Promise<{ slug: string }> };
@@ -28,9 +29,10 @@ export default async function WorkPage({ params }: Props) {
 
   return (
     <main className="work-page">
+      <MermaidBoot />
       <header className="work-header">
-        <Link href="/#work" className="work-back">
-          ← Work
+        <Link href="/work" className="work-back">
+          ← Work map
         </Link>
         <p className="work-kicker">{meta.kicker}</p>
         <h1 className="work-title">{meta.title}</h1>
@@ -50,7 +52,7 @@ export default async function WorkPage({ params }: Props) {
           ) : null}
         </div>
         <p className="work-note">
-          Engineering write-up — anti-clone redacted. Behavior and decisions, not a rebuild kit.
+          Engineering write-up — anti-clone redacted. Architecture maps render below.
         </p>
       </header>
 
