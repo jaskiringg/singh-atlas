@@ -16,6 +16,9 @@ export type CaseStudy = {
   shot: string | null;
   shotLabel: string;
   diagramType?: "flow" | "trace";
+  docHref?: string;
+  githubHref?: string | null;
+  liveHref?: string | null;
 };
 
 export const CASES: CaseStudy[] = [
@@ -36,42 +39,91 @@ export const CASES: CaseStudy[] = [
     tags: ["SQL", "REST", "Kafka", "Postman", "Jira", "Confluence"],
     shot: "/shots/salescode-coke-buddy.png",
     shotLabel: "Coke Buddy · Thailand",
+    docHref: "/work/salescode",
+    githubHref: null,
+    liveHref: null,
   },
   {
-    id: "integration",
+    id: "relivecure",
     numLabel: "02",
-    kicker: "Architecture",
-    title: "The integration layer that holds it together",
+    kicker: "Production · AI ops · CRM",
+    title: "ReliveCure",
     context:
-      "One platform has to survive many local systems. The integration architecture is where that actually happens — and where the value quietly hides.",
+      "Clinic operations platform: WhatsApp qualification, CRM analytics, Agent Console for organic marketing, and voice as an application layer — live on Railway.",
     did: [
-      "Designed how ERP / DMS, master data (product, customer, outlet, hierarchy) and the platform stay in sync.",
-      "Handled the hard parts: delta sync, idempotency, fail-safe consumers and reconciliation when upstream drifts.",
-      "Kept business rules in the integration layer — enforced at the boundary, not left to client discipline.",
+      "Mapped inbound → qualify → CRM → rep → appointment as the load-bearing spine.",
+      "Shipped founder ops surfaces: Pulse, inbox, analytics, bot shadow/live controls.",
+      "Built Agent Console as a separate growth app with human approval before publish.",
+      "Designed voice-agent application layer (conversation, RAG roles, escalation) without claiming STT/LLM/TTS infra ownership.",
     ],
-    outcome: "Field systems and the central platform agree on one version of the truth.",
-    tags: ["ERP / DMS", "Kafka", "Delta sync", "Master data", "API orchestration"],
-    shot: null,
-    shotLabel: "Integration architecture",
-    diagramType: "flow",
+    outcome: "Production daily ops for clinic lead flow; public case study is anti-clone redacted.",
+    tags: ["WhatsApp", "CRM", "Gemini", "Railway", "Supabase"],
+    shot: "/shots/relive-analytics.png",
+    shotLabel: "CRM Analytics",
+    docHref: "/work/relivecure",
+    githubHref: "https://github.com/jaskiringg/relive-cure",
+    liveHref: "https://relive-cure-dashboard-production.up.railway.app",
   },
   {
-    id: "incident",
+    id: "piku",
     numLabel: "03",
-    kicker: "Operator · the way I think",
-    title: "When it breaks in production, I own it",
+    kicker: "Flagship · local-first · world model",
+    title: "PIKU",
     context:
-      "A field rep couldn't sync an order. Go-live had happened three weeks earlier — this one landed on me anyway.",
+      "Local-first ambient AI workspace — persistent memory, knowledge graph, world model, and agent workflows on the machine. Not another chatbot.",
     did: [
-      "Worked it back from the symptom: an API timeout at the gateway.",
-      "Followed the thread to a Kafka consumer lag, then a SQL mismatch on a stale product-master record.",
-      "Root cause: a dropped delta-sync update. Patched the sync, replayed the events, verified the rep was green.",
+      "Designed layered architecture: OS shell, chat, graph, world model, apps.",
+      "Built IndexedDB-backed memory + hybrid retrieval with local embeddings.",
+      "Shipped privacy toggle: local-only vs optional cloud brain via local proxy.",
+      "Documented ADRs, feature inventory, and roadmap as an engineering design pack.",
     ],
-    outcome: "Back to healthy the same day — and the failure mode designed out so it can't recur quietly.",
-    tags: ["Root-cause analysis", "SQL", "Kafka", "Production support"],
-    shot: null,
-    shotLabel: "Incident → resolution",
-    diagramType: "trace",
+    outcome: "Active desktop build (Tauri + Ollama) with public design documentation.",
+    tags: ["Tauri", "Ollama", "IndexedDB", "RAG", "Privacy"],
+    shot: "/shots/piku-home.png",
+    shotLabel: "PIKU home",
+    docHref: "/work/piku",
+    githubHref: "https://github.com/jaskiringg/piku",
+    liveHref: null,
+  },
+  {
+    id: "mandibhai",
+    numLabel: "04",
+    kicker: "B2B · inventory · ordering",
+    title: "MandiBhai",
+    context:
+      "B2B wholesaler-to-retailer ordering: catalogue, pricing, inventory, orders, and admin SKU / packshot operations.",
+    did: [
+      "Modeled retailer and wholesaler workflows around same-day procurement.",
+      "Documented admin SKU and packshot operations from product design work.",
+      "Captured architecture and failure modes without publishing a rebuild kit.",
+    ],
+    outcome: "Working marketplace surfaces + sanitized public architecture pack.",
+    tags: ["NestJS", "Next.js", "Orders", "SKU admin"],
+    shot: "/shots/mandibhai-catalogue.png",
+    shotLabel: "Retailer catalogue",
+    docHref: "/work/mandibhai",
+    githubHref: "https://github.com/jaskiringg/mandibhai",
+    liveHref: null,
+  },
+  {
+    id: "voice-agent",
+    numLabel: "05",
+    kicker: "Essay · app layer vs infrastructure",
+    title: "Enterprise AI voice agent",
+    context:
+      "How to reason about deploying a voice agent: rent STT/LLM/TTS/telephony; own conversation design, RAG roles, tools, escalation, and validation.",
+    did: [
+      "Separated infrastructure from application responsibilities clearly.",
+      "Used ReliveCure (designed/evaluated) and Salescode (application-layer support) as examples.",
+      "Kept claims interview-defensible — no engine authorship, no rebuild recipe.",
+    ],
+    outcome: "Technical essay for FDE / AI deployment interviews.",
+    tags: ["Voice", "RAG", "Conversation design", "UAT"],
+    shot: "/shots/relive-agent-console.png",
+    shotLabel: "Agent Console",
+    docHref: "/work/voice-agent",
+    githubHref: "https://github.com/jaskiringg/relive-cure",
+    liveHref: null,
   },
 ];
 
@@ -197,7 +249,8 @@ export const GITHUB_USER = "jaskiringg";
 
 export const REPOS = [
   { name: "piku", group: "AI", purpose: "Ambient AI operating system — local-first, persistent memory.", shows: "World models, retrieval, agent orchestration", stack: "Tauri · Rust · Ollama", featured: true },
-  { name: "relive-cure", group: "Product", purpose: "Agent-driven organic marketing + CRM for a clinic I operate daily.", shows: "AI agents, content pipeline, production ops", stack: "Node · Supabase · Gemini", featured: true },
+  { name: "relive-cure", group: "Product", purpose: "Agent Console for organic marketing + CRM Analytics for clinic lead ops — both in production.", shows: "AI agents, content pipeline, funnel & rep performance", stack: "React · Node · Supabase · Gemini", featured: true },
+  { name: "mandibhai", group: "Product", purpose: "B2B wholesaler–retailer ordering — architecture showcase (docs only).", shows: "Inventory, pricing, SKU admin, order workflows", stack: "NestJS · Next.js", featured: true },
   { name: "mitra-friend-only-messaging", group: "Product", purpose: "Friend-request-only messaging with backend-enforced moderation.", shows: "Trust boundaries, CometChat, API enforcement", stack: "TypeScript · CometChat", featured: false },
   { name: "lasik-consultation-bot", group: "Systems", purpose: "Trilingual WhatsApp consultation qualifier — precursor to Relive.", shows: "Messaging as a production channel", stack: "Node · WhatsApp", featured: false },
   { name: "lead-scoring-dashboard", group: "Systems", purpose: "Lead-scoring engine with the logic as the product.", shows: "Business rules in code, SLA bands", stack: "Python · Streamlit", featured: false },
@@ -217,8 +270,8 @@ export const BUILDS = [
     status: "Live",
     body: "A LASIK clinic and the system that operates it, both mine. I see the patients and the leads, improve the workflows, ship the features, and own the business process and the software at the same time.",
     shots: [
-      { label: "Lead analytics", src: "/shots/relive-analytics.png" },
       { label: "Agent console", src: "/shots/relive-agent-console.png" },
+      { label: "CRM analytics", src: "/shots/relive-analytics.png" },
     ],
   },
   {
@@ -234,7 +287,7 @@ export const BUILDS = [
 
 export const METRICS = [
   { n: "Live", l: "in production" },
-  { n: "8,800", l: "line operator UI" },
+  { n: "8,800", l: "lines · operator UI" },
   { n: "5", l: "reps run on it" },
   { n: "100+", l: "security commits" },
 ];
@@ -257,7 +310,7 @@ export const TIMELINE: { t: string; d: string; isNow?: boolean }[] = [
   { t: "International Implementations", d: "Coca-Cola across Thailand, the Philippines and North India. Scale and local constraints." },
   { t: "AI Systems", d: "AI as a delivery multiplier and an architectural primitive." },
   { t: "PIKU", d: "The system I wish existed — a personal operating layer." },
-  { t: "Future", d: "Someone companies trust to own an entire system.", isNow: true },
+  { t: "Future", d: "Becoming someone companies trust to own an entire system.", isNow: true },
 ];
 
 export const AI_EXAMPLES = [

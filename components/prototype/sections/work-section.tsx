@@ -3,7 +3,7 @@
 import { memo } from "react";
 import Reveal from "@/components/prototype/reveal";
 import SwitchingPanel from "@/components/prototype/switching-panel";
-import { CASES, INTEGRATION_FLOW, INCIDENT_TRACE } from "@/lib/prototype-data";
+import { CASES } from "@/lib/prototype-data";
 
 type WorkSectionProps = {
   revealed: boolean;
@@ -22,7 +22,7 @@ function WorkSection({ revealed, activeCase, pickCase }: WorkSectionProps) {
             What that looks like in practice.
           </h2>
           <p className="pt-body" style={{ margin: "14px auto 0" }}>
-            Three cases, one at a time — click a title to switch.
+            Case studies with Docs / GitHub / Live — click a title to switch.
           </p>
 
           <div data-work-tabs style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 8, marginTop: 30 }}>
@@ -120,6 +120,83 @@ function WorkSection({ revealed, activeCase, pickCase }: WorkSectionProps) {
                         </span>
                       ))}
                     </div>
+                    {(cd.docHref || cd.githubHref || cd.liveHref) && (
+                      <div style={{ display: "flex", flexWrap: "wrap", gap: 10, marginTop: 20 }}>
+                        {cd.docHref ? (
+                          <a
+                            href={cd.docHref}
+                            className="pt-hover-lift"
+                            style={{
+                              fontFamily: "var(--font-mono)",
+                              fontSize: 12,
+                              color: "var(--bg)",
+                              background: "var(--accent)",
+                              padding: "9px 14px",
+                              borderRadius: 8,
+                              textDecoration: "none",
+                            }}
+                          >
+                            Docs
+                          </a>
+                        ) : null}
+                        {cd.githubHref ? (
+                          <a
+                            href={cd.githubHref}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="pt-hover-lift"
+                            style={{
+                              fontFamily: "var(--font-mono)",
+                              fontSize: 12,
+                              color: "var(--ink2)",
+                              border: "1px solid var(--line2)",
+                              padding: "9px 14px",
+                              borderRadius: 8,
+                              textDecoration: "none",
+                            }}
+                          >
+                            GitHub
+                          </a>
+                        ) : null}
+                        {cd.liveHref ? (
+                          <a
+                            href={cd.liveHref}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="pt-hover-lift"
+                            style={{
+                              fontFamily: "var(--font-mono)",
+                              fontSize: 12,
+                              color: "var(--ink2)",
+                              border: "1px solid var(--line2)",
+                              padding: "9px 14px",
+                              borderRadius: 8,
+                              textDecoration: "none",
+                            }}
+                          >
+                            Live
+                          </a>
+                        ) : null}
+                        {cd.docHref ? (
+                          <a
+                            href={`/docs/${cd.id === "relivecure" ? "relivecure" : cd.id === "voice-agent" ? "voice-agent" : cd.id}.md`}
+                            download
+                            className="pt-hover-lift"
+                            style={{
+                              fontFamily: "var(--font-mono)",
+                              fontSize: 12,
+                              color: "var(--ink2)",
+                              border: "1px solid var(--line2)",
+                              padding: "9px 14px",
+                              borderRadius: 8,
+                              textDecoration: "none",
+                            }}
+                          >
+                            Download
+                          </a>
+                        ) : null}
+                      </div>
+                    )}
                   </div>
 
                   <div>
@@ -144,91 +221,6 @@ function WorkSection({ revealed, activeCase, pickCase }: WorkSectionProps) {
                             aspectRatio: "16/10",
                           }}
                         />
-                      </div>
-                    )}
-                    {cd.diagramType === "flow" && (
-                      <div
-                        style={{
-                          border: "1px solid var(--line2)",
-                          borderRadius: 18,
-                          padding: "26px 24px",
-                          background: "linear-gradient(165deg, var(--bg2), var(--bg))",
-                          boxShadow: "0 24px 60px -28px color-mix(in srgb, var(--accent) 45%, transparent), inset 0 1px 0 color-mix(in srgb, var(--ink) 4%, transparent)",
-                          transform: "perspective(900px) rotateX(1.5deg)",
-                        }}
-                      >
-                        <div style={{ fontFamily: "var(--font-mono)", fontSize: "10.5px", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--ink3)", marginBottom: 18 }}>
-                          {cd.shotLabel}
-                        </div>
-                        {INTEGRATION_FLOW.map((node, i) => (
-                          <div key={node.label}>
-                            <div style={{ border: "1px solid var(--line2)", borderRadius: 16, padding: "12px 14px", background: "var(--bg3)", boxShadow: "0 8px 20px -12px rgba(0,0,0,.6)" }}>
-                              <div style={{ fontFamily: "var(--font-mono)", fontSize: "12.5px", color: "var(--ink)" }}>{node.label}</div>
-                              <div style={{ fontSize: 11, color: "var(--ink3)", marginTop: 3 }}>{node.sub}</div>
-                            </div>
-                            {i < INTEGRATION_FLOW.length - 1 && (
-                              <div style={{ position: "relative", width: 2, height: 26, background: "var(--line)", margin: "0 auto" }}>
-                                <div className="pt-flow-dot-y" />
-                              </div>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                    {cd.diagramType === "trace" && (
-                      <div
-                        style={{
-                          border: "1px solid var(--line2)",
-                          borderRadius: 18,
-                          padding: "26px 24px",
-                          background: "linear-gradient(165deg, var(--bg2), var(--bg))",
-                          boxShadow: "0 24px 60px -28px color-mix(in srgb, var(--accent3) 45%, transparent), inset 0 1px 0 color-mix(in srgb, var(--ink) 4%, transparent)",
-                          transform: "perspective(900px) rotateX(1.5deg)",
-                        }}
-                      >
-                        <div style={{ fontFamily: "var(--font-mono)", fontSize: "10.5px", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--ink3)", marginBottom: 18 }}>
-                          {cd.shotLabel}
-                        </div>
-                        {INCIDENT_TRACE.map((st, i) => {
-                          const danger = st.kind === "fail" || st.kind === "root";
-                          const fixed = st.kind === "fixed";
-                          const dotColor = danger ? "var(--accent3)" : fixed ? "var(--accent2)" : "var(--line2)";
-                          return (
-                            <div key={st.label} style={{ display: "grid", gridTemplateColumns: "24px 1fr", gap: 14 }}>
-                              <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
-                                <div
-                                  style={{
-                                    width: 24,
-                                    height: 24,
-                                    borderRadius: "50%",
-                                    border: `1.5px solid ${dotColor}`,
-                                    background: "var(--bg)",
-                                    display: "grid",
-                                    placeItems: "center",
-                                  }}
-                                >
-                                  <span style={{ width: 6, height: 6, borderRadius: "50%", background: dotColor }} />
-                                </div>
-                                {i < INCIDENT_TRACE.length - 1 && (
-                                  <div style={{ width: 1.5, flex: 1, minHeight: 20, background: "var(--line2)" }} />
-                                )}
-                              </div>
-                              <div style={{ paddingBottom: 16 }}>
-                                <div
-                                  style={{
-                                    fontFamily: "var(--font-display)",
-                                    fontWeight: 600,
-                                    fontSize: "13.5px",
-                                    color: danger ? "var(--accent3)" : fixed ? "var(--accent2)" : "var(--ink)",
-                                  }}
-                                >
-                                  {st.label}
-                                </div>
-                                <div style={{ fontSize: "12.5px", color: "var(--ink2)", marginTop: 3 }}>{st.sub}</div>
-                              </div>
-                            </div>
-                          );
-                        })}
                       </div>
                     )}
                   </div>
