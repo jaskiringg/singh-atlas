@@ -142,12 +142,13 @@ export default function AiOrb() {
       } else if (data.error === "missing_api_key") {
         reply = {
           role: "assistant",
-          text: "Orb isn't configured yet — add your OpenRouter API key to .env.local and restart the server.",
+          text: "The orb is offline right now — email me directly and you'll reach the actual human.",
         };
       } else if (data.message) {
+        // data.message is already a complete, visitor-safe sentence — don't wrap it again.
         reply = {
           role: "assistant",
-          text: `Couldn't reach the model (${data.message}). Try again in a moment, or email me directly.`,
+          text: data.message,
         };
       } else {
         reply = {
