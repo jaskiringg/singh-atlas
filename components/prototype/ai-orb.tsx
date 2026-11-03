@@ -13,9 +13,9 @@ export type OrbMessage = {
 };
 
 const SIZE_PRESETS = {
-  sm: { w: 320, h: 400 },
-  md: { w: 400, h: 520 },
-  lg: { w: 480, h: 640 },
+  sm: { w: 380, h: 520 },
+  md: { w: 460, h: 640 },
+  lg: { w: 560, h: 760 },
 } as const;
 
 type SizePreset = keyof typeof SIZE_PRESETS;
@@ -25,29 +25,23 @@ const GREETING: OrbMessage = {
   text: "Hey, I'm an AI version of Jaskirat. I think in systems, not just software. Tell me what you're building or where you're stuck, and I'll reason through it with you.",
 };
 
-function AiDisclaimerChip() {
+/** One quiet line under the composer — not a block stacked on every reply. */
+function AiFooterNote() {
   return (
-    <div
+    <p
       style={{
-        marginBottom: 8,
-        padding: "7px 10px",
-        borderRadius: 10,
-        background: "color-mix(in srgb, var(--accent) 8%, var(--bg2))",
-        border: "1px solid color-mix(in srgb, var(--accent) 22%, var(--line))",
+        margin: 0,
+        padding: "0 14px 10px",
         fontFamily: "var(--font-mono)",
         fontSize: 10,
+        lineHeight: 1.5,
         color: "var(--ink3)",
-        lineHeight: 1.55,
+        textAlign: "center",
+        flexShrink: 0,
       }}
     >
-      <div style={{ color: "var(--accent)", marginBottom: 4 }}>Replying as AI Jaskirat</div>
-      <div style={{ color: "var(--ink2)" }}>
-        I can make mistakes — Jaskirat learns from them and won&apos;t let me repeat the same one twice.
-      </div>
-      <div style={{ marginTop: 5, color: "var(--ink3)" }}>
-        Treat anything here as a sketch, not a commitment — for anything that matters, ping the human.
-      </div>
-    </div>
+      AI version of Jaskirat — can be wrong. For anything that matters, ping the human.
+    </p>
   );
 }
 
@@ -293,6 +287,23 @@ export default function AiOrb() {
               <span style={{ fontFamily: "var(--font-display)", fontSize: 13, fontWeight: 600, color: "var(--ink)" }}>Talk to Jaskirat</span>
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+              <button
+                type="button"
+                onClick={() => setShowBookForm((v) => !v)}
+                style={{
+                  border: "1px solid color-mix(in srgb, var(--accent) 45%, var(--line2))",
+                  background: showBookForm ? "color-mix(in srgb, var(--accent) 16%, var(--bg3))" : "transparent",
+                  borderRadius: 999,
+                  padding: "3px 11px",
+                  fontFamily: "var(--font-mono)",
+                  fontSize: 10,
+                  color: "var(--accent)",
+                  cursor: "pointer",
+                  marginRight: 2,
+                }}
+              >
+                {showBookForm ? "Cancel" : "Connect"}
+              </button>
               {(["sm", "md", "lg"] as const).map((p) => (
                 <button
                   key={p}
@@ -319,27 +330,7 @@ export default function AiOrb() {
               </button>
             </div>
           </div>
-          <div style={{ padding: "8px 14px 0", flexShrink: 0, display: "flex", flexDirection: "column", gap: 8 }}>
-            <p style={{ margin: 0, fontSize: "11.5px", color: "var(--ink3)", lineHeight: 1.4 }}>
-              Systems, architecture, AI, products — I&apos;ll ask before I assume.
-            </p>
-            <button
-              type="button"
-              onClick={() => setShowBookForm((v) => !v)}
-              style={{
-                alignSelf: "flex-start",
-                border: "1px solid color-mix(in srgb, var(--accent) 40%, var(--line2))",
-                borderRadius: 999,
-                padding: "6px 14px",
-                background: showBookForm ? "color-mix(in srgb, var(--accent) 12%, var(--bg3))" : "var(--bg2)",
-                color: "var(--accent)",
-                fontFamily: "var(--font-mono)",
-                fontSize: 11,
-                cursor: "pointer",
-              }}
-            >
-              {showBookForm ? "Cancel" : "Connect"}
-            </button>
+          <div style={{ padding: showBookForm ? "10px 14px 0" : 0, flexShrink: 0, display: "flex", flexDirection: "column", gap: 8 }}>
             {showBookForm && (
               <div
                 style={{
@@ -418,7 +409,6 @@ export default function AiOrb() {
                     color: "var(--ink)",
                   }}
                 >
-                  {m.role === "assistant" && m.text !== GREETING.text && <AiDisclaimerChip />}
                   {m.text}
                   {m.role === "assistant" && m.extras?.flowchart && <OrbFlowchart id={m.extras.flowchart} />}
                   {m.role === "assistant" && m.extras?.showResume && <ResumeDownloadCard />}
@@ -433,7 +423,7 @@ export default function AiOrb() {
               </div>
             )}
           </div>
-          <div style={{ display: "flex", gap: 8, padding: "10px 12px", borderTop: "1px solid var(--line)", flexShrink: 0 }}>
+          <div style={{ display: "flex", gap: 8, padding: "10px 12px 8px", borderTop: "1px solid var(--line)", flexShrink: 0 }}>
             <input
               value={orbInput}
               onChange={(e) => setOrbInput(e.target.value)}
@@ -475,6 +465,7 @@ export default function AiOrb() {
               Send
             </button>
           </div>
+          <AiFooterNote />
           <div
             className="pt-orb-resize-handle"
             onMouseDown={onResizeStart}

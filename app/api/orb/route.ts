@@ -13,16 +13,20 @@ import {
 } from "@/lib/orb-response";
 import { isPrivateInfoRequest, privateInfoReplyAsMe } from "@/lib/orb-privacy";
 import { chatOpenRouter, formatOpenRouterError } from "@/lib/openrouter";
+import { chatGemini, formatGeminiError } from "@/lib/gemini";
 
 type OrbMessage = { role: "user" | "assistant"; text: string };
 
 export async function POST(req: Request) {
-  const key = process.env.OPENROUTER_API_KEY?.trim();
-  if (!key || key === "your_openrouter_api_key_here") {
+  const geminiKey = process.env.GEMINI_API_KEY?.trim();
+  const openRouterKey = process.env.OPENROUTER_API_KEY?.trim();
+  const hasOpenRouter = Boolean(openRouterKey) && openRouterKey !== "your_openrouter_api_key_here";
+
+  if (!geminiKey && !hasOpenRouter) {
     return Response.json(
       {
         error: "missing_api_key",
-        message: "Add OPENROUTER_API_KEY to .env.local and restart the dev server.",
+        message: "The orb is offline right now — email me directly and you'll reach the actual human.",
       },
       { status: 503 },
     );
@@ -115,10 +119,26 @@ export async function POST(req: Request) {
   ];
 
   try {
-    const { text: rawText } = await chatOpenRouter(key, chatMessages, {
-      model: process.env.OPENROUTER_MODEL,
-      siteUrl,
-    });
+    let rawText: string;
+    if (geminiKey) {
+      try {
+        ({ text: rawText } = await chatGemini(geminiKey, chatMessages, {
+          model: process.env.GEMINI_MODEL,
+        }));
+      } catch (geminiErr) {
+        if (!hasOpenRouter) throw geminiErr;
+        console.error("Gemini failed, falling back to OpenRouter:", geminiErr);
+        ({ text: rawText } = await chatOpenRouter(openRouterKey as string, chatMessages, {
+          model: process.env.OPENROUTER_MODEL,
+          siteUrl,
+        }));
+      }
+    } else {
+      ({ text: rawText } = await chatOpenRouter(openRouterKey as string, chatMessages, {
+        model: process.env.OPENROUTER_MODEL,
+        siteUrl,
+      }));
+    }
 
     const { text } = sanitizeOrbReply(rawText, { askFirst, userText });
     const meta = shouldShowMeta(userText, text, mode) ? buildOrbMeta(userText, mode) : undefined;
@@ -148,7 +168,7 @@ export async function POST(req: Request) {
     return Response.json(payload);
   } catch (e) {
     const raw = e instanceof Error ? e.message : "model request failed";
-    const message = formatOpenRouterError(raw);
+    const message = geminiKey ? formatGeminiError(raw) : formatOpenRouterError(raw);
     console.error("Orb route error:", raw);
     return Response.json({ error: "model_failed", message }, { status: 502 });
   }
