@@ -18,8 +18,11 @@ Tick before treating metrics/ownership as final. Until then, keep `[VALIDATE]` m
 - [ ] Outcome metrics: keep / rewrite / drop each `[VALIDATE]`
 
 ## MandiBhai
-- [ ] Scope vs co-builder / upstream (`siddharth555555`) accurate
+- [ ] Scope vs co-builder / upstream accurate
 - [ ] Showcase is docs-only (no private source leak)
+- [ ] Portfolio shots use retailer redesign (`mandibhai-ui-*.jpg`), not legacy demo as primary
+- [ ] Udhaar messaging vs khata ledger non-goal distinguished
+- [ ] GitHub README screenshots match Atlas Work / Build tiles
 
 ## Salescode
 - [ ] No confidential Coke/ERP details beyond resume level

@@ -19,7 +19,7 @@ const DATA_DIR = process.env.DATA_DIR || path.join(process.cwd(), "data");
 const RESUME_PATH = path.join(DATA_DIR, "resume.md");
 
 export const ORB_IDENTITY = `You ARE Jaskirat Singh speaking in first person (I/me/my) — AI version on jaskirat.sys.
-Consultant, bridge engineer, and operator. Gurugram, India.
+Solutions / Implementation Consultant and AI Deployment Lead. Gurugram, India.
 "I don't ask how to build it. I ask how it should work."
 Never sound like a chatbot. No emoji. No "Hey there!" No "I'm all ears." No "Happy to help."`;
 
@@ -33,14 +33,18 @@ const CORE_RULES = `ANSWER AS ME:
 
 ${ORB_PRIVACY_RULES}`;
 
-async function loadAdminNotes(): Promise<string> {
+async function loadResumeContext(): Promise<string> {
   try {
     const text = await readFile(RESUME_PATH, "utf8");
-    if (text.trim() && !text.startsWith("# Jaskirat Singh")) return text.trim().slice(0, 600);
+    const cleaned = text
+      .replace(/^<!--[\s\S]*?-->\s*/m, "")
+      .trim();
+    if (!cleaned || cleaned.startsWith("Paste your resume")) return "";
+    // Full Solutions Consultant resume — cap for prompt budget
+    return cleaned.slice(0, 9000);
   } catch {
-    /* empty */
+    return "";
   }
-  return "";
 }
 
 export type OrbPromptContext = {
@@ -60,10 +64,10 @@ export async function buildOrbSystemPrompt(ctx: OrbPromptContext): Promise<Built
   const askFirst = shouldAskFirst(userText, messages);
   const meta = buildOrbMeta(userText, mode);
 
-  const [memories, knowledge, adminNotes] = await Promise.all([
+  const [memories, knowledge, resumeCtx] = await Promise.all([
     retrieveMemoryCards(userText, 3),
     sliceKnowledge(userText, mode),
-    loadAdminNotes(),
+    loadResumeContext(),
   ]);
 
   const examples = selectExamples(userText, mode, askFirst ? 1 : 2);
@@ -92,7 +96,11 @@ export async function buildOrbSystemPrompt(ctx: OrbPromptContext): Promise<Built
   if (mode !== "greeting" && memoryBlock) parts.push(`RELEVANT MEMORIES (weave naturally, never mention "memory cards"):\n${memoryBlock}`);
   if (exampleBlock) parts.push(`TONE EXAMPLES (match style, don't copy):\n${exampleBlock}`);
   if (knowledge) parts.push(`FACTS (reference only):\n${knowledge}`);
-  if (adminNotes) parts.push(`ADMIN NOTES:\n${adminNotes}`);
+  if (resumeCtx) {
+    parts.push(
+      `CANONICAL RESUME (authoritative for titles, dates, employers, metrics, skills — prefer this over older notes if conflict):\n${resumeCtx}`,
+    );
+  }
 
   return { prompt: parts.join("\n\n"), mode, askFirst };
 }

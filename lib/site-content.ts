@@ -362,11 +362,8 @@ export const interests = [
 export type RepoCard = { name: string; group: string; purpose: string; shows: string; stack: string; featured?: boolean };
 export const repoCards: RepoCard[] = [
   { name: "piku", group: "AI", purpose: "Ambient AI operating system — local-first, persistent memory.", shows: "World models, retrieval, agent orchestration", stack: "Tauri · Rust · Ollama", featured: true },
-  { name: "relive-cure", group: "Product", purpose: "Agent Console for organic marketing + CRM Analytics for clinic lead ops — both in production.", shows: "AI agents, content pipeline, funnel & rep performance", stack: "React · Node · Postgres · Gemini", featured: true },
+  { name: "relive-cure", group: "Product", purpose: "Freelance: voice + WhatsApp lead platform for a clinic, handed over to the client's team.", shows: "Call capture & AI analysis, WhatsApp qualification, one lead timeline", stack: "Kotlin · React · Node · Postgres · Gemini", featured: true },
   { name: "mandibhai", group: "Product", purpose: "B2B wholesaler–retailer ordering — architecture showcase.", shows: "Inventory, pricing, order workflows", stack: "NestJS · Next.js", featured: true },
-  { name: "mitra-friend-only-messaging", group: "Product", purpose: "Friend-request-only messaging with backend-enforced moderation.", shows: "Trust boundaries, API enforcement", stack: "TypeScript · CometChat" },
-  { name: "lasik-consultation-bot", group: "Systems", purpose: "WhatsApp consultation qualifier — ReliveCure stack.", shows: "Messaging as a production channel", stack: "Node · WhatsApp" },
-  { name: "lead-scoring-dashboard", group: "Systems", purpose: "Lead-scoring + SLA assignment — ReliveCure adjacent.", shows: "Business rules in code, SLA bands", stack: "Python · Streamlit" },
 ];
 
 /* ── PERSONAL — Explorations of how I think ──────────────────────────── */
@@ -386,45 +383,46 @@ export const builds: Build[] = [
   {
     index: "X-01",
     name: "PIKU",
-    status: "Building",
-    tagline: "The operating system I wish existed.",
+    status: "Concept",
+    tagline: "The workspace I wish existed.",
     body:
-      "I got tired of re-explaining myself to a chatbot every session, so I'm building the opposite: something local-first that actually remembers — a running model of what I'm doing, thinking about, and learning, that I get to keep.",
+      "A concept I keep coming back to: a local-first workspace that actually remembers — what I'm doing, thinking about, and learning. I'm designing it, not shipping it.",
     themes: ["Memory", "Identity", "Context", "Knowledge", "Reasoning", "Local AI", "Ambient intelligence", "Agent orchestration"],
   },
   {
     index: "X-02",
     name: "Relive Cure",
-    status: "Live",
+    status: "Freelance · handed over",
     live: true,
-    tagline: "I built software to run a real business — and I run it.",
+    tagline: "I built the platform a LASIK clinic now runs on.",
     body:
-      "A LASIK clinic and the system that operates it, both mine. I see the patients and the leads. I improve the workflows, ship the features, and own the business process and the software at the same time. That combination is the point.",
-    themes: ["Business ownership", "Operations", "Lead workflows", "WhatsApp CRM", "Automation", "Ship daily"],
+      "A freelance build for a LASIK clinic: leads from ads, a WhatsApp agent that qualifies them, IVR and rep calls captured, every recording transcribed and analysed by AI, all on one lead timeline. I scoped and built it end to end; it's live, and the clinic's own team runs it now.",
+    themes: ["Lead workflows", "WhatsApp agent", "Call intelligence", "Data modelling", "Automation", "Handover"],
   },
   {
     index: "X-03",
     name: "MandiBhai",
-    status: "Building now",
+    status: "Freelance · client continues",
     tagline: "Same-day wholesale, from the mandi to the shop.",
     body:
-      "A wholesaler-to-retailer commerce solution I'm building: wholesalers sell, retailers buy at wholesale prices and get the stuff the same day. It pulls the wholesalers from the local mandi and shapes the whole flow — pricing, inventory, fulfilment — around that one promise.",
+      "A freelance wholesaler-to-retailer commerce solution: wholesalers sell, retailers buy at wholesale prices and get the stuff the same day. It pulls the wholesalers from the local mandi and shapes the whole flow — pricing, inventory, fulfilment — around that one promise. I built the early version; the client's team carries it on.",
     themes: ["Wholesale", "Retail", "Same-day fulfilment", "Pricing", "Inventory", "Local mandi", "Commerce"],
   },
 ];
 
 export const reliveCase = {
   rows: [
-    { k: "Role", v: "Founder, operator and sole engineer. I see the patient funnel and the codebase in the same glance." },
-    { k: "Own", v: "The business process and the software. I see patients, work leads, improve the workflows, and ship the features that fix what I just felt as an operator." },
-    { k: "Build", v: "A WhatsApp CRM with an AI operator — fallback chains, shadow mode — lead scoring with SLA bands, and an 8,800-line command center I open every day." },
-    { k: "Why it matters", v: "If a workflow annoys me at 9am as the operator, I've usually shipped the fix by that evening — same person, no handoff, no ticket." },
+    { k: "Role", v: "Freelance: sole engineer and solution designer. I scoped and built the platform end to end; I don't own or run the clinic." },
+    { k: "Built", v: "Lead intake from Meta Ads, a trilingual WhatsApp agent that qualifies inbound, IVR and rep calls captured and AI-analysed, and the data model and dedupe rules that tie it all to one lead timeline." },
+    { k: "Stack", v: "Android call-capture app (Kotlin, Jetpack Compose), Node.js, PostgreSQL, React dashboard, Gemini, WhatsApp Cloud API, on Railway." },
+    { k: "Now", v: "Live in production and handed over — the company's internal team runs and extends it." },
   ],
+  /** System usage as of 3 Nov 2026 — usage of what I built, not outcomes I drove. */
   metrics: [
-    { n: "Live", l: "in production" },
-    { n: "8,800", l: "line operator UI" },
-    { n: "5", l: "reps run on it" },
-    { n: "100+", l: "security commits" },
+    { n: "~98,000", l: "unique calls" },
+    { n: "13,700+", l: "AI-analysed calls" },
+    { n: "90.7%", l: "calls matched to a lead" },
+    { n: "10,880+", l: "leads" },
   ],
 };
 
@@ -463,8 +461,7 @@ export const timeline = [
 
 export const repoGroups = [
   { group: "AI", repos: ["piku"] },
-  { group: "Automation", repos: ["lasik-consultation-bot", "lead-scoring-dashboard"] },
-  { group: "Personal", repos: ["relive-cure", "mitra-friend-only-messaging"] },
+  { group: "Personal", repos: ["relive-cure", "mandibhai"] },
 ];
 
 /* ── Voice — first-person, specific, no corporate filler ──────────────────
@@ -541,7 +538,8 @@ export const recruiterCard = {
   lookingFor: ["Consultant", "Implementation Consultant", "Solutions Engineer", "Forward Deployed Engineer", "AI Product / Integration"],
   proof: [
     "3 countries live — Coca-Cola retail-execution rollout (Salescode.ai)",
-    "8,800-line production system I built and operate daily (Relive Cure)",
+    "Deployed SCAI, Salescode's AI voice agent: integration, guardrails, RAG context",
+    "Freelance clinic platform: ~98,000 calls, 13,700+ AI-analysed, now run by the client's team",
     "Root-cause depth: SQL, Kafka, API, production support — not just requirements",
   ],
   basedIn: "Gurugram, India — open to remote / onsite",

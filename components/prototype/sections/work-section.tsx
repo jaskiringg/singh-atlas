@@ -188,7 +188,7 @@ function WorkSection({ revealed, activeCase, pickCase }: WorkSectionProps) {
                         ) : null}
                         {cd.docHref ? (
                           <a
-                            href={`/docs/${cd.id === "relivecure" ? "relivecure" : cd.id === "voice-agent" ? "voice-agent" : cd.id}.md`}
+                            href={`/docs/${cd.id}.md`}
                             download
                             className="pt-hover-lift"
                             style={{
@@ -209,7 +209,7 @@ function WorkSection({ revealed, activeCase, pickCase }: WorkSectionProps) {
                   </div>
 
                   <div>
-                    {cd.shot && (
+                    {cd.shot ? (
                       <div style={{ border: "1px solid var(--line2)", borderRadius: 16, overflow: "hidden", background: "var(--bg2)" }}>
                         <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "9px 12px", borderBottom: "1px solid var(--line)" }}>
                           {[0, 1, 2].map((n) => (
@@ -230,6 +230,26 @@ function WorkSection({ revealed, activeCase, pickCase }: WorkSectionProps) {
                             aspectRatio: "16/10",
                           }}
                         />
+                      </div>
+                    ) : (
+                      <div
+                        style={{
+                          border: "1px dashed var(--line2)",
+                          borderRadius: 16,
+                          background: "var(--bg2)",
+                          padding: "26px 22px",
+                          display: "grid",
+                          gap: 10,
+                          alignContent: "center",
+                          minHeight: 180,
+                        }}
+                      >
+                        <p style={{ margin: 0, fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--ink3)" }}>
+                          {cd.shotLabel}
+                        </p>
+                        <p style={{ margin: 0, fontSize: 14, color: "var(--ink2)", lineHeight: 1.6 }}>
+                          Nothing to screenshot — this one lives as a design, not a product.
+                        </p>
                       </div>
                     )}
                   </div>

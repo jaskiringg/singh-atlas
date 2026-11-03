@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 
 /**
  * Animates a metric value from 0 to its final number when scrolled into view.
- * Accepts the raw display string (e.g. "8,800", "100+", "3", "Live", "E2E") —
+ * Accepts the raw display string (e.g. "~98,000", "13,700+", "90.7%", "Live", "E2E") —
  * non-numeric or mixed strings render as-is immediately (no count-up possible).
  * Respects prefers-reduced-motion by snapping straight to the final value.
  */

@@ -1,269 +1,128 @@
 ---
-title: Salescode — Enterprise Implementation Lifecycle
+title: Salescode — Enterprise Implementation & SCAI Voice Agent
 slug: salescode
-kicker: Consulting · SIT/UAT · go-live
+kicker: Consulting · integrations · SCAI voice agent
 github: null
 live: null
 download: /docs/salescode.md
 ---
 
-# Salescode — Enterprise Implementation Lifecycle
+# Salescode — Enterprise Implementation
 
-**Context:** I work as a Senior Technical Project Development Associate at Salescode.ai, owning the technical arc of enterprise SaaS rollouts for Coca-Cola bottler implementations across Thailand, the Philippines, and North India. This document describes **how** those implementations are run — phases, artifacts, debug domains, and failure modes — in sanitized form suitable for portfolio and interview review.
+**Senior Technical Project Development Associate, Salescode.ai — July 2024 to now.**
 
-**What this is not:** customer-confidential payloads, internal URLs, real Kafka topic names, LOB identifiers, auth tokens, or copy-paste integration recipes. Customer systems are referred to generically (bottler DMS, field app, ERP-adjacent master data).
+Salescode builds ordering and field-sales software for brands like Coca-Cola. My job is making it work for each customer: I sit between the customer's business and our engineers, and I own the technical arc from the first workshop to production support.
 
-**Approved UI reference:** Coke Buddy field-sales screen (Thailand rollout) — screenshot only, no live system access assumed for readers.
-
----
-
-## Problem
-
-Coca-Cola bottlers operate retail execution and ordering through a mix of field-sales apps, distributor management systems (DMS), and local ERP/master-data sources. Salescode's platform must sit in the middle: one product experience for reps and back-office, many upstream systems per country.
-
-The failure mode is rarely "the REST call returned 500." It is:
-
-1. **Workflow misalignment.** Operations, sales, IT, and the vendor each hold a different mental model of the same order or outlet sync step.
-2. **Master-data drift.** Product, outlet, hierarchy, and pricing records disagree between field systems and the platform after cutover.
-3. **Integration brittleness at scale.** Event backlogs, partial SQL updates, and non-idempotent consumers surface weeks after go-live.
-4. **Testing gaps.** SIT passes on happy paths; UAT breaks on real outlet hierarchies, promo rules, and legacy SKU mappings.
-5. **Hypercare without playbooks.** Production issues become heroics instead of repeatable runbooks.
-
-My job is to keep discovery, design, build, test, cutover, and hypercare aligned so field reps and back-office actually trust the data.
+Rollouts across **Thailand, the Philippines and North India.** The Thailand bottler accounts for roughly **20% of Coca-Cola consumption in Thailand** — that's the bottler's share of the market, and the scale of the engagement.
 
 ---
 
-## Goals and non-goals
+## The problem
 
-### Goals
+The failure mode on an enterprise rollout is almost never "the REST call returned 500."
 
-- Run discovery and solution design workshops with business and IT stakeholders (including onsite work in Thailand)
-- Translate bottler-specific workflows into implementable requirements and integration contracts
-- Deliver and debug integrations across REST APIs, Kafka event streams, and SQL master-data paths
-- Own SIT/UAT coordination, defect triage, and go-live cutover checklists per region
-- Stay through hypercare: production RCA, replay procedures, roadmap input
-- Leave behind operator playbooks, validation checklists, and requirement traceability — not tribal knowledge
-
-### Non-goals
-
-- Publishing proprietary Salescode platform source or internal admin credentials
-- Claiming authorship of the core SaaS product codebase (I implement and integrate against it)
-- Exposing customer-specific pricing rules, promo payloads, or production credentials
-- Replacing bottler IT as system-of-record owner for ERP/DMS
+1. **Everyone has a different mental model.** Operations, sales, IT and the vendor each describe the same order step differently, using the same words for different things.
+2. **Master data drifts after cutover.** Product, outlet, hierarchy and pricing records stop agreeing between the customer's systems and the platform.
+3. **Integrations break weeks later, not on day one.** Event backlogs and non-idempotent consumers surface long after go-live.
+4. **SIT passes, UAT breaks.** Happy paths work; real outlet hierarchies, promo stacking and legacy SKU aliases don't.
+5. **Hypercare turns into heroics** when there are no runbooks.
 
 ---
 
-## Implementation lifecycle
+## What I do
 
-```mermaid
-flowchart LR
-  D[Discovery] --> SD[Solution design]
-  SD --> I[Implementation]
-  I --> SIT[SIT]
-  SIT --> UAT[UAT]
-  UAT --> GL[Go-live]
-  GL --> HC[Hypercare]
-```
+**Discovery.** I run requirement-gathering and workshops with business, sales, operations and IT — including onsite in Thailand. The Thailand engagement is where I learned the lesson that shaped everything after: the delays were alignment problems, not API bugs. Different teams used identical field names for different concepts. Workflow first, pipes second.
 
-### Phase 1 — Discovery
+**Design and documentation.** I turn unclear requirements into designs both the customer and the engineers agree on — system flows, API contracts, data mappings, rollout plans. I write the BRDs and FRDs, change requests, user stories with acceptance criteria, and gap and impact analysis.
 
-**Purpose:** Establish a single shared picture of how field reps and back-office actually work today.
+**Integrations.** I designed and implemented integrations with customers' ERP, DMS and field-sales systems over REST APIs, Kafka and SQL, including delta syncs and scheduled jobs for pricing, master data and stock.
 
-| Activity | Output |
-|----------|--------|
-| Stakeholder workshops (ops, sales, IT) | Workflow maps on whiteboard / Confluence |
-| Current-state system inventory | Source-of-truth matrix (which system owns outlet, product, price, stock) |
-| Pain-point prioritization | Ranked backlog tied to business outcomes (order capture, visit compliance, inventory visibility) |
-| Regional constraint capture | Language, hierarchy depth, promo complexity, connectivity assumptions |
+**SIT, UAT, go-live, hypercare.** I own these as the customer's technical point of contact. I coordinate UAT, triage defects, run the cutover, and stay through stabilisation — tracing production failures to root cause with SQL, logs and AWS CloudWatch.
 
-**Thailand onsite:** Running workshops in-country surfaced that delays were often alignment issues, not API bugs — different teams used the same field names for different concepts. That shaped every later phase: workflow first, pipes second.
-
-### Phase 2 — Solution design
-
-**Purpose:** Turn agreed workflows into integration architecture and testable requirements.
-
-| Activity | Output |
-|----------|--------|
-| To-be workflow definition | Swimlanes: rep action → platform → DMS/ERP feedback |
-| Integration contract design | REST resource map, event shapes (conceptual), SQL sync boundaries |
-| Master-data strategy | Product, outlet, hierarchy, pricing — initial load vs delta sync |
-| Non-functional requirements | Idempotency, retry, reconciliation, fail-safe consumer behavior |
-| Traceability seed | Requirement ID → design element → test case stub |
-
-**Design principle:** Business rules enforced at the integration boundary, not left to client-side discipline in the field app.
-
-### Phase 3 — Implementation
-
-**Purpose:** Build and configure integrations, mappings, and operator workflows.
-
-| Workstream | Typical deliverables |
-|------------|---------------------|
-| API integrations | REST gateways between platform and bottler DMS/field endpoints |
-| Event integrations | Kafka producers/consumers for order, master-data, and status propagation |
-| SQL / batch paths | Master-data loads, stock reset jobs, hierarchy mapping tables |
-| Configuration | Pricing workflows, outlet hierarchies, role-based field visibility |
-| Operator playbooks | Step-by-step guides for back-office actions that must run the same way every time |
-
-Debug during build is cross-domain: Postman for REST contracts, log tailing for Kafka consumer lag, SQL diffs for master-record mismatches, JSON transform inspection when payload mapping drifts.
-
-### Phase 4 — SIT (System Integration Testing)
-
-**Purpose:** Prove components work together in a controlled environment before business users touch it.
-
-| Activity | Output |
-|----------|--------|
-| Environment parity check | SIT mirrors prod topology at integration boundaries (sanitized data) |
-| Interface test packs | REST + Kafka + SQL scenarios with expected request/response shapes |
-| Defect logging | Jira tickets with reproduction, logs, owning workstream |
-| Regression gates | No promotion to UAT while P1 integration defects remain open |
-
-SIT catches wiring errors. It does not catch "the rep's real Tuesday route."
-
-### Phase 5 — UAT (User Acceptance Testing)
-
-**Purpose:** Bottler business users validate workflows against real operational scenarios.
-
-| Activity | Output |
-|----------|--------|
-| UAT scripts by role | Field rep, supervisor, back-office — tied to requirement IDs |
-| Validation checklists | Sign-off per workflow (order capture, returns, master-data refresh, etc.) |
-| Defect triage | Business severity vs technical severity |
-| Training dry-runs | Playbook walkthroughs with super-users |
-
-UAT is where hierarchy edge cases, promo stacking, and legacy SKU aliases usually appear — the scenarios SIT simplified away.
-
-### Phase 6 — Go-live
-
-**Purpose:** Controlled cutover with rollback awareness.
-
-| Activity | Output |
-|----------|--------|
-| Cutover runbook | Ordered steps, owners, timestamps, rollback triggers |
-| Data migration / delta freeze | Final sync window documented |
-| Smoke tests in prod | Minimal path: login → capture order → downstream visibility |
-| War-room comms | Single POC channel for first 24–72 hours |
-
-I have served as primary technical POC for go-lives across three countries. Each region differed in cutover window, data volume, and upstream system maturity — the runbook template stayed; the sequencing did not.
-
-### Phase 7 — Hypercare
-
-**Purpose:** Stabilize production and convert incidents into systemic fixes.
-
-| Activity | Output |
-|----------|--------|
-| Production monitoring | CloudWatch/log dashboards, consumer lag alerts, API error budgets |
-| RCA and hotfix | Same-day patches where safe; event replay when appropriate |
-| Reconciliation jobs | Catch-up sync when upstream drift detected |
-| Handoff to steady-state | Updated runbooks, known-issues list, roadmap items |
-
-**Example incident pattern (sanitized):** Field rep cannot sync an order → API timeout symptom → Kafka consumer lag → stale SQL master record → dropped delta update. Fix: patch + replay + design idempotency so the failure mode cannot silently recur. The bug was often a design decision from months earlier, not a one-line code mistake.
+**Leaving it repeatable.** Runbooks and playbooks, so the next rollout isn't a rediscovery.
 
 ---
 
-## Artifacts (conceptual)
+## SCAI voice agent
 
-These are the document types that make rollouts repeatable — not copies of internal files.
+**SCAI is Salescode's enterprise AI voice agent.** I worked on deploying it at the **application layer** — not on the speech or LLM engines.
 
-| Artifact | Purpose |
-|----------|---------|
-| **Discovery playbook** | Workshop agenda, question bank, workflow capture template |
-| **Integration runbook** | Step sequence for initial load, delta sync, and failure recovery |
-| **Workflow maps** | As-is / to-be swimlanes shared with business and IT |
-| **Validation checklists** | Per-role UAT sign-off with pass/fail and evidence column |
-| **Requirement traceability matrix** | Req ID → design → SIT case → UAT case → go-live smoke |
-| **Cutover checklist** | Ordered tasks, owners, rollback criteria |
-| **Hypercare runbook** | Top incidents, log locations (generic), escalation path |
-| **Operator playbook** | How back-office runs pricing/stock/hierarchy changes without breaking sync |
+| What I owned | |
+|---|---|
+| **Integration planning** | How SCAI connects to the customer's systems — what it reads, where its outcomes land |
+| **Expected call outcomes** | What a call is supposed to produce: qualified, escalated, handed to a human, or closed |
+| **Guardrails** | What the agent may and may not say on a live call — the boundary that makes it safe to point at real customers |
+| **Knowledge for RAG** | Section-wise chunking, so retrieval returns the right passage rather than the right document |
+| **Context management** | What the agent carries turn to turn, and what gets re-retrieved |
+| **Validation** | UAT and customer-readiness checks before voice features go live |
 
-AI-assisted delivery (docs drafts, payload validation helpers, SQL draft review, RCA summaries) accelerates artifact production; human review and customer sign-off remain mandatory.
+I worked against managed STT/TTS, LLM and retrieval services.
 
----
+### Rent the infrastructure, own the application
 
-## Debug domains (generalized)
+Most teams treat "voice AI" as a vendor-selection problem. It isn't. The stack splits cleanly, and only one half decides whether the agent converts or burns leads:
 
-| Domain | What breaks | How I debug (pattern) |
-|--------|-------------|----------------------|
-| **REST** | 4xx/5xx, timeout, schema mismatch | Postman reproduction → compare contract doc vs actual payload → check auth/header/LOB context (generic) → fix mapping or upstream |
-| **Kafka** | Consumer lag, poison messages, duplicate processing | Inspect lag metrics → read consumer logs → identify non-idempotent handler → replay from safe offset after fix |
-| **SQL** | Master record stale, hierarchy orphan, pricing row missing | Row-level diff against source snapshot → trace last successful sync job → fix transform or schedule catch-up |
-| **JSON transforms** | Field rename, null handling, array vs object | Golden-file comparison on sanitized samples → update mapping layer → regression in SIT |
-| **CloudWatch / logs** | Latency spikes, throttling | Time-boxed log query around incident → correlate API → bus → DB timestamps → identify bottleneck layer |
+| Layer | Own or rent |
+|-------|-------------|
+| Telephony / SIP | **Rent** — carrier physics and regulation |
+| Speech-to-text | **Rent** — commodity, not a moat |
+| LLM inference | **Rent** the inference; **own** the application design |
+| Text-to-speech | **Rent** — quality-sensitive, not proprietary |
+| Expected outcomes, guardrails, retrieval context, escalation, CRM writeback | **Own** — this is the work |
 
-No internal topic names, connection strings, or customer LOB headers appear here by design.
+The hard meetings are never "which STT API." They are: who owns the qualification fields, what happens on partial capture, when does the agent escalate, and how does a call write back to the same record the other channels use. Those are application decisions, and those are the ones I was in.
 
----
-
-## Regional scope (resume-level)
-
-| Region | Role summary |
-|--------|--------------|
-| **Thailand** | Onsite discovery workshops; wholesaler-to-retailer ordering platform alignment; field-sales UI (Coke Buddy) in rollout |
-| **Philippines** | Integration and UAT/go-live support for bottler DMS ↔ platform sync |
-| **North India** | Master-data, pricing, and hierarchy mapping; production support |
-
-"Live across three countries" means production rollouts reached go-live with field and back-office on the platform — not that every module is identical across regions.
+The engines themselves — telephony, speech, the foundation models — are platform-managed. My work was the layer above them, which is the layer that decides whether the thing is safe to put in front of a customer.
 
 ---
 
-## Outcomes
+## What it resolved
 
-| Claim | Status |
-|-------|--------|
-| End-to-end ownership from discovery workshops through hypercare | Defensible — primary technical POC on rollouts |
-| Three-country go-live participation (TH, PH, North India) | Defensible — resume-level |
-| Integration work across REST, Kafka, SQL | Defensible — pattern-level |
-| ~40% reliability improvement via SQL/Kafka/API RCA | **[VALIDATE]** — cite only with internal approval and measurement definition |
-| ~60% reduction in manual intervention on integrated workflows | **[VALIDATE]** — cite only with before/after scope defined |
-| Onsite discovery in Thailand | Defensible |
-
-Do not publish customer-internal metrics without Salescode/Coca-Cola approval.
+| Before | After |
+|--------|-------|
+| Teams describing the same workflow four different ways | One agreed set of flows, contracts and mappings signed off by business and engineering |
+| Pricing, master data and stock moved by hand between systems | Delta syncs and scheduled jobs over REST, Kafka and SQL — **manual intervention cut ~35%** |
+| Production issues handled as one-off heroics | Root-cause tracing through SQL, logs and CloudWatch, written up as runbooks |
+| Every rollout rediscovering the same ground | Playbooks and validation checklists that carried across three countries |
+| Voice features shipped on vibes | Defined call outcomes, explicit guardrails and UAT before anything reached a live customer |
 
 ---
 
-## Screenshot
+## How much it helped
 
-### Coke Buddy — field sales (Thailand, approved UI)
+| | |
+|---|---|
+| Countries live | **3** — Thailand, Philippines, North India |
+| Manual intervention on integrated workflows | **Cut ~35%** |
+| Scope of the Thailand engagement | A bottler accounting for **~20% of Coca-Cola consumption in Thailand** |
+| SCAI | **Deployed** — integration, outcomes, guardrails, RAG context, UAT |
+
+"Live across three countries" means production rollouts reached go-live with field and back-office teams working on the platform — not that every module is identical across regions.
+
+---
+
+## How I debug
+
+| Domain | How I work it |
+|--------|---------------|
+| **REST** | Reproduce, compare the contract against the actual payload, check auth and context, fix the mapping or the upstream |
+| **Kafka** | Lag metrics, then consumer logs, find the non-idempotent handler, replay from a safe offset after the fix |
+| **SQL** | Row-level diff against the source, trace the last successful sync, fix the transform or schedule a catch-up |
+| **Payload mapping** | Golden-file comparison against known-good samples, then regression in SIT |
+| **CloudWatch / logs** | Time-boxed query around the incident, correlate API → bus → DB timestamps, find the bottleneck layer |
+
+**A typical incident:** a field rep can't sync an order. The symptom is an API timeout. Underneath it is consumer lag, and underneath that a stale master record from a dropped delta update. The fix is patch, replay, and make the failure mode impossible to recur silently. The bug was a design decision from months earlier, not a one-line mistake — that's usually how it goes.
+
+---
+
+## The field surface
 
 ![Coke Buddy field-sales screen from Thailand rollout](/shots/salescode-coke-buddy.png)
 
-*Approved portfolio screenshot only. Represents the field-rep surface in a bottler retail-execution rollout — not a live login or production data feed for readers.*
+*Coke Buddy — the field-rep surface in a bottler retail-execution rollout.*
 
 ---
 
-## Claim checklist
+## How I work
 
-Use before publishing externally. Tick when verified.
-
-### Scope and sanitization
-
-- [ ] No proprietary payloads, Kafka topic names, or internal URLs
-- [ ] No auth tokens, LOB headers, or customer system hostnames
-- [ ] Customer names limited to resume-level (Coca-Cola bottlers, Thailand / Philippines / North India)
-- [ ] Coke Buddy screenshot is approved-for-portfolio only
-- [ ] No claim of authorship over core Salescode product codebase
-
-### Role and ownership
-
-- [ ] "Primary technical POC" phrasing matches actual engagement letters / manager confirmation [VALIDATE]
-- [ ] Onsite Thailand workshops accurately described
-- [ ] Three-country go-live claim matches employment record
-- [ ] Playbook/runbook work described as artifacts, not attached confidential files
-
-### Metrics
-
-- [ ] ~40% reliability improvement marked [VALIDATE] or removed
-- [ ] ~60% manual effort reduction marked [VALIDATE] or removed
-- [ ] No fabricated defect counts or uptime percentages
-
-### Technical claims
-
-- [ ] REST / Kafka / SQL debug patterns are generalized (no customer-specific repro steps)
-- [ ] Incident example is sanitized and does not identify customer individuals
-- [ ] AI-assisted delivery described as acceleration, not unsupervised automation
-
-### Anti-clone redaction
-
-- [ ] No Postman collection exports or curl one-liners with real credentials
-- [ ] No copy-paste SQL from production schemas
-- [ ] No internal Confluence/Jira links
-- [ ] No step-by-step recipe to replicate proprietary integration mappings
+I use Claude Code and ChatGPT across requirements analysis, data-mapping drafts, SQL validation, test scenarios and documentation. They make the work faster; the decisions and the customer outcome stay mine, and I review every output.

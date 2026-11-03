@@ -20,7 +20,7 @@ export type WorkDoc = {
 
 const WORK_DIR = path.join(process.cwd(), "content", "work");
 
-const SLUGS = ["piku", "relivecure", "mandibhai", "salescode", "voice-agent"] as const;
+const SLUGS = ["piku", "relivecure", "mandibhai", "salescode"] as const;
 export type WorkSlug = (typeof SLUGS)[number];
 
 function escapeHtml(text: string): string {
@@ -73,9 +73,8 @@ export const WORK_INDEX: {
   lane: "build" | "operate" | "consult" | "essay";
   github?: string | null;
 }[] = [
-  { slug: "piku", title: "PIKU", blurb: "Local-first AI workspace — world model, memory, agents.", lane: "build", github: "https://github.com/jaskiringg/piku" },
-  { slug: "relivecure", title: "ReliveCure", blurb: "Clinic ops — WhatsApp, CRM, Agent Console, voice app layer.", lane: "operate", github: "https://github.com/jaskiringg/relive-cure" },
-  { slug: "mandibhai", title: "MandiBhai", blurb: "B2B ordering — inventory, pricing, admin SKU ops.", lane: "build", github: "https://github.com/jaskiringg/mandibhai" },
-  { slug: "salescode", title: "Salescode", blurb: "Enterprise implementation lifecycle — discovery → hypercare.", lane: "consult", github: null },
-  { slug: "voice-agent", title: "Voice agent", blurb: "Infra vs application layer when deploying enterprise voice AI.", lane: "essay", github: "https://github.com/jaskiringg/relive-cure" },
+  { slug: "piku", title: "PIKU", blurb: "Concept: a local-first AI workspace that remembers — world model, memory, agents.", lane: "build", github: "https://github.com/jaskiringg/piku" },
+  { slug: "relivecure", title: "ReliveCure", blurb: "Freelance clinic lead platform — WhatsApp agent, IVR + call intelligence, one lead timeline.", lane: "operate", github: "https://github.com/jaskiringg/relive-cure" },
+  { slug: "mandibhai", title: "MandiBhai", blurb: "Freelance B2B ordering — catalogue, split cart, inventory; client's team continues it.", lane: "build", github: "https://github.com/jaskiringg/mandibhai" },
+  { slug: "salescode", title: "Salescode", blurb: "Enterprise lifecycle + SCAI voice agent — discovery → hypercare.", lane: "consult", github: null },
 ];

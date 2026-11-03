@@ -58,7 +58,7 @@ const TOPIC_TAGS: Record<string, string[]> = {
   "Enterprise rollout": ["rollout", "thailand", "coca", "enterprise", "workflow"],
   "Enterprise messaging": ["kafka", "messaging", "event"],
   "Infrastructure & ops": ["kubernetes", "k8s", "infrastructure", "ops"],
-  "How I answer": ["systems", "consultant", "founder", "engineer"],
+  "How I answer": ["systems", "consultant", "product builder", "engineer"],
   "PIKU & AI memory": ["piku", "memory", "ai", "context"],
 };
 

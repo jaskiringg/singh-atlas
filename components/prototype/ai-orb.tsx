@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { OrbExtras } from "@/lib/orb-extras";
 import { getOrbSessionId, getVisitorId, trackOrbOpen } from "@/lib/visitor-client";
+import { CONTACT_PHONE } from "@/lib/contact";
 import { OrbFlowchart, ResumeDownloadCard } from "./orb-flowcharts";
 
 export type OrbMessage = {
@@ -44,8 +45,7 @@ function AiDisclaimerChip() {
         I can make mistakes — Jaskirat learns from them and won&apos;t let me repeat the same one twice.
       </div>
       <div style={{ marginTop: 5, color: "var(--ink3)" }}>
-        If I&apos;m off: recruiters — weird answer = good interview question. CTOs &amp; CEOs — whiteboard sketch,
-        not a SOW. Colleagues — you know the drill: ping the human for source of truth.
+        Treat anything here as a sketch, not a commitment — for anything that matters, ping the human.
       </div>
     </div>
   );
@@ -83,9 +83,28 @@ export default function AiOrb() {
   const width = customSize?.w ?? SIZE_PRESETS[size].w;
   const height = customSize?.h ?? SIZE_PRESETS[size].h;
 
+  const [showHint, setShowHint] = useState(false);
+
   useEffect(() => {
     if (orbOpen) trackOrbOpen();
   }, [orbOpen]);
+
+  useEffect(() => {
+    if (orbOpen || sessionStorage.getItem("orb-hint-seen")) return;
+    const showTimer = setTimeout(() => setShowHint(true), 2600);
+    return () => clearTimeout(showTimer);
+  }, [orbOpen]);
+
+  useEffect(() => {
+    if (!showHint) return;
+    const hideTimer = setTimeout(() => setShowHint(false), 7000);
+    return () => clearTimeout(hideTimer);
+  }, [showHint]);
+
+  const dismissHint = () => {
+    setShowHint(false);
+    sessionStorage.setItem("orb-hint-seen", "1");
+  };
 
   const onOrbMove = (e: React.MouseEvent) => {
     const rect = e.currentTarget.getBoundingClientRect();
@@ -179,7 +198,7 @@ export default function AiOrb() {
           ...m,
           {
             role: "assistant",
-            text: "Got it — I've logged your details. I'll reach out soon. Looking forward to connecting.",
+            text: `Got it — I've logged your details. I'll reach out soon. Or skip ahead and WhatsApp me directly: ${CONTACT_PHONE}.`,
           },
         ]);
       } else {
@@ -238,6 +257,12 @@ export default function AiOrb() {
   const openConnect = () => {
     setOrbOpen(true);
     setShowBookForm(true);
+    dismissHint();
+  };
+
+  const toggleOrbOpen = () => {
+    setOrbOpen((o) => !o);
+    dismissHint();
   };
 
   const ConnectSphere = ({ small = false }: { small?: boolean }) => (
@@ -458,6 +483,14 @@ export default function AiOrb() {
           />
         </div>
       )}
+      {showHint && !orbOpen && (
+        <div className="pt-orb-hint" role="status">
+          <button type="button" className="pt-orb-hint-close" onClick={dismissHint} aria-label="Dismiss">
+            ✕
+          </button>
+          <span className="pt-orb-hint-emoji">👋</span> Ask me anything — I&apos;m an AI version of Jaskirat.
+        </div>
+      )}
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12 }}>
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 5 }}>
           <div
@@ -479,7 +512,7 @@ export default function AiOrb() {
               transition: "transform .25s cubic-bezier(.16,1,.3,1)",
             }}
           >
-            <div className="pt-orb-sphere-wrap" onClick={() => setOrbOpen((o) => !o)} role="button" tabIndex={0} onKeyDown={(e) => e.key === "Enter" && setOrbOpen((o) => !o)}>
+            <div className="pt-orb-sphere-wrap" onClick={toggleOrbOpen} role="button" tabIndex={0} onKeyDown={(e) => e.key === "Enter" && toggleOrbOpen()}>
               <ConnectSphere />
             </div>
           </div>

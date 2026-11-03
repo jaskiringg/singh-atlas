@@ -17,6 +17,7 @@ import PathSection from "@/components/prototype/sections/path-section";
 import ReposSection from "@/components/prototype/sections/repos-section";
 import ContactSection from "@/components/prototype/sections/contact-section";
 import { trackPageview } from "@/lib/visitor-client";
+import { parseMetric, formatMetric } from "@/lib/metrics";
 import {
   CASES,
   DOCS,
@@ -29,16 +30,6 @@ const DOC_ROTATE_MS = 5500;
 const TAB_PAUSE_MS = 14000;
 
 const REVEAL_IDS = ["hero", "approach", "work", "ai", "comm", "mind", "personal", "path", "repos", "contact"] as const;
-
-function parseMetric(str: string) {
-  const m = String(str).match(/^([\d,]+)/);
-  if (!m) return { num: null as number | null, suffix: "", raw: str };
-  return { num: parseInt(m[1].replace(/,/g, ""), 10), suffix: str.slice(m[0].length), raw: str };
-}
-
-function formatMetric(n: number, t: { suffix: string }) {
-  return n.toLocaleString("en-US") + (t.suffix || "");
-}
 
 export default function PrototypeSite() {
   const [theme, setThemeState] = useState<ColorScheme>("dark");
@@ -72,9 +63,7 @@ export default function PrototypeSite() {
     metricsIntervalRef.current = setInterval(() => {
       const p = Math.min(1, (Date.now() - start) / dur);
       const eased = 1 - Math.pow(1 - p, 3);
-      const vals = targets.map((t) =>
-        t.num === null ? t.raw : formatMetric(Math.round(t.num * eased), t),
-      );
+      const vals = targets.map((t) => (t.num === null ? t.raw : formatMetric(t.num * eased, t)));
       setMetricsVals(vals);
       if (p >= 1 && metricsIntervalRef.current) clearInterval(metricsIntervalRef.current);
     }, 80);
@@ -198,11 +187,8 @@ export default function PrototypeSite() {
         entries.forEach((entry) => {
           const id = entry.target.getAttribute("data-reveal-id");
           if (entry.isIntersecting && id) {
-            setRevealed((s) => {
-              if (s[id]) return s;
-              if (id === "personal") startMetrics();
-              return { ...s, [id]: true };
-            });
+            if (id === "personal") startMetrics();
+            setRevealed((s) => (s[id] ? s : { ...s, [id]: true }));
             needRefresh = true;
           }
         });

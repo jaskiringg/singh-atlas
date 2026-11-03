@@ -29,6 +29,9 @@ export default async function WorkPage({ params }: Props) {
 
   return (
     <main className="work-page">
+      <div className="work-page__glow work-page__glow--a" aria-hidden />
+      <div className="work-page__glow work-page__glow--b" aria-hidden />
+      <div className="work-page__grid" aria-hidden />
       <MermaidBoot />
       <header className="work-header">
         <Link href="/work" className="work-back">
@@ -46,20 +49,17 @@ export default async function WorkPage({ params }: Props) {
             </a>
           ) : null}
           {meta.live ? (
-            <a className="work-btn" href={meta.live} target="_blank" rel="noreferrer">
+            <a className="work-btn work-btn--neon" href={meta.live} target="_blank" rel="noreferrer">
               Live
             </a>
           ) : null}
         </div>
-        <p className="work-note">
-          Engineering write-up — anti-clone redacted. Architecture maps render below.
-        </p>
       </header>
 
       <article className="work-prose" dangerouslySetInnerHTML={{ __html: html }} />
 
       <nav className="work-more">
-        <h2>More write-ups</h2>
+        <h2>More work</h2>
         <ul>
           {others.map((w) => (
             <li key={w.slug}>

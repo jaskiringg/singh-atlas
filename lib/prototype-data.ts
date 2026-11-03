@@ -28,15 +28,16 @@ export const CASES: CaseStudy[] = [
     kicker: "Consulting · technical · delivery",
     title: "Salescode × Coca-Cola",
     context:
-      "Owning an enterprise retail-execution rollout for Coca-Cola bottlers across Thailand, the Philippines and North India — the whole arc, from the first workshop to production support.",
+      "Owning an enterprise retail-execution rollout for Coca-Cola bottlers across Thailand, the Philippines and North India — the whole arc, from the first workshop to production support. The Thailand bottler accounts for roughly 20% of Coca-Cola consumption in the country.",
     did: [
       "Ran requirement-gathering and discovery workshops with business and IT stakeholders — onsite in Thailand.",
       "Built operator playbooks and automations so the field process runs the same way every time.",
-      "Designed and debugged the integrations between the platform and the bottlers' field / DMS systems (REST, Kafka, SQL).",
+      "Designed and implemented integrations with customers' ERP, DMS and field-sales systems over REST, Kafka and SQL — delta syncs and scheduled jobs for pricing, master data and stock. Cut manual intervention by ~35%.",
+      "Deployed SCAI, Salescode's enterprise AI voice agent: integration planning, expected call outcomes, live-call guardrails, section-wise RAG chunking and context management — application layer, not the speech or LLM engines.",
       "Managed delivery end to end — UAT, SIT, go-live across regions and customer onboarding.",
     ],
     outcome: "Live across three countries, with field-sales and back-office systems finally speaking the same language.",
-    tags: ["SQL", "REST", "Kafka", "Postman", "Jira", "Confluence"],
+    tags: ["SQL", "REST", "Kafka", "Voice AI", "RAG", "UAT"],
     shot: "/shots/salescode-coke-buddy.png",
     shotLabel: "Coke Buddy · Thailand",
     docHref: "/work/salescode",
@@ -46,41 +47,42 @@ export const CASES: CaseStudy[] = [
   {
     id: "relivecure",
     numLabel: "02",
-    kicker: "Production · AI ops · CRM",
+    kicker: "Freelance · voice & WhatsApp lead platform",
     title: "ReliveCure",
     context:
-      "Clinic operations platform: WhatsApp qualification, CRM analytics, Agent Console for organic marketing, and voice as an application layer — live on Railway.",
+      "A freelance build for a LASIK clinic in India. I scoped and built the platform end to end — ad leads, a trilingual WhatsApp agent, IVR and rep calls captured and analysed by AI, all on one lead timeline. It is live in production and the clinic's internal team runs it now.",
     did: [
-      "Mapped inbound → qualify → CRM → rep → appointment as the load-bearing spine.",
-      "Shipped founder ops surfaces: Pulse, inbox, analytics, bot shadow/live controls.",
-      "Built Agent Console as a separate growth app with human approval before publish.",
-      "Designed voice-agent application layer (conversation, RAG roles, escalation) without claiming STT/LLM/TTS infra ownership.",
+      "Built lead intake from Meta Ads into one record per person, deduped across channels.",
+      "Built a trilingual WhatsApp agent (Hindi, Hinglish, English) that qualifies inbound before a rep touches it.",
+      "Captured IVR calls and the reps' own phone calls, then transcribed and AI-analysed every recording.",
+      "Designed the data model and the matching rules that tie calls, messages and CRM events to one lead timeline.",
     ],
-    outcome: "Production daily ops for clinic lead flow; public case study is anti-clone redacted.",
-    tags: ["WhatsApp", "CRM", "Gemini", "Railway", "Ops"],
+    outcome:
+      "10,880+ leads and ~98,000 unique calls on the system; 90.7% of calls matched to a lead, 13,700+ AI-analysed. In October, 96% of new leads were called and 86% within 24 hours.",
+    tags: ["WhatsApp", "Voice AI", "Kotlin", "Gemini", "Postgres"],
     shot: "/shots/relive-analytics.png",
-    shotLabel: "CRM Analytics",
+    shotLabel: "Lead dashboard",
     docHref: "/work/relivecure",
     githubHref: "https://github.com/jaskiringg/relive-cure",
-    liveHref: "https://relive-cure-dashboard-production.up.railway.app",
+    liveHref: null,
   },
   {
     id: "piku",
     numLabel: "03",
-    kicker: "Flagship · local-first · world model",
+    kicker: "Concept · passion project",
     title: "PIKU",
     context:
-      "Local-first ambient AI workspace — persistent memory, knowledge graph, world model, and agent workflows on the machine. Not another chatbot.",
+      "My idea for a local-first AI workspace that remembers you — persistent memory, a world model of what you are doing, and agent workflows that stay on your machine. The model is replaceable; the understanding should not be.",
     did: [
-      "Designed layered architecture: OS shell, chat, graph, world model, apps.",
-      "Built IndexedDB-backed memory + hybrid retrieval with local embeddings.",
-      "Shipped privacy toggle: local-only vs optional cloud brain via local proxy.",
-      "Documented ADRs, feature inventory, and roadmap as an engineering design pack.",
+      "Designed a layered architecture: OS shell, chat, graph, world model, apps.",
+      "Explored local-first memory and hybrid retrieval over on-device embeddings.",
+      "Designed a privacy boundary: local-only reasoning vs an optional cloud brain behind a local proxy.",
+      "Wrote the ADRs, feature inventory and roadmap as a design pack I keep thinking through.",
     ],
-    outcome: "Active desktop build (Tauri + Ollama) with public design documentation.",
+    outcome: "A concept I'm designing and prototyping, not a shipped product.",
     tags: ["Tauri", "Ollama", "IndexedDB", "RAG", "Privacy"],
-    shot: "/shots/piku-home.png",
-    shotLabel: "PIKU home",
+    shot: null,
+    shotLabel: "Concept · no product shots",
     docHref: "/work/piku",
     githubHref: "https://github.com/jaskiringg/piku",
     liveHref: null,
@@ -88,43 +90,34 @@ export const CASES: CaseStudy[] = [
   {
     id: "mandibhai",
     numLabel: "04",
-    kicker: "B2B · inventory · ordering",
+    kicker: "Freelance · B2B ordering",
     title: "MandiBhai",
     context:
-      "B2B wholesaler-to-retailer ordering: catalogue, pricing, inventory, orders, and admin SKU / packshot operations.",
+      "Freelance, not my startup. A B2B wholesale marketplace where kirana retailers order stock from nearby mandi wholesalers with same-day delivery. I built the early version; the client's own team carries it forward now.",
     did: [
-      "Modeled retailer and wholesaler workflows around same-day procurement.",
-      "Documented admin SKU and packshot operations from product design work.",
-      "Captured architecture and failure modes without publishing a rebuild kit.",
+      "Built the mobile marketplace and the inventory, pricing and ordering APIs under it.",
+      "Resolved the same SKU across wholesalers onto one product, so retailers compare prices instead of making five phone calls.",
+      "Split a mixed cart per wholesaler before confirmation, each supplier's minimum shown up front rather than failing at checkout.",
+      "Tied stock deduction to order placement, so the platform stops promising what isn't there.",
     ],
-    outcome: "Working marketplace surfaces + sanitized public architecture pack.",
-    tags: ["NestJS", "Next.js", "Orders", "SKU admin"],
-    shot: "/shots/mandibhai-catalogue.png",
-    shotLabel: "Retailer catalogue",
+    outcome: "Moved wholesaler-to-retailer orders off manual coordination. I built the early version; the client's team carries it on. No adoption, GMV or revenue claimed — not my company.",
+    tags: ["Next.js", "Orders", "SKU admin", "Mobile UX"],
+    shot: "/shots/mandibhai-ui-home.jpg",
+    shotLabel: "Retailer home · redesign",
     docHref: "/work/mandibhai",
     githubHref: "https://github.com/jaskiringg/mandibhai",
     liveHref: null,
   },
-  {
-    id: "voice-agent",
-    numLabel: "05",
-    kicker: "Essay · app layer vs infrastructure",
-    title: "Enterprise AI voice agent",
-    context:
-      "How to reason about deploying a voice agent: rent STT/LLM/TTS/telephony; own conversation design, RAG roles, tools, escalation, and validation.",
-    did: [
-      "Separated infrastructure from application responsibilities clearly.",
-      "Used ReliveCure (designed/evaluated) and Salescode (application-layer support) as examples.",
-      "Kept claims interview-defensible — no engine authorship, no rebuild recipe.",
-    ],
-    outcome: "Technical essay for FDE / AI deployment interviews.",
-    tags: ["Voice", "RAG", "Conversation design", "UAT"],
-    shot: "/shots/relive-agent-console.png",
-    shotLabel: "Agent Console",
-    docHref: "/work/voice-agent",
-    githubHref: "https://github.com/jaskiringg/relive-cure",
-    liveHref: null,
-  },
+];
+
+/** Visual for voice essay tile — not a product screenshot. */
+export const VOICE_LAYER_FLOW = [
+  { label: "Telephony / SIP", sub: "rent", kind: "rent" as const },
+  { label: "STT", sub: "rent", kind: "rent" as const },
+  { label: "LLM inference", sub: "rent", kind: "rent" as const },
+  { label: "TTS", sub: "rent", kind: "rent" as const },
+  { label: "Conversation · RAG · tools · escalate", sub: "own", kind: "own" as const },
+  { label: "CRM / lead writeback · UAT", sub: "own", kind: "own" as const },
 ];
 
 export const INTEGRATION_FLOW = [
@@ -264,7 +257,7 @@ export const REPOS: RepoCard[] = [
   {
     name: "piku",
     group: "AI",
-    purpose: "Ambient AI operating system — local-first, persistent memory.",
+    purpose: "Concept: local-first AI workspace that remembers (design + prototype).",
     shows: "World models, retrieval, agent orchestration",
     stack: "Tauri · Rust · Ollama",
     featured: true,
@@ -274,9 +267,9 @@ export const REPOS: RepoCard[] = [
   {
     name: "relive-cure",
     group: "Product",
-    purpose: "Agent Console for organic marketing + CRM Analytics for clinic lead ops — both in production.",
-    shows: "AI agents, content pipeline, funnel & rep performance",
-    stack: "React · Node · Postgres · Gemini",
+    purpose: "Freelance: voice + WhatsApp lead platform for a clinic, handed over to the client's team.",
+    shows: "Call capture & AI analysis, WhatsApp qualification, one lead timeline",
+    stack: "Kotlin · React · Node · Postgres · Gemini",
     featured: true,
     docHref: "/work/relivecure",
     githubRepo: "relive-cure",
@@ -284,41 +277,12 @@ export const REPOS: RepoCard[] = [
   {
     name: "mandibhai",
     group: "Product",
-    purpose: "B2B wholesaler–retailer ordering — architecture showcase (docs only).",
-    shows: "Inventory, pricing, SKU admin, order workflows",
+    purpose: "Freelance: B2B wholesale ordering, early version; client team continues.",
+    shows: "Split cart/MOQ, catalogue, inventory, admin SKU concepts",
     stack: "NestJS · Next.js",
     featured: true,
     docHref: "/work/mandibhai",
     githubRepo: "mandibhai",
-  },
-  {
-    name: "lasik-consultation-bot",
-    group: "Systems",
-    purpose: "WhatsApp consultation qualifier — part of ReliveCure ops stack.",
-    shows: "Messaging as a production channel",
-    stack: "Node · WhatsApp",
-    featured: false,
-    docHref: "/work/relivecure",
-    githubRepo: "lasik-consultation-bot",
-  },
-  {
-    name: "lead-scoring-dashboard",
-    group: "Systems",
-    purpose: "Lead-scoring + SLA assignment layer — ReliveCure ops adjacent.",
-    shows: "Business rules in code, SLA bands",
-    stack: "Python · Streamlit",
-    featured: false,
-    docHref: "/work/relivecure",
-    githubRepo: "lead-scoring-dashboard",
-  },
-  {
-    name: "mitra-friend-only-messaging",
-    group: "Product",
-    purpose: "Friend-request-only messaging with backend-enforced moderation.",
-    shows: "Trust boundaries, API enforcement",
-    stack: "TypeScript · CometChat",
-    featured: false,
-    githubRepo: "mitra-friend-only-messaging",
   },
 ];
 
@@ -327,41 +291,41 @@ export type BuildShot = { label: string; src: string };
 export const BUILDS = [
   {
     name: "PIKU",
-    status: "Building",
-    body: "I got tired of re-explaining myself to a chatbot every session, so I'm building the opposite: something local-first that actually remembers — a running model of what I'm doing, thinking about, and learning.",
-    shots: [{ label: "PIKU · ambient OS home", src: "/shots/piku-home.png" }],
+    status: "Concept",
+    body: "A concept I keep coming back to: a local-first workspace that actually remembers — what I'm doing, thinking about, and learning. I'm designing it, not shipping it.",
+    shots: [],
     docHref: "/work/piku",
     githubHref: "https://github.com/jaskiringg/piku",
   },
   {
     name: "Relive Cure",
-    status: "Live",
-    body: "A LASIK clinic and the system that operates it, both mine. I see the patients and the leads, improve the workflows, ship the features, and own the business process and the software at the same time.",
-    shots: [
-      { label: "Agent console", src: "/shots/relive-agent-console.png" },
-      { label: "CRM analytics", src: "/shots/relive-analytics.png" },
-    ],
+    status: "Freelance · handed over",
+    body: "A freelance build for a LASIK clinic: leads from ads, a WhatsApp agent that qualifies them, IVR and rep calls captured, every recording transcribed and analysed by AI, all on one lead timeline. It's live, and the clinic's own team runs it now.",
+    shots: [{ label: "Lead dashboard", src: "/shots/relive-analytics.png" }],
     docHref: "/work/relivecure",
     githubHref: "https://github.com/jaskiringg/relive-cure",
   },
   {
     name: "MandiBhai",
-    status: "Building now",
-    body: "A wholesaler-to-retailer commerce solution: wholesalers sell, retailers buy at wholesale prices and get the stuff the same day — pricing, inventory and fulfilment shaped around that one promise.",
+    status: "Freelance · client continues",
+    body: "A wholesaler-to-retailer commerce solution: wholesalers sell, retailers buy at wholesale prices and get the stuff the same day — pricing, inventory and fulfilment shaped around that one promise. I built the early version; the client's team carries it on.",
     shots: [
-      { label: "Retailer catalogue", src: "/shots/mandibhai-catalogue.png" },
-      { label: "Wholesaler orders", src: "/shots/mandibhai-wholesaler.png" },
+      { label: "Home · redesign", src: "/shots/mandibhai-ui-home.jpg" },
+      { label: "Categories", src: "/shots/mandibhai-ui-categories.jpg" },
+      { label: "Split cart · MOQ", src: "/shots/mandibhai-ui-cart-split.jpg" },
+      { label: "Buy in bulk", src: "/shots/mandibhai-ui-bulk.jpg" },
     ],
     docHref: "/work/mandibhai",
     githubHref: "https://github.com/jaskiringg/mandibhai",
   },
 ];
 
+/** ReliveCure system usage as of 3 Nov 2026 — usage of what I built, not outcomes I drove. */
 export const METRICS = [
-  { n: "Live", l: "in production" },
-  { n: "8,800", l: "lines · operator UI" },
-  { n: "5", l: "reps run on it" },
-  { n: "100+", l: "security commits" },
+  { n: "~98,000", l: "unique calls" },
+  { n: "13,700+", l: "AI-analysed calls" },
+  { n: "90.7%", l: "calls matched to a lead" },
+  { n: "10,880+", l: "leads" },
 ];
 
 export const INTERESTS = [
@@ -376,13 +340,13 @@ export const INTERESTS = [
 ];
 
 export const TIMELINE: { t: string; d: string; isNow?: boolean }[] = [
-  { t: "CAW Studios", d: "Where the craft started — building, shipping, learning the shape of real software." },
+  { t: "CAW Studios · Nov 2023–Jun 2024", d: "Where the craft started — API and backend test automation for Postman, Paytm and Celito, and the habit of asking how a system will fail." },
   { t: "Automation", d: "Finding the leverage: the manual processes that should have been systems." },
-  { t: "Enterprise Delivery", d: "Owning implementation — discovery, integration, go-live, support." },
+  { t: "Salescode.ai · Jul 2024–now", d: "Owning implementation — discovery, integration, SIT/UAT, go-live, hypercare." },
   { t: "International Implementations", d: "Coca-Cola across Thailand, the Philippines and North India. Scale and local constraints." },
-  { t: "AI Systems", d: "AI as a delivery multiplier and an architectural primitive." },
-  { t: "PIKU", d: "The system I wish existed — a personal operating layer." },
-  { t: "Future", d: "Becoming someone companies trust to own an entire system.", isNow: true },
+  { t: "Voice AI: SCAI at Salescode", d: "Taking an enterprise voice agent to live calls — integration, expected outcomes, guardrails, RAG context." },
+  { t: "Freelance builds: ReliveCure, MandiBhai", d: "Scoped and built two platforms end to end, then handed each to the client's own team." },
+  { t: "Future", d: "PIKU and the systems I wish existed — and becoming someone companies trust to own an entire system.", isNow: true },
 ];
 
 export const AI_EXAMPLES = [
@@ -440,6 +404,7 @@ export const REPO_GROUP_NEON: Record<string, string> = {
 
 export const RECRUITER_BULLETS = [
   "3 countries live — Coca-Cola retail-execution rollout",
-  "8,800-line production system built & run daily",
+  "Deployed SCAI, Salescode's AI voice agent: integration, guardrails, RAG context",
+  "Freelance clinic platform: ~98,000 calls, 13,700+ AI-analysed, now run by the client's team",
   "Root-cause depth: SQL, Kafka, API, frontend, prod support",
 ];

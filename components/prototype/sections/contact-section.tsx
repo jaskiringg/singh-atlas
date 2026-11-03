@@ -2,7 +2,7 @@
 
 import { memo } from "react";
 import Reveal from "@/components/prototype/reveal";
-import { CONTACT_EMAIL, CONTACT_PHONE, CONTACT_PHONE_TEL } from "@/lib/contact";
+import { CONTACT_EMAIL } from "@/lib/contact";
 
 type ContactSectionProps = {
   revealed: boolean;
@@ -31,9 +31,6 @@ function ContactSection({ revealed }: ContactSectionProps) {
           <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 10, marginTop: 28 }}>
             <a href={`mailto:${CONTACT_EMAIL}`} className="pt-contact-link">
               → email
-            </a>
-            <a href={CONTACT_PHONE_TEL} className="pt-contact-link pt-contact-link--alt">
-              → {CONTACT_PHONE}
             </a>
             <a href="https://www.linkedin.com/in/jaskiring" target="_blank" rel="noreferrer" className="pt-contact-link pt-contact-link--alt">
               → linkedin

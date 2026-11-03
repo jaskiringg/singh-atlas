@@ -370,3 +370,48 @@ no changes added to commit (use "git add" and/or "git commit -a")
  package.json                   |   1 +
  8 files changed, 429 insertions(+), 183 deletions(-)
 [0m
+[0m$ [0mgit add -A && git commit -m "chore: complete scaffold — Tailwind v4, geist fonts, static export, types, Dockerfile"
+[master cccca94] chore: complete scaffold — Tailwind v4, geist fonts, static export, types, Dockerfile
+ 16 files changed, 2550 insertions(+), 183 deletions(-)
+ create mode 100644 app/os/apps/enterprise/page.tsx
+ create mode 100644 app/os/apps/operate/page.tsx
+ create mode 100644 app/os/layout.tsx
+ delete mode 100644 app/postcss.config.mjs
+ create mode 100644 components/os/app-parts.tsx
+ create mode 100644 components/os/shell.tsx
+ create mode 100644 components/ui.tsx
+ create mode 100644 content/evidence/atlas.json
+ create mode 100644 package-lock.json
+[0m
+[0m# [0mTodos
+[✓] Check current directory state and existing files
+[✓] Create package.json with Next.js 15 deps
+[✓] Create tsconfig.json
+[✓] Create next.config.ts with output: 'export'
+[✓] Configure Tailwind v4 with ARD-001 colors
+[✓] Create app/layout.tsx, app/page.tsx, app/os/page.tsx
+[✓] Create components folder
+[✓] Create content/evidence types
+[✓] Create railway.json and nginx Dockerfile
+[✓] Initialize git if missing
+[✓] Commit latest changes
+[0m
+Done. Scaffolded:
+
+| File | Purpose |
+|------|---------|
+| `package.json` | Next.js 15.5, React 19, Tailwind v4, geist |
+| `tsconfig.json` | Bundler resolution, `@/*` paths |
+| `next.config.ts` | `output: "export"`, unoptimized images |
+| `app/globals.css` | Tailwind v4 `@theme` — bg `#08090c`, accent `#5e6ad2`, geist font vars |
+| `app/layout.tsx` | GeistSans/GeistMono via `geist` package |
+| `app/page.tsx` | Trust Mode `/` |
+| `app/os/page.tsx` | Atlas Mode `/os` |
+| `components/` | Shell, app-parts, UI primitives |
+| `types/evidence.ts` | Repo, Pattern, EvidenceManifest interfaces |
+| `content/evidence/atlas.json` | Stub manifest for build |
+| `railway.json` | Dockerfile builder, nginx start |
+| `Dockerfile` | Node 20 → build → nginx alpine |
+| `nginx.conf` | SPA routing, gzip, cache headers |
+
+Git initialized, two commits made. Build passes — static export in `out/`.

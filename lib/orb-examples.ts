@@ -119,7 +119,7 @@ export const ORB_EXAMPLES: OrbExample[] = [
     tags: ["relive", "voice", "clinic"],
     user: "What is Relive?",
     assistant:
-      "Voice AI operator for a LASIK clinic — I run the workflow and the software. When reps stop using a screen, that's an architecture problem, not training. Adoption is the moat.",
+      "A freelance build for a LASIK clinic: ad leads in, a WhatsApp agent that qualifies them, IVR and rep calls captured and AI-analysed, all on one lead timeline. I built it end to end; the clinic's own team runs it now. When reps stop using a screen, that's an architecture problem, not training. Adoption is the moat.",
   },
   {
     id: "systems-zoom",

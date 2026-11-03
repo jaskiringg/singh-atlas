@@ -19,11 +19,11 @@ function ApproachSection({ revealed, personaTick }: ApproachSectionProps) {
           <h2 className="pt-h2" style={{ maxWidth: "18ch" }}>
             Same seat, start to finish.
           </h2>
-          <p className="pt-body" style={{ maxWidth: "68ch", margin: "22px auto 0" }}>
+          <p className="pt-body" data-hero-block style={{ maxWidth: "68ch", margin: "22px auto 0" }}>
             I get deep into the problem first. Only after that do I look for something existing that solves it —
             and I&apos;ll use it happily if it does. Most of the time it half-solves it, so I build the rest.
           </p>
-          <p className="pt-body" style={{ maxWidth: "68ch", margin: "14px auto 0", color: "var(--ink)" }}>
+          <p className="pt-body" data-hero-block style={{ maxWidth: "68ch", margin: "14px auto 0", color: "var(--ink)" }}>
             A discovery workshop and a SQL migration are the same project to me — I&apos;m in the room for both,
             and lately that includes the frontend too.
           </p>
@@ -70,6 +70,7 @@ function ApproachSection({ revealed, personaTick }: ApproachSectionProps) {
           </div>
 
           <div
+            data-hero-block
             style={{
               display: "flex",
               flexWrap: "wrap",

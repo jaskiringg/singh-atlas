@@ -3,6 +3,7 @@
 import { memo } from "react";
 import Reveal from "@/components/prototype/reveal";
 import { BUILDS, METRICS, INTERESTS } from "@/lib/prototype-data";
+import { metricPlaceholder } from "@/lib/metrics";
 
 type PersonalSectionProps = {
   revealed: boolean;
@@ -26,6 +27,7 @@ function PersonalSection({ revealed, metricsVals }: PersonalSectionProps) {
           <div style={{ display: "flex", flexDirection: "column", gap: 28, marginTop: 34, textAlign: "left" }}>
             {BUILDS.map((b, i) => {
               const live = b.status === "Live";
+              const hasShots = b.shots.length > 0;
               return (
                 <article
                   key={b.name}
@@ -33,7 +35,7 @@ function PersonalSection({ revealed, metricsVals }: PersonalSectionProps) {
                   className="pt-hover-lift"
                   style={{
                     display: "grid",
-                    gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))",
+                    gridTemplateColumns: hasShots ? "repeat(auto-fit,minmax(280px,1fr))" : "1fr",
                     gap: 26,
                     alignItems: "center",
                     border: "1px solid var(--line)",
@@ -43,9 +45,10 @@ function PersonalSection({ revealed, metricsVals }: PersonalSectionProps) {
                   }}
                 >
                   <div
+                    hidden={!hasShots}
                     style={{
                       order: i % 2 === 1 ? 2 : 1,
-                      display: "grid",
+                      display: hasShots ? "grid" : "none",
                       gridTemplateColumns: b.shots.length > 1 ? "repeat(2,1fr)" : "1fr",
                       gap: 10,
                     }}
@@ -138,7 +141,7 @@ function PersonalSection({ revealed, metricsVals }: PersonalSectionProps) {
             {METRICS.map((m, i) => (
               <div key={m.l} style={{ border: "1px solid var(--line)", borderRadius: 16, padding: "16px 18px", background: "var(--bg2)" }}>
                 <div style={{ fontFamily: "var(--font-display)", fontWeight: 800, fontSize: 26, color: "var(--accent)", textShadow: "0 0 14px color-mix(in srgb, var(--neon4) 40%, transparent)" }}>
-                  {metricsVals ? metricsVals[i] : "0"}
+                  {metricsVals ? metricsVals[i] : metricPlaceholder(m.n)}
                 </div>
                 <div style={{ marginTop: 4, fontFamily: "var(--font-mono)", fontSize: "10.5px", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--ink3)" }}>
                   {m.l}

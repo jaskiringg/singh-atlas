@@ -19,8 +19,7 @@ function ReposSection({ revealed }: ReposSectionProps) {
             A few worth actually opening.
           </h2>
           <p className="pt-body" style={{ margin: "14px auto 0" }}>
-            Click a card for the case study / design doc. GitHub is the public showcase repo —
-            not a rebuild kit.
+            Click a card for the full case study, or go straight to the code.
           </p>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(270px,1fr))", gap: 14, marginTop: 30, textAlign: "left" }}>
             {REPOS.map((r) => {

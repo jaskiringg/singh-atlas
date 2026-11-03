@@ -557,7 +557,7 @@ export default function BackgroundCanvas({ theme }: BackgroundCanvasProps) {
 
     let heroBlockEls: Element[] = [];
     let hoverElList: HTMLElement[] = [];
-    let heroRect: { top: number; bottom: number; left: number; right: number } | null = null;
+    let heroRects: { top: number; bottom: number; left: number; right: number }[] = [];
     let heroRectTick = 0;
     let hoverRectTick = 0;
     let ballHovered = new Set<HTMLElement>();
@@ -720,29 +720,25 @@ export default function BackgroundCanvas({ theme }: BackgroundCanvasProps) {
 
       if (t - heroRectTick > HERO_RECT_MS) {
         heroRectTick = t;
-        let rect: typeof heroRect = null;
+        const rects: typeof heroRects = [];
         for (const el of heroBlockEls) {
           const r = el.getBoundingClientRect();
           if (r.width === 0 && r.height === 0) continue;
-          if (!rect) rect = { top: r.top, bottom: r.bottom, left: r.left, right: r.right };
-          else {
-            rect.top = Math.min(rect.top, r.top);
-            rect.bottom = Math.max(rect.bottom, r.bottom);
-            rect.left = Math.min(rect.left, r.left);
-            rect.right = Math.max(rect.right, r.right);
-          }
+          rects.push({ top: r.top, bottom: r.bottom, left: r.left, right: r.right });
         }
-        heroRect = rect;
+        heroRects = rects;
       }
 
       const HERO_PAD = 16;
       const heroDim = (yTop: number, yBottom: number, xLeft: number, xRight?: number) => {
-        if (!heroRect) return 1;
-        const clearY = yBottom < heroRect.top - HERO_PAD || yTop > heroRect.bottom + HERO_PAD;
-        if (clearY) return 1;
-        if (xRight === undefined) return 0.12;
-        const clearX = xRight < heroRect.left - HERO_PAD || xLeft > heroRect.right + HERO_PAD;
-        return clearX ? 1 : 0.12;
+        for (const rect of heroRects) {
+          const clearY = yBottom < rect.top - HERO_PAD || yTop > rect.bottom + HERO_PAD;
+          if (clearY) continue;
+          if (xRight === undefined) return 0.12;
+          const clearX = xRight < rect.left - HERO_PAD || xLeft > rect.right + HERO_PAD;
+          if (!clearX) return 0.12;
+        }
+        return 1;
       };
 
       ctx.lineWidth = 2;
