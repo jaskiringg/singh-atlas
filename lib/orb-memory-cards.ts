@@ -4,7 +4,11 @@ import { randomUUID } from "crypto";
 import type { FlowchartId } from "@/lib/orb-extras";
 
 const DATA_DIR = process.env.DATA_DIR || path.join(process.cwd(), "data");
+/** Runtime store — a mounted volume in production. Holds cards the orb saved itself. */
 const CARDS_PATH = path.join(DATA_DIR, "orb-memory-cards.json");
+/** Seeds ship with the image. Editing them in the repo must actually reach production,
+ *  so they are reconciled from here on every read instead of being frozen in the volume. */
+const SEED_PATH = path.join(process.cwd(), "data", "orb-memory-cards.json");
 
 export type OrbMemoryCard = {
   id: string;
@@ -25,20 +29,37 @@ const GREETING_RE = /^\s*(hi|hello|hey|sup|yo|thanks|thank you|thx|ok|okay)\b/i;
 const LEAK_RE =
   /\b(okay, the user|they seem|looking back at my experience|from the memory cards|i recall from|let me think|based on (the|this) question)\b/i;
 
-async function readStore(): Promise<CardStore> {
+async function readCardsFrom(file: string): Promise<OrbMemoryCard[]> {
   try {
-    const raw = await readFile(CARDS_PATH, "utf8");
-    const parsed = JSON.parse(raw) as CardStore;
-    if (Array.isArray(parsed.cards)) return parsed;
+    const parsed = JSON.parse(await readFile(file, "utf8")) as CardStore;
+    return Array.isArray(parsed.cards) ? parsed.cards : [];
   } catch {
-    /* empty */
+    return [];
   }
-  return { cards: [] };
+}
+
+/** Seeds come from the deployed file, auto-saved cards from the runtime volume.
+ *  A seed edited or deleted in the repo therefore takes effect on deploy, while
+ *  cards the orb saved at runtime survive. */
+async function readStore(): Promise<CardStore> {
+  const [runtime, seedFile] = await Promise.all([
+    readCardsFrom(CARDS_PATH),
+    CARDS_PATH === SEED_PATH ? Promise.resolve([]) : readCardsFrom(SEED_PATH),
+  ]);
+
+  if (CARDS_PATH === SEED_PATH) return { cards: runtime };
+
+  const seeds = seedFile.filter((c) => c.source === "seed");
+  const seedIds = new Set(seeds.map((c) => c.id));
+  const auto = runtime.filter((c) => c.source !== "seed" && !seedIds.has(c.id));
+  return { cards: [...seeds, ...auto] };
 }
 
 async function writeStore(store: CardStore) {
   await mkdir(DATA_DIR, { recursive: true });
-  await writeFile(CARDS_PATH, JSON.stringify(store, null, 2), "utf8");
+  // Seeds live in the repo; writing them into the volume would freeze them again.
+  const cards = CARDS_PATH === SEED_PATH ? store.cards : store.cards.filter((c) => c.source !== "seed");
+  await writeFile(CARDS_PATH, JSON.stringify({ cards }, null, 2), "utf8");
 }
 
 const TOPIC_LABELS: Record<FlowchartId, string> = {
@@ -54,7 +75,7 @@ const TOPIC_LABELS: Record<FlowchartId, string> = {
 };
 
 const TOPIC_TAGS: Record<string, string[]> = {
-  "Voice AI & ROI": ["voice", "roi", "voice agent", "relive"],
+  "Voice AI & ROI": ["roi", "cost per call", "business case", "payback"],
   "Enterprise rollout": ["rollout", "thailand", "coca", "enterprise", "workflow"],
   "Enterprise messaging": ["kafka", "messaging", "event"],
   "Infrastructure & ops": ["kubernetes", "k8s", "infrastructure", "ops"],
