@@ -52,8 +52,19 @@ export function isFollowUpToClarification(messages: OrbTurn[]): boolean {
 }
 
 /** Broad questions get ONE clarifying question first — unless user already gave context or is following up. */
+/** "Did you build X?", "do you own Y?", "are you a founder?" — questions about what is
+ *  true of me. These need a straight answer; replying with a clarifying question reads
+ *  as dodging, and these are exactly the questions a recruiter checks claims with. */
+const DIRECT_ABOUT_ME_RE =
+  /\b(did|do|does|have|has|are|is|were|was)\s+(you|your|he|jaskirat)\b|\bhow (many|much|long)\b|\bwhat (is|are|was|were) your\b/i;
+
+/** "What do you think of X" is an opinion, not a fact about me — still ask first. */
+const OPINION_FRAMING_RE =
+  /\b(what|how)\s+(do|would|did)\s+you\s+(think|feel|see|reckon|approach|handle|recommend|suggest)\b|\byour (take|view|opinion|thoughts)\b|\bwhat'?s your take\b/i;
+
 export function shouldAskFirst(userText: string, messages: OrbTurn[]): boolean {
   if (isFollowUpToClarification(messages)) return false;
+  if (DIRECT_ABOUT_ME_RE.test(userText) && !OPINION_FRAMING_RE.test(userText)) return false;
   if (CONTEXT_SIGNAL_RE.test(userText)) return false;
   const mode = detectOrbMode(userText);
   if (mode === "greeting" || mode === "career" || mode === "recruiter") return false;
