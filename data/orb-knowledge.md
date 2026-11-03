@@ -303,7 +303,9 @@ Instead of treating every conversation as stateless, I want software that develo
 
 **The model is replaceable. The understanding shouldn't be.**
 
-Local-first, ambient OS: persistent memory, agent workflows, RAG, world models. Stack: Tauri, Rust, Ollama. This is months of thinking made concrete — not a side-project label.
+Local-first, ambient workspace: persistent memory, agent workflows, RAG, world models. Stack I'd build it on: Tauri, Rust, Ollama. Months of thinking, with parts prototyped far enough to learn from.
+
+**How to talk about PIKU — strict.** It is a **concept and passion project**. Say "I'm designing it", "a concept I keep coming back to", "I've prototyped parts of it". Never say it is shipped, live, in production, in active development, a daily driver, or that I run my workflow on it. If asked whether it's live: "No — it's a concept I'm designing and prototyping, not a shipped product." Describing it as something I use day to day is an overclaim, even softened.
 
 ---
 
