@@ -1,4 +1,7 @@
+import { randomUUID } from "crypto";
 import { appendEvent } from "@/lib/analytics-store";
+import { saveLead, type Lead } from "@/lib/leads-store";
+import { notifyNewLead } from "@/lib/notify";
 
 export async function POST(req: Request) {
   try {
@@ -20,15 +23,36 @@ export async function POST(req: Request) {
       return Response.json({ error: "invalid email" }, { status: 400 });
     }
 
-    await appendEvent({
-      type: "contact_request",
+    const lead: Lead = {
+      id: randomUUID(),
+      ts: Date.now(),
       sessionId,
       visitorId,
       name: typeof name === "string" ? name.trim() || undefined : undefined,
       email: emailStr || undefined,
       phone: phoneStr || undefined,
       note: typeof note === "string" ? note.trim() || undefined : undefined,
+    };
+
+    // Postgres is the durable copy; the analytics event is a local mirror that
+    // survives only until the container restarts.
+    const stored = await saveLead(lead);
+    await appendEvent({
+      type: "contact_request",
+      sessionId,
+      visitorId,
+      name: lead.name,
+      email: lead.email,
+      phone: lead.phone,
+      note: lead.note,
     });
+
+    // Never let a failed alert cost the visitor their submission.
+    void notifyNewLead(lead).catch((err) => console.error("Lead alert failed:", err));
+
+    if (!stored) {
+      console.error("Connect request not persisted to Postgres:", lead.id);
+    }
 
     return Response.json({ ok: true });
   } catch {
