@@ -20,7 +20,7 @@ export type WorkDoc = {
 
 const WORK_DIR = path.join(process.cwd(), "content", "work");
 
-const SLUGS = ["piku", "relivecure", "mandibhai", "salescode"] as const;
+const SLUGS = ["salescode", "relivecure", "piku", "mandibhai"] as const;
 export type WorkSlug = (typeof SLUGS)[number];
 
 function escapeHtml(text: string): string {
@@ -73,8 +73,8 @@ export const WORK_INDEX: {
   lane: "build" | "operate" | "consult" | "essay";
   github?: string | null;
 }[] = [
-  { slug: "piku", title: "PIKU", blurb: "Concept: a local-first AI workspace that remembers — world model, memory, agents.", lane: "build", github: "https://github.com/jaskiringg/piku" },
-  { slug: "relivecure", title: "ReliveCure", blurb: "Freelance clinic lead platform — WhatsApp agent, IVR + call intelligence, one lead timeline.", lane: "operate", github: "https://github.com/jaskiringg/relive-cure" },
-  { slug: "mandibhai", title: "MandiBhai", blurb: "Freelance B2B ordering — catalogue, split cart, inventory; client's team continues it.", lane: "build", github: "https://github.com/jaskiringg/mandibhai" },
-  { slug: "salescode", title: "Salescode", blurb: "Enterprise lifecycle + SCAI voice agent — discovery → hypercare.", lane: "consult", github: null },
+  { slug: "salescode", title: "Salescode AI × Coca-Cola", blurb: "Flagship. Enterprise implementations + SCAI application layer.", lane: "consult", github: null },
+  { slug: "relivecure", title: "ReliveCure", blurb: "Transferred to their team.", lane: "operate", github: "https://github.com/jaskiringg/relive-cure" },
+  { slug: "piku", title: "Eko / PIKU", blurb: "In progress. Local-first AI workspace — designed, not shipped.", lane: "build", github: "https://github.com/jaskiringg/piku" },
+  { slug: "mandibhai", title: "Mandi Bhai", blurb: "Early marketplace. Transferred to their team.", lane: "build", github: "https://github.com/jaskiringg/mandibhai" },
 ];

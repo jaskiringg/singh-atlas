@@ -4,15 +4,25 @@ export const PERSONAS = [
   { key: "operator", label: "Operator", color: "#c08bff", desc: "Owning production — incidents, adoption, iteration." },
 ] as const;
 
+export type CaseShot = { src: string; label: string };
+
 export type CaseStudy = {
   id: string;
   numLabel: string;
   kicker: string;
   title: string;
+  status: string;
   context: string;
+  problem: string;
+  role: string;
+  architecture: string;
+  implementation: string[];
+  /** @deprecated use implementation */
   did: string[];
+  stack: string[];
   outcome: string;
   tags: string[];
+  shots: CaseShot[];
   shot: string | null;
   shotLabel: string;
   diagramType?: "flow" | "trace";
@@ -25,19 +35,34 @@ export const CASES: CaseStudy[] = [
   {
     id: "salescode",
     numLabel: "01",
-    kicker: "Consulting · technical · delivery",
-    title: "Salescode × Coca-Cola",
+    kicker: "Flagship · Salescode.ai",
+    title: "Salescode AI × Coca-Cola",
+    status: "Live engagement",
     context:
-      "Owning an enterprise retail-execution rollout for Coca-Cola bottlers across Thailand, the Philippines and North India — the whole arc, from the first workshop to production support. The Thailand bottler accounts for roughly 20% of Coca-Cola consumption in the country.",
-    did: [
-      "Ran requirement-gathering and discovery workshops with business and IT stakeholders — onsite in Thailand.",
-      "Built operator playbooks and automations so the field process runs the same way every time.",
-      "Designed and implemented integrations with customers' ERP, DMS and field-sales systems over REST, Kafka and SQL — delta syncs and scheduled jobs for pricing, master data and stock. Cut manual intervention by ~35%.",
-      "Deployed SCAI, Salescode's enterprise AI voice agent: integration planning, expected call outcomes, live-call guardrails, section-wise RAG chunking and context management — application layer, not the speech or LLM engines.",
-      "Managed delivery end to end — UAT, SIT, go-live across regions and customer onboarding.",
+      "Senior Technical Project Development Associate at Salescode.ai, July 2024 onwards. Enterprise ordering, distribution and field-sales implementations for Coca-Cola bottlers in Thailand, the Philippines and North India. One major account: a wholesaler-to-retailer ordering platform for a Thai bottler responsible for about 20% of Coca-Cola consumption in Thailand — that 20% is the account's scale, not a personal result.",
+    problem:
+      "Product and outlet masters, distributor and sales hierarchies, pricing and discounts, stock, retailer and wholesaler orders, and incremental changes from source systems all had to stay consistent across the customer's ERP / DMS / field-sales systems and the Salescode platform.",
+    role:
+      "Customer-facing technical owner of the implementation: discovery, mappings, integrations on the Salescode platform, SIT/UAT, go-live and hypercare. I did not build the Salescode platform or its Kafka infrastructure.",
+    architecture:
+      "Customer ERP / DMS / field-sales → REST, Kafka and scheduled jobs → integration and transformation (field mapping, customer rules, delta sync, validation) → Salescode ordering and distribution platform. SCAI sits beside that as an application-layer voice agent on managed STT, TTS, LLM and retrieval.",
+    implementation: [
+      "Discovery with client leadership, business, sales and operations — existing and target workflows, implementation plans, dependencies, field mappings, transformation rules and validation scenarios. Onsite in Thailand.",
+      "Integrations on the Salescode platform: REST, Kafka-based flows, SQL validation and reconciliation, source-to-destination mapping, delta sync, scheduled jobs, customer-specific transformation.",
+      "SIT and UAT coordination, Postman, SQL validation, defect triage, go-live, hypercare, CloudWatch and application logs, runbooks, SOPs, knowledge transfer.",
+      "SCAI application layer: conversation flows, call outcomes and qualification, guardrails, section-wise RAG chunking, retrieval context, writeback. I did not build the speech stack or the models.",
     ],
-    outcome: "Live across three countries, with field-sales and back-office systems finally speaking the same language.",
-    tags: ["SQL", "REST", "Kafka", "Voice AI", "RAG", "UAT"],
+    did: [
+      "Discovery with client leadership, business, sales and operations — existing and target workflows, implementation plans, dependencies, field mappings, transformation rules and validation scenarios. Onsite in Thailand.",
+      "Integrations on the Salescode platform: REST, Kafka-based flows, SQL validation and reconciliation, source-to-destination mapping, delta sync, scheduled jobs, customer-specific transformation.",
+      "SIT and UAT coordination, Postman, SQL validation, defect triage, go-live, hypercare, CloudWatch and application logs, runbooks, SOPs, knowledge transfer.",
+      "SCAI application layer: conversation flows, call outcomes and qualification, guardrails, section-wise RAG chunking, retrieval context, writeback. I did not build the speech stack or the models.",
+    ],
+    stack: ["REST", "Kafka (platform bus)", "SQL", "Postman", "CloudWatch", "SCAI application layer"],
+    outcome:
+      "Production rollouts reached go-live across three countries, with field and back-office teams working on the platform. No percentage claims here — none is tied to a single implementation on this page.",
+    tags: ["SQL", "REST", "Kafka", "SCAI", "RAG", "UAT"],
+    shots: [{ src: "/shots/salescode-coke-buddy.png", label: "Coke Buddy · Thailand" }],
     shot: "/shots/salescode-coke-buddy.png",
     shotLabel: "Coke Buddy · Thailand",
     docHref: "/work/salescode",
@@ -47,21 +72,21 @@ export const CASES: CaseStudy[] = [
   {
     id: "relivecure",
     numLabel: "02",
-    kicker: "Freelance · voice & WhatsApp lead platform",
+    kicker: "Freelance · transferred",
     title: "ReliveCure",
-    context:
-      "A freelance build for a LASIK clinic in India. I scoped and built the platform end to end — ad leads, a trilingual WhatsApp agent, IVR and rep calls captured and analysed by AI, all on one lead timeline. It is live in production and the clinic's internal team runs it now.",
-    did: [
-      "Built lead intake from Meta Ads into one record per person, deduped across channels.",
-      "Built a trilingual WhatsApp agent (Hindi, Hinglish, English) that qualifies inbound before a rep touches it.",
-      "Captured IVR calls and the reps' own phone calls, then transcribed and AI-analysed every recording.",
-      "Designed the data model and the matching rules that tie calls, messages and CRM events to one lead timeline.",
-    ],
-    outcome:
-      "10,880+ leads and ~98,000 unique calls on the system; 90.7% of calls matched to a lead, 13,700+ AI-analysed. In October, 96% of new leads were called and 86% within 24 hours.",
-    tags: ["WhatsApp", "Voice AI", "Kotlin", "Gemini", "Postgres"],
+    status: "Transferred to their team",
+    context: "ReliveCure. A platform I built, then transferred to the client's team. I do not operate it now.",
+    problem: "",
+    role: "Independent builder, then handover.",
+    architecture: "",
+    implementation: [],
+    did: [],
+    stack: ["Kotlin", "Node.js", "PostgreSQL", "React", "Gemini"],
+    outcome: "Transferred to their team.",
+    tags: ["Kotlin", "Postgres", "React"],
+    shots: [{ src: "/shots/relive-analytics.png", label: "Dashboard" }],
     shot: "/shots/relive-analytics.png",
-    shotLabel: "Lead dashboard",
+    shotLabel: "Dashboard",
     docHref: "/work/relivecure",
     githubHref: "https://github.com/jaskiringg/relive-cure",
     liveHref: null,
@@ -69,20 +94,32 @@ export const CASES: CaseStudy[] = [
   {
     id: "piku",
     numLabel: "03",
-    kicker: "Concept · passion project",
-    title: "PIKU",
+    kicker: "Eko · in progress",
+    title: "Eko / PIKU",
+    status: "In progress · concept",
     context:
-      "My idea for a local-first AI workspace that remembers you — persistent memory, a world model of what you are doing, and agent workflows that stay on your machine. The model is replaceable; the understanding should not be.",
-    did: [
-      "Designed a layered architecture: OS shell, chat, graph, world model, apps.",
-      "Explored local-first memory and hybrid retrieval over on-device embeddings.",
-      "Designed a privacy boundary: local-only reasoning vs an optional cloud brain behind a local proxy.",
-      "Wrote the ADRs, feature inventory and roadmap as a design pack I keep thinking through.",
+      "A local-first personal AI workspace: persistent memory, retrieval, context assembly, agent workflows. Documented direction is Tauri, Rust, React, TypeScript, Ollama and local models. The architecture drawing is a direction, not a verified deployment.",
+    problem:
+      "Assistants drop context between sessions. Knowledge is scattered. Cloud-only AI trades away custody. Retrieval alone is not a world model.",
+    role: "Product designer and developer — personal project, in progress.",
+    architecture:
+      "UI (React · TypeScript · Tauri) → application and orchestration (Rust, tools, agent workflows) → memory + retrieval, with a world-model and agents layer on a local model runtime (Ollama). Conceptual, not a production diagram.",
+    implementation: [
+      "Designed persistent memory, RAG over local knowledge, and context assembly as current build areas.",
+      "Designed agent workflows and local-first execution with a swappable model.",
+      "World model, memory system and autonomous agents are not claimed as production-ready.",
     ],
-    outcome: "A concept I'm designing and prototyping, not a shipped product.",
-    tags: ["Tauri", "Ollama", "IndexedDB", "RAG", "Privacy"],
+    did: [
+      "Designed persistent memory, RAG over local knowledge, and context assembly as current build areas.",
+      "Designed agent workflows and local-first execution with a swappable model.",
+      "World model, memory system and autonomous agents are not claimed as production-ready.",
+    ],
+    stack: ["Tauri", "Rust", "React", "TypeScript", "Ollama"],
+    outcome: "In progress. Designed, not a shipped system.",
+    tags: ["Tauri", "Ollama", "RAG", "Privacy"],
+    shots: [],
     shot: null,
-    shotLabel: "Concept · no product shots",
+    shotLabel: "In progress · no product shots",
     docHref: "/work/piku",
     githubHref: "https://github.com/jaskiringg/piku",
     liveHref: null,
@@ -90,20 +127,39 @@ export const CASES: CaseStudy[] = [
   {
     id: "mandibhai",
     numLabel: "04",
-    kicker: "Freelance · B2B ordering",
-    title: "MandiBhai",
+    kicker: "Freelance · transferred",
+    title: "Mandi Bhai",
+    status: "Transferred to their team",
     context:
-      "Freelance, not my startup. A B2B wholesale marketplace where kirana retailers order stock from nearby mandi wholesalers with same-day delivery. I built the early version; the client's own team carries it forward now.",
-    did: [
-      "Built the mobile marketplace and the inventory, pricing and ordering APIs under it.",
-      "Resolved the same SKU across wholesalers onto one product, so retailers compare prices instead of making five phone calls.",
-      "Split a mixed cart per wholesaler before confirmation, each supplier's minimum shown up front rather than failing at checkout.",
-      "Tied stock deduction to order placement, so the platform stops promising what isn't there.",
+      "Early version of a B2B wholesale marketplace: inventory, pricing and ordering APIs, plus the retailer-facing UI. Freelance. I do not operate the current marketplace.",
+    problem:
+      "Wholesaler-to-retailer ordering ran on manual coordination — inventory, price and order in separate conversations.",
+    role: "Builder of the early mobile marketplace and its APIs, then handover.",
+    architecture:
+      "Wholesaler manages products, stock and prices → marketplace APIs (inventory, pricing, ordering) → retailer browses and places orders. Conceptual flow of the version I built.",
+    implementation: [
+      "Early mobile marketplace and the inventory, pricing and ordering APIs under it.",
+      "Shared product layer so the same SKU can be compared across wholesalers.",
+      "Cart split per wholesaler before confirmation, with each supplier minimum visible.",
+      "Stock deducted on order placement in that early version.",
     ],
-    outcome: "Moved wholesaler-to-retailer orders off manual coordination. I built the early version; the client's team carries it on. No adoption, GMV or revenue claimed — not my company.",
-    tags: ["Next.js", "Orders", "SKU admin", "Mobile UX"],
+    did: [
+      "Early mobile marketplace and the inventory, pricing and ordering APIs under it.",
+      "Shared product layer so the same SKU can be compared across wholesalers.",
+      "Cart split per wholesaler before confirmation, with each supplier minimum visible.",
+      "Stock deducted on order placement in that early version.",
+    ],
+    stack: ["Next.js", "NestJS", "PostgreSQL"],
+    outcome: "Transferred to their team. No adoption, GMV or revenue claimed — not my company.",
+    tags: ["Next.js", "Orders", "Inventory"],
+    shots: [
+      { src: "/shots/mandibhai-ui-home.jpg", label: "Retailer home" },
+      { src: "/shots/mandibhai-ui-categories.jpg", label: "Categories" },
+      { src: "/shots/mandibhai-ui-cart-split.jpg", label: "Split cart · MOQ" },
+      { src: "/shots/mandibhai-ui-bulk.jpg", label: "Buy in bulk" },
+    ],
     shot: "/shots/mandibhai-ui-home.jpg",
-    shotLabel: "Retailer home · redesign",
+    shotLabel: "Retailer home",
     docHref: "/work/mandibhai",
     githubHref: "https://github.com/jaskiringg/mandibhai",
     liveHref: null,
@@ -267,8 +323,8 @@ export const REPOS: RepoCard[] = [
   {
     name: "relive-cure",
     group: "Product",
-    purpose: "Freelance: voice + WhatsApp lead platform for a clinic, handed over to the client's team.",
-    shows: "Call capture & AI analysis, WhatsApp qualification, one lead timeline",
+    purpose: "ReliveCure — transferred to their team.",
+    shows: "Dashboard from the portfolio; I do not operate it now",
     stack: "Kotlin · React · Node · Postgres · Gemini",
     featured: true,
     docHref: "/work/relivecure",
@@ -300,7 +356,7 @@ export const BUILDS = [
   {
     name: "Relive Cure",
     status: "Freelance · handed over",
-    body: "A freelance build for a LASIK clinic: leads from ads, a WhatsApp agent that qualifies them, IVR and rep calls captured, every recording transcribed and analysed by AI, all on one lead timeline. It's live, and the clinic's own team runs it now.",
+    body: "ReliveCure. Transferred to their team. I do not operate it now.",
     shots: [{ label: "Lead dashboard", src: "/shots/relive-analytics.png" }],
     docHref: "/work/relivecure",
     githubHref: "https://github.com/jaskiringg/relive-cure",
@@ -320,12 +376,12 @@ export const BUILDS = [
   },
 ];
 
-/** ReliveCure system usage as of 3 Nov 2026 — usage of what I built, not outcomes I drove. */
+/** Homepage metrics — only figures that are tied and allowed. */
 export const METRICS = [
-  { n: "~98,000", l: "unique calls" },
-  { n: "13,700+", l: "AI-analysed calls" },
-  { n: "90.7%", l: "calls matched to a lead" },
-  { n: "10,880+", l: "leads" },
+  { n: "3", l: "countries live" },
+  { n: "~20%", l: "Thai bottler share of Coca-Cola consumption — account scale" },
+  { n: "Jul 2024", l: "Salescode.ai · present" },
+  { n: "SCAI", l: "application layer, not the engines" },
 ];
 
 export const INTERESTS = [
@@ -340,13 +396,8 @@ export const INTERESTS = [
 ];
 
 export const TIMELINE: { t: string; d: string; isNow?: boolean }[] = [
-  { t: "CAW Studios · Nov 2023–Jun 2024", d: "Where the craft started — API and backend test automation for Postman, Paytm and Celito, and the habit of asking how a system will fail." },
-  { t: "Automation", d: "Finding the leverage: the manual processes that should have been systems." },
-  { t: "Salescode.ai · Jul 2024–now", d: "Owning implementation — discovery, integration, SIT/UAT, go-live, hypercare." },
-  { t: "International Implementations", d: "Coca-Cola across Thailand, the Philippines and North India. Scale and local constraints." },
-  { t: "Voice AI: SCAI at Salescode", d: "Taking an enterprise voice agent to live calls — integration, expected outcomes, guardrails, RAG context." },
-  { t: "Freelance builds: ReliveCure, MandiBhai", d: "Scoped and built two platforms end to end, then handed each to the client's own team." },
-  { t: "Future", d: "PIKU and the systems I wish existed — and becoming someone companies trust to own an entire system.", isNow: true },
+  { t: "CAW Studios · Associate SDET · Nov 2023–Jun 2024", d: "API and backend test automation in Postman and Playwright for Postman, Paytm and Celito. Cross-system SQL validation. Diagnosing integration failures across APIs, databases and backend services." },
+  { t: "Salescode.ai · Senior Technical Project Development Associate · Jul 2024–now", d: "Enterprise implementations for Coca-Cola bottlers in Thailand, the Philippines and North India — discovery, integrations on the Salescode platform, SIT/UAT, go-live, hypercare. SCAI at the application layer.", isNow: true },
 ];
 
 export const AI_EXAMPLES = [
@@ -385,15 +436,13 @@ export const PRINCIPLES = [
 ];
 
 export const NAV_ITEMS = [
-  { id: "approach", label: "Approach" },
+  { id: "overview", label: "Overview" },
   { id: "work", label: "Work" },
-  { id: "ai", label: "AI" },
-  { id: "comm", label: "Comms" },
-  { id: "mind", label: "Mind" },
-  { id: "personal", label: "Build" },
-  { id: "path", label: "Path" },
-  { id: "repos", label: "Repos" },
-  { id: "contact", label: "Signal" },
+  { id: "capabilities", label: "Capabilities" },
+  { id: "lab", label: "Lab" },
+  { id: "approach", label: "Approach" },
+  { id: "experience", label: "Experience" },
+  { id: "contact", label: "Contact" },
 ];
 
 export const REPO_GROUP_NEON: Record<string, string> = {
@@ -403,8 +452,76 @@ export const REPO_GROUP_NEON: Record<string, string> = {
 };
 
 export const RECRUITER_BULLETS = [
-  "3 countries live — Coca-Cola retail-execution rollout",
-  "Deployed SCAI, Salescode's AI voice agent: integration, guardrails, RAG context",
-  "Freelance clinic platform: ~98,000 calls, 13,700+ AI-analysed, now run by the client's team",
-  "Root-cause depth: SQL, Kafka, API, frontend, prod support",
+  "Senior Technical Project Development Associate, Salescode.ai — Jul 2024 onwards",
+  "Coca-Cola bottlers: Thailand, the Philippines, North India",
+  "Integrations on the Salescode platform — REST, Kafka flows, SQL validation. I did not build the platform or Kafka.",
+  "SCAI application layer: flows, guardrails, RAG, writeback — not the STT/TTS/LLM engines",
+];
+
+export const CAPABILITIES = [
+  {
+    id: "pipelines",
+    title: "Data pipelines",
+    body: "How a record proceeds through systems — source, map, validate, land — so operations can trust the next screen.",
+  },
+  {
+    id: "movement",
+    title: "How data moves",
+    body: "REST, Kafka-based flows and scheduled jobs on the Salescode platform. I implement against that bus. I did not build Kafka.",
+  },
+  {
+    id: "insight",
+    title: "From data to insight",
+    body: "SQL reconciliation, golden-file checks, and the questions a dashboard is allowed to answer once masters agree.",
+  },
+  {
+    id: "mapping",
+    title: "Mapping and automation",
+    body: "Field maps, customer-specific transforms, delta sync, and the jobs that stop people copying stock and price by hand.",
+  },
+  {
+    id: "kpi",
+    title: "KPI management",
+    body: "Define the metric with the business, then hold it through SIT, UAT and hypercare — not a vanity number on a slide.",
+  },
+  {
+    id: "delivery",
+    title: "Delivery",
+    body: "Timelines, SIT, UAT, go-live and hypercare. Happy-path SIT is not the same as UAT on hierarchy, promo stacking and legacy aliases.",
+  },
+];
+
+export const APPROACH_STEPS = [
+  { n: "01", title: "Discovery", body: "Leadership, business, sales, operations. What they think the workflow is, in the room, onsite when it matters." },
+  { n: "02", title: "As-is / to-be", body: "Existing and target workflows. The delays are usually two mental models of the same field name." },
+  { n: "03", title: "Dependencies", body: "What has to stay consistent: product and outlet masters, hierarchies, pricing, stock, orders, deltas from source systems." },
+  { n: "04", title: "Field mapping", body: "Source-to-destination maps, transformation rules, customer-specific logic. Written down before anyone writes a consumer." },
+  { n: "05", title: "Integration", body: "REST, Kafka-based flows, SQL validation, delta sync, scheduled jobs — on the Salescode platform, not a platform I built." },
+  { n: "06", title: "Validation scenarios", body: "What must be true after a sync. Golden files. The cases SIT will never see if you only test the happy path." },
+  { n: "07", title: "SIT and UAT", body: "SIT can pass on the happy path. UAT is where hierarchy, promo stacking and legacy aliases fail." },
+  { n: "08", title: "Go-live & hypercare", body: "Cutover, CloudWatch and application logs, runbooks, SOPs, knowledge transfer. Leave it repeatable." },
+];
+
+export const EXPERIENCE = [
+  {
+    org: "CAW Studios",
+    title: "Associate SDET",
+    dates: "Nov 2023 – Jun 2024",
+    now: false,
+    body: "API and backend test automation in Postman and Playwright for Postman, Paytm and Celito. Cross-system SQL validation. Diagnosing integration failures across APIs, databases and backend services.",
+  },
+  {
+    org: "Salescode.ai",
+    title: "Senior Technical Project Development Associate",
+    dates: "Jul 2024 – present",
+    now: true,
+    body: "Enterprise ordering, distribution and field-sales implementations for Coca-Cola bottlers in Thailand, the Philippines and North India. Discovery through hypercare. SCAI at the application layer. I did not build the Salescode platform, its Kafka infrastructure, or the STT/TTS/LLM engines.",
+  },
+];
+
+export const AI_IN_WORKFLOW = [
+  "Turning a raw integration payload into a draft data contract, then I check it.",
+  "SQL I will actually run against mock or SIT — never blindly against production.",
+  "Workshop notes into an architecture doc someone else can follow.",
+  "SCAI: section-wise RAG chunking, retrieval context, qualification, writeback. Application layer.",
 ];

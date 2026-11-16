@@ -119,7 +119,7 @@ export const ORB_EXAMPLES: OrbExample[] = [
     tags: ["relive", "voice", "clinic"],
     user: "What is Relive?",
     assistant:
-      "A freelance build for a LASIK clinic: ad leads in, a WhatsApp agent that qualifies them, IVR and rep calls captured and AI-analysed, all on one lead timeline. I built it end to end; the clinic's own team runs it now. When reps stop using a screen, that's an architecture problem, not training. Adoption is the moat.",
+      "ReliveCure. I built it, then transferred it to their team. I don't operate it now. The portfolio shows the name and the dashboard shot — not a clinic story, not a production URL.",
   },
   {
     id: "systems-zoom",

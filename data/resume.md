@@ -23,7 +23,7 @@ Enterprise SaaS consultant who understands how businesses operate before recomme
 - Structured ambiguous business problems into phased plans balancing customer priorities, technical dependencies, delivery risk, and engineering capacity — aligned business, product, and engineering before development began.
 - Built reusable implementation playbooks, runbooks, workflow maps, and validation checklists that standardized deployments and accelerated onboarding.
 - Drove adoption through UAT, change management, and enablement; owned hypercare and post-go-live issues as the customer's technical point of contact.
-- Designed and implemented ERP, DMS and field-sales integrations over REST APIs, Kafka and SQL, including delta syncs and scheduled jobs for pricing, master data and stock; cut manual intervention ~35% with consistent ordering and cross-system visibility.
+- Designed and implemented ERP, DMS and field-sales integrations over REST APIs, Kafka and SQL, including delta syncs and scheduled jobs for pricing, master data and stock, with consistent ordering and cross-system visibility. (No percentage published until tied to one implementation.)
 - Deployed SCAI, Salescode's enterprise AI voice agent: integration planning with customer systems, expected call outcomes, guardrails on what it may say on a live call, section-wise RAG chunking of its knowledge base, context management, and customer-readiness validation — application layer on managed STT/TTS, LLM and retrieval services.
 - Embedded Claude Code, ChatGPT, and LLM workflows across the implementation lifecycle (requirements analysis, planning, SQL generation, API validation, customer documentation) while owning implementation quality, business decisions, and customer outcomes.
 

@@ -7,67 +7,37 @@ import { colorsToCssVars, getColors } from "@/lib/prototype-colors";
 import BackgroundCanvas from "@/components/prototype/background-canvas";
 import AiOrb from "@/components/prototype/ai-orb";
 import HeroSection from "@/components/prototype/sections/hero-section";
-import ApproachSection from "@/components/prototype/sections/approach-section";
 import WorkSection from "@/components/prototype/sections/work-section";
-import AiSection from "@/components/prototype/sections/ai-section";
-import CommSection from "@/components/prototype/sections/comm-section";
-import MindSection from "@/components/prototype/sections/mind-section";
-import PersonalSection from "@/components/prototype/sections/personal-section";
-import PathSection from "@/components/prototype/sections/path-section";
-import ReposSection from "@/components/prototype/sections/repos-section";
+import CapabilitiesSection from "@/components/prototype/sections/capabilities-section";
+import LabSection from "@/components/prototype/sections/lab-section";
+import ApproachSection from "@/components/prototype/sections/approach-section";
+import ExperienceSection from "@/components/prototype/sections/experience-section";
 import ContactSection from "@/components/prototype/sections/contact-section";
 import { trackPageview } from "@/lib/visitor-client";
-import { parseMetric, formatMetric } from "@/lib/metrics";
-import {
-  CASES,
-  DOCS,
-  METRICS,
-  NAV_ITEMS,
-} from "@/lib/prototype-data";
+import { CASES, NAV_ITEMS } from "@/lib/prototype-data";
 
-const CASE_ROTATE_MS = 6000;
-const DOC_ROTATE_MS = 5500;
-const TAB_PAUSE_MS = 14000;
+const CASE_ROTATE_MS = 8000;
+const TAB_PAUSE_MS = 16000;
 
-const REVEAL_IDS = ["hero", "approach", "work", "ai", "comm", "mind", "personal", "path", "repos", "contact"] as const;
+const REVEAL_IDS = ["overview", "work", "capabilities", "lab", "approach", "experience", "contact"] as const;
 
 export default function PrototypeSite() {
   const [theme, setThemeState] = useState<ColorScheme>("dark");
   const [activeCase, setActiveCase] = useState(0);
-  const [activeDoc, setActiveDoc] = useState(0);
   const [revealed, setRevealed] = useState<Record<string, boolean>>({});
-  const [activeSection, setActiveSection] = useState("hero");
+  const [activeSection, setActiveSection] = useState("overview");
   const [personaTick, setPersonaTick] = useState(0);
-  const [metricsStarted, setMetricsStarted] = useState(false);
-  const [metricsVals, setMetricsVals] = useState<string[] | null>(null);
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  const metricsIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const caseRotatePausedRef = useRef(false);
-  const docRotatePausedRef = useRef(false);
   const casePauseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const docPauseTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const scrollTickingRef = useRef(false);
   const sectionCacheRef = useRef<{ id: string; top: number; bottom: number }[]>([]);
   const cacheDirtyRef = useRef(true);
 
   const colors = getColors(theme);
   const cssVars = colorsToCssVars(colors);
-
-  const startMetrics = useCallback(() => {
-    if (metricsStarted) return;
-    setMetricsStarted(true);
-    const targets = METRICS.map((m) => parseMetric(m.n));
-    const start = Date.now();
-    const dur = 1100;
-    metricsIntervalRef.current = setInterval(() => {
-      const p = Math.min(1, (Date.now() - start) / dur);
-      const eased = 1 - Math.pow(1 - p, 3);
-      const vals = targets.map((t) => (t.num === null ? t.raw : formatMetric(t.num * eased, t)));
-      setMetricsVals(vals);
-      if (p >= 1 && metricsIntervalRef.current) clearInterval(metricsIntervalRef.current);
-    }, 80);
-  }, [metricsStarted]);
 
   const revealAll = useCallback(() => {
     setRevealed((prev) => {
@@ -81,8 +51,7 @@ export default function PrototypeSite() {
       });
       return changed ? merged : prev;
     });
-    startMetrics();
-  }, [startMetrics]);
+  }, []);
 
   const refreshSectionCache = useCallback(() => {
     cacheDirtyRef.current = false;
@@ -115,15 +84,6 @@ export default function PrototypeSite() {
     }, TAB_PAUSE_MS);
   }, []);
 
-  const pickDoc = useCallback((i: number) => {
-    setActiveDoc(i);
-    docRotatePausedRef.current = true;
-    if (docPauseTimerRef.current) clearTimeout(docPauseTimerRef.current);
-    docPauseTimerRef.current = setTimeout(() => {
-      docRotatePausedRef.current = false;
-    }, TAB_PAUSE_MS);
-  }, []);
-
   useEffect(() => {
     if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const timer = setInterval(() => {
@@ -134,18 +94,8 @@ export default function PrototypeSite() {
   }, []);
 
   useEffect(() => {
-    if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    const timer = setInterval(() => {
-      if (docRotatePausedRef.current) return;
-      setActiveDoc((i) => (i + 1) % DOCS.length);
-    }, DOC_ROTATE_MS);
-    return () => clearInterval(timer);
-  }, []);
-
-  useEffect(() => {
     return () => {
       if (casePauseTimerRef.current) clearTimeout(casePauseTimerRef.current);
-      if (docPauseTimerRef.current) clearTimeout(docPauseTimerRef.current);
     };
   }, []);
 
@@ -178,7 +128,8 @@ export default function PrototypeSite() {
   }, [refreshSectionCache]);
 
   useEffect(() => {
-    const personaTimer = setInterval(() => setPersonaTick((t) => (t + 1) % 3), 2200);
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const personaTimer = reduced ? null : setInterval(() => setPersonaTick((t) => (t + 1) % 3), 3200);
     const fallbackTimer = setTimeout(revealAll, 700);
 
     const revealObs = new IntersectionObserver(
@@ -187,7 +138,6 @@ export default function PrototypeSite() {
         entries.forEach((entry) => {
           const id = entry.target.getAttribute("data-reveal-id");
           if (entry.isIntersecting && id) {
-            if (id === "personal") startMetrics();
             setRevealed((s) => (s[id] ? s : { ...s, [id]: true }));
             needRefresh = true;
           }
@@ -214,13 +164,13 @@ export default function PrototypeSite() {
     handleScroll();
 
     return () => {
-      clearInterval(personaTimer);
+      if (personaTimer) clearInterval(personaTimer);
       clearTimeout(fallbackTimer);
       clearTimeout(obsTimer);
       revealObs.disconnect();
       window.removeEventListener("scroll", handleScroll);
     };
-  }, [revealAll, startMetrics, handleScroll, refreshSectionCache]);
+  }, [revealAll, handleScroll, refreshSectionCache]);
 
   const toggleTheme = () => {
     setThemeState((t) => (t === "dark" ? "light" : "dark"));
@@ -231,7 +181,7 @@ export default function PrototypeSite() {
       <BackgroundCanvas theme={theme} />
 
       <nav className={`pt-nav ${scrolled ? "pt-nav--scrolled" : ""}`}>
-        <a href="#top" className="pt-nav-brand">
+        <a href="#overview" className="pt-nav-brand">
           <span className="pt-nav-brand-diamond" />
           jaskirat.sys
         </a>
@@ -241,12 +191,23 @@ export default function PrototypeSite() {
               <a
                 key={item.id}
                 href={`#${item.id}`}
+                title={item.id === "work" ? "Selected Work" : item.id === "lab" ? "Engineering Lab" : item.label}
                 className={`pt-nav-link ${activeSection === item.id ? "pt-nav-link--active" : ""}`}
               >
                 {item.label}
               </a>
             ))}
           </div>
+          <button
+            type="button"
+            className="pt-menu-btn"
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen((o) => !o)}
+          >
+            <span />
+            <span />
+          </button>
           <button
             type="button"
             className="pt-theme-toggle"
@@ -258,13 +219,23 @@ export default function PrototypeSite() {
         </div>
       </nav>
 
-      <HeroSection
-        revealed={!!revealed.hero}
-        personaTick={personaTick}
-      />
+      {menuOpen ? (
+        <div className="pt-mobile-menu">
+          {NAV_ITEMS.map((item) => (
+            <a
+              key={item.id}
+              href={`#${item.id}`}
+              className={activeSection === item.id ? "is-on" : ""}
+              onClick={() => setMenuOpen(false)}
+            >
+              {item.label}
+            </a>
+          ))}
+        </div>
+      ) : null}
 
-      <ApproachSection
-        revealed={!!revealed.approach}
+      <HeroSection
+        revealed={!!revealed.overview}
         personaTick={personaTick}
       />
 
@@ -274,31 +245,21 @@ export default function PrototypeSite() {
         pickCase={pickCase}
       />
 
-      <AiSection
-        revealed={!!revealed.ai}
+      <CapabilitiesSection
+        revealed={!!revealed.capabilities}
       />
 
-      <CommSection
-        revealed={!!revealed.comm}
-        activeDoc={activeDoc}
-        pickDoc={pickDoc}
+      <LabSection
+        revealed={!!revealed.lab}
       />
 
-      <MindSection
-        revealed={!!revealed.mind}
+      <ApproachSection
+        revealed={!!revealed.approach}
+        personaTick={personaTick}
       />
 
-      <PersonalSection
-        revealed={!!revealed.personal}
-        metricsVals={metricsVals}
-      />
-
-      <PathSection
-        revealed={!!revealed.path}
-      />
-
-      <ReposSection
-        revealed={!!revealed.repos}
+      <ExperienceSection
+        revealed={!!revealed.experience}
       />
 
       <ContactSection

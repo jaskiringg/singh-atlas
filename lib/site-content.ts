@@ -362,7 +362,7 @@ export const interests = [
 export type RepoCard = { name: string; group: string; purpose: string; shows: string; stack: string; featured?: boolean };
 export const repoCards: RepoCard[] = [
   { name: "piku", group: "AI", purpose: "Ambient AI operating system — local-first, persistent memory.", shows: "World models, retrieval, agent orchestration", stack: "Tauri · Rust · Ollama", featured: true },
-  { name: "relive-cure", group: "Product", purpose: "Freelance: voice + WhatsApp lead platform for a clinic, handed over to the client's team.", shows: "Call capture & AI analysis, WhatsApp qualification, one lead timeline", stack: "Kotlin · React · Node · Postgres · Gemini", featured: true },
+  { name: "relive-cure", group: "Product", purpose: "ReliveCure — transferred to their team.", shows: "Dashboard from the portfolio", stack: "Kotlin · React · Node · Postgres · Gemini", featured: true },
   { name: "mandibhai", group: "Product", purpose: "B2B wholesaler–retailer ordering — architecture showcase.", shows: "Inventory, pricing, order workflows", stack: "NestJS · Next.js", featured: true },
 ];
 
@@ -394,9 +394,9 @@ export const builds: Build[] = [
     name: "Relive Cure",
     status: "Freelance · handed over",
     live: true,
-    tagline: "I built the platform a LASIK clinic now runs on.",
+    tagline: "Transferred to their team.",
     body:
-      "A freelance build for a LASIK clinic: leads from ads, a WhatsApp agent that qualifies them, IVR and rep calls captured, every recording transcribed and analysed by AI, all on one lead timeline. I scoped and built it end to end; it's live, and the clinic's own team runs it now.",
+      "ReliveCure. I built it, then transferred it to their team. I do not operate it now.",
     themes: ["Lead workflows", "WhatsApp agent", "Call intelligence", "Data modelling", "Automation", "Handover"],
   },
   {
@@ -412,18 +412,12 @@ export const builds: Build[] = [
 
 export const reliveCase = {
   rows: [
-    { k: "Role", v: "Freelance: sole engineer and solution designer. I scoped and built the platform end to end; I don't own or run the clinic." },
-    { k: "Built", v: "Lead intake from Meta Ads, a trilingual WhatsApp agent that qualifies inbound, IVR and rep calls captured and AI-analysed, and the data model and dedupe rules that tie it all to one lead timeline." },
-    { k: "Stack", v: "Android call-capture app (Kotlin, Jetpack Compose), Node.js, PostgreSQL, React dashboard, Gemini, WhatsApp Cloud API, on Railway." },
-    { k: "Now", v: "Live in production and handed over — the company's internal team runs and extends it." },
+    { k: "Role", v: "Freelance: I built it, then transferred it to their team. I do not operate it now." },
+    { k: "Built", v: "ReliveCure. Name and dashboard only on this site." },
+    { k: "Stack", v: "Kotlin · Node.js · PostgreSQL · React · Gemini" },
+    { k: "Now", v: "Transferred to their team. No production URL." },
   ],
-  /** System usage as of 3 Nov 2026 — usage of what I built, not outcomes I drove. */
-  metrics: [
-    { n: "~98,000", l: "unique calls" },
-    { n: "13,700+", l: "AI-analysed calls" },
-    { n: "90.7%", l: "calls matched to a lead" },
-    { n: "10,880+", l: "leads" },
-  ],
+  metrics: [] as { n: string; l: string }[],
 };
 
 /* ── How both worlds feed each other ─────────────────────────────────── */
@@ -491,7 +485,7 @@ export const voiceQuotes: VoiceQuote[] = [
   },
   {
     tag: "relive",
-    text: "Relive Cure changed how I build software. It's one thing to build a CRM. It's another to build a CRM that five people actually use every day while patients are waiting for callbacks. If something is confusing, I'm the one who feels it first because I'm operating the business too.",
+    text: "ReliveCure is transferred to their team. I don't operate it now. What I still take from the build: if people stop using a screen, that's an architecture problem, not a training problem.",
   },
   {
     tag: "ai",
@@ -519,7 +513,7 @@ export const voiceQuotes: VoiceQuote[] = [
   },
   {
     tag: "loop",
-    text: "I don't really separate business from engineering anymore. Whether it's Coca-Cola's ordering platform, a WhatsApp CRM for my LASIK clinic, or a wholesale marketplace, I end up asking the same questions: who uses it, what breaks, who owns the data, how does it fail. The code comes after those answers.",
+    text: "I don't really separate business from engineering anymore. Whether it's Coca-Cola's ordering platform or a marketplace I handed over, I end up asking the same questions: who uses it, what breaks, who owns the data, how does it fail. The code comes after those answers.",
   },
   {
     tag: "personal",
@@ -539,7 +533,7 @@ export const recruiterCard = {
   proof: [
     "3 countries live — Coca-Cola retail-execution rollout (Salescode.ai)",
     "Deployed SCAI, Salescode's AI voice agent: integration, guardrails, RAG context",
-    "Freelance clinic platform: ~98,000 calls, 13,700+ AI-analysed, now run by the client's team",
+    "SCAI application layer: flows, guardrails, RAG, writeback — not the engines",
     "Root-cause depth: SQL, Kafka, API, production support — not just requirements",
   ],
   basedIn: "Gurugram, India — open to remote / onsite",

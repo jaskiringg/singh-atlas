@@ -1,6 +1,6 @@
 "use client";
 
-import { memo } from "react";
+import { memo, useState } from "react";
 import Reveal from "@/components/prototype/reveal";
 import SwitchingPanel from "@/components/prototype/switching-panel";
 import { CASES } from "@/lib/prototype-data";
@@ -16,39 +16,26 @@ function WorkSection({ revealed, activeCase, pickCase }: WorkSectionProps) {
     <section className="pt-section" id="work">
       <div className="pt-section-num">02</div>
       <Reveal id="work" visible={revealed} sectionId="work">
-        <div className="pt-wrap pt-center">
+        <div className="pt-wrap">
           <span className="pt-kicker">Selected work</span>
           <h2 className="pt-h2" style={{ maxWidth: "20ch" }}>
-            What that looks like in practice.
+            Salescode first. The rest by name.
           </h2>
-          <p className="pt-body" style={{ margin: "14px auto 0" }}>
-            Case studies with Docs / GitHub / Live — click a title to switch.{" "}
-            <a href="/work" style={{ color: "var(--accent)" }}>
-              Full system map →
-            </a>
+          <p className="pt-body" style={{ margin: "14px 0 0", maxWidth: "64ch" }}>
+            Flagship is Coca-Cola on Salescode. ReliveCure and Mandi Bhai were transferred. PIKU is in progress.
+            Screens are only files already in this repo.
           </p>
 
-          <div data-work-tabs style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 8, marginTop: 30 }}>
+          <div data-work-tabs className="pt-work-tabs">
             {CASES.map((c, i) => (
               <button
                 key={c.id}
                 type="button"
                 className={`pt-tab pt-hover-lift ${i === activeCase ? "pt-tab--active" : ""}`}
-                style={{ padding: "11px 18px", display: "inline-flex", alignItems: "center", gap: 10 }}
                 onClick={() => pickCase(i)}
               >
-                <span
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: 11,
-                    color: i === activeCase ? "var(--accent)" : "var(--ink3)",
-                  }}
-                >
-                  {c.numLabel}
-                </span>
-                <span style={{ fontSize: "13.5px", color: i === activeCase ? "var(--ink)" : "var(--ink2)" }}>
-                  {c.title}
-                </span>
+                <span className="pt-lab-tab-num">{c.numLabel}</span>
+                {c.title}
               </button>
             ))}
           </div>
@@ -56,210 +43,127 @@ function WorkSection({ revealed, activeCase, pickCase }: WorkSectionProps) {
           <SwitchingPanel
             index={activeCase}
             total={CASES.length}
-            style={{ marginTop: 34, textAlign: "left" }}
-            render={(caseIndex) => {
-              const cd = CASES[caseIndex];
-              return (
-                <div
-                  className="pt-switch-stagger"
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "repeat(auto-fit,minmax(380px,1fr))",
-                    gap: 40,
-                    alignItems: "start",
-                  }}
-                >
-                  <div>
-                    <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--accent)" }}>
-                      {cd.kicker}
-                    </div>
-                    <h3 style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "clamp(22px,2.6vw,30px)", margin: "10px 0 0" }}>
-                      {cd.docHref ? (
-                        <a href={cd.docHref} style={{ color: "inherit", textDecoration: "none" }}>
-                          {cd.title}
-                        </a>
-                      ) : (
-                        cd.title
-                      )}
-                    </h3>
-                    <p style={{ fontSize: "15.5px", color: "var(--ink2)", lineHeight: 1.62, marginTop: 14, maxWidth: "56ch" }}>
-                      {cd.context}
-                    </p>
-                    <div style={{ display: "flex", flexDirection: "column", marginTop: 20 }}>
-                      {cd.did.map((text, i) => (
-                        <div
-                          key={text}
-                          style={{
-                            display: "grid",
-                            gridTemplateColumns: "26px 1fr",
-                            gap: 14,
-                            padding: "12px 0",
-                            borderBottom: "1px solid var(--line)",
-                          }}
-                        >
-                          <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--accent)" }}>
-                            {String(i + 1).padStart(2, "0")}
-                          </div>
-                          <div style={{ fontSize: "14.5px", color: "var(--ink2)", lineHeight: 1.55 }}>{text}</div>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="pt-outcome-box">
-                      <div style={{ fontFamily: "var(--font-mono)", fontSize: "10.5px", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 6 }}>
-                        Outcome
-                      </div>
-                      <div style={{ fontSize: "14.5px", color: "var(--ink)", lineHeight: 1.5 }}>{cd.outcome}</div>
-                    </div>
-                    <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 16 }}>
-                      {cd.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="pt-hover-lift"
-                          style={{
-                            fontFamily: "var(--font-mono)",
-                            fontSize: 11,
-                            color: "var(--ink2)",
-                            border: "1px solid var(--line2)",
-                            padding: "5px 10px",
-                            borderRadius: 16,
-                            display: "inline-block",
-                          }}
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                    {(cd.docHref || cd.githubHref || cd.liveHref) && (
-                      <div style={{ display: "flex", flexWrap: "wrap", gap: 10, marginTop: 20 }}>
-                        {cd.docHref ? (
-                          <a
-                            href={cd.docHref}
-                            className="pt-hover-lift"
-                            style={{
-                              fontFamily: "var(--font-mono)",
-                              fontSize: 12,
-                              color: "var(--bg)",
-                              background: "var(--accent)",
-                              padding: "9px 14px",
-                              borderRadius: 8,
-                              textDecoration: "none",
-                            }}
-                          >
-                            Docs
-                          </a>
-                        ) : null}
-                        {cd.githubHref ? (
-                          <a
-                            href={cd.githubHref}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="pt-hover-lift"
-                            style={{
-                              fontFamily: "var(--font-mono)",
-                              fontSize: 12,
-                              color: "var(--ink2)",
-                              border: "1px solid var(--line2)",
-                              padding: "9px 14px",
-                              borderRadius: 8,
-                              textDecoration: "none",
-                            }}
-                          >
-                            GitHub
-                          </a>
-                        ) : null}
-                        {cd.liveHref ? (
-                          <a
-                            href={cd.liveHref}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="pt-hover-lift"
-                            style={{
-                              fontFamily: "var(--font-mono)",
-                              fontSize: 12,
-                              color: "var(--ink2)",
-                              border: "1px solid var(--line2)",
-                              padding: "9px 14px",
-                              borderRadius: 8,
-                              textDecoration: "none",
-                            }}
-                          >
-                            Live
-                          </a>
-                        ) : null}
-                        {cd.docHref ? (
-                          <a
-                            href={`/docs/${cd.id}.md`}
-                            download
-                            className="pt-hover-lift"
-                            style={{
-                              fontFamily: "var(--font-mono)",
-                              fontSize: 12,
-                              color: "var(--ink2)",
-                              border: "1px solid var(--line2)",
-                              padding: "9px 14px",
-                              borderRadius: 8,
-                              textDecoration: "none",
-                            }}
-                          >
-                            Download
-                          </a>
-                        ) : null}
-                      </div>
-                    )}
-                  </div>
-
-                  <div>
-                    {cd.shot ? (
-                      <div style={{ border: "1px solid var(--line2)", borderRadius: 16, overflow: "hidden", background: "var(--bg2)" }}>
-                        <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "9px 12px", borderBottom: "1px solid var(--line)" }}>
-                          {[0, 1, 2].map((n) => (
-                            <span key={n} style={{ width: 7, height: 7, borderRadius: "50%", background: "var(--line2)", display: "inline-block" }} />
-                          ))}
-                          <span style={{ marginLeft: 6, fontFamily: "var(--font-mono)", fontSize: "10.5px", color: "var(--ink3)" }}>
-                            {cd.shotLabel}
-                          </span>
-                        </div>
-                        <div
-                          style={{
-                            backgroundImage: `url(${cd.shot})`,
-                            backgroundSize: "contain",
-                            backgroundRepeat: "no-repeat",
-                            backgroundColor: "var(--bg3)",
-                            backgroundPosition: "center",
-                            width: "100%",
-                            aspectRatio: "16/10",
-                          }}
-                        />
-                      </div>
-                    ) : (
-                      <div
-                        style={{
-                          border: "1px dashed var(--line2)",
-                          borderRadius: 16,
-                          background: "var(--bg2)",
-                          padding: "26px 22px",
-                          display: "grid",
-                          gap: 10,
-                          alignContent: "center",
-                          minHeight: 180,
-                        }}
-                      >
-                        <p style={{ margin: 0, fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--ink3)" }}>
-                          {cd.shotLabel}
-                        </p>
-                        <p style={{ margin: 0, fontSize: 14, color: "var(--ink2)", lineHeight: 1.6 }}>
-                          Nothing to screenshot — this one lives as a design, not a product.
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              );
-            }}
+            style={{ marginTop: 34 }}
+            render={(caseIndex) => <CasePanel index={caseIndex} />}
           />
         </div>
       </Reveal>
     </section>
+  );
+}
+
+function CasePanel({ index }: { index: number }) {
+  const cd = CASES[index];
+  const [shot, setShot] = useState(0);
+  const current = cd.shots[shot] ?? null;
+
+  return (
+    <div className="pt-switch-stagger pt-case">
+      <div>
+        <div className="pt-case-kicker">
+          {cd.kicker}
+          <em>{cd.status}</em>
+        </div>
+        <h3 className="pt-case-title">
+          {cd.docHref ? (
+            <a href={cd.docHref} style={{ color: "inherit", textDecoration: "none" }}>
+              {cd.title}
+            </a>
+          ) : (
+            cd.title
+          )}
+        </h3>
+        {cd.context ? <CaseBlock label="Context" text={cd.context} /> : null}
+        {cd.problem ? <CaseBlock label="Problem" text={cd.problem} /> : null}
+        {cd.role ? <CaseBlock label="Role" text={cd.role} /> : null}
+        {cd.architecture ? <CaseBlock label="Architecture" text={cd.architecture} /> : null}
+        {cd.implementation.length ? (
+          <div className="pt-case-block">
+            <div className="pt-lab-kicker">Implementation</div>
+            <ol>
+              {cd.implementation.map((text) => (
+                <li key={text}>{text}</li>
+              ))}
+            </ol>
+          </div>
+        ) : null}
+        {cd.stack.length ? (
+          <div className="pt-case-block">
+            <div className="pt-lab-kicker">Stack</div>
+            <div className="pt-tag-row">
+              {cd.stack.map((tag) => (
+                <span key={tag} className="pt-chip">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
+        ) : null}
+        <div className="pt-outcome-box">
+          <div className="pt-lab-kicker">Outcomes</div>
+          <div style={{ fontSize: "14.5px", color: "var(--ink)", lineHeight: 1.5, marginTop: 6 }}>{cd.outcome}</div>
+        </div>
+        {(cd.docHref || cd.githubHref) && (
+          <div className="pt-lab-actions" style={{ marginTop: 20 }}>
+            {cd.docHref ? (
+              <a href={cd.docHref} className="pt-cta pt-cta--primary">
+                Case study
+              </a>
+            ) : null}
+            {cd.githubHref ? (
+              <a href={cd.githubHref} target="_blank" rel="noreferrer" className="pt-cta">
+                GitHub
+              </a>
+            ) : null}
+          </div>
+        )}
+      </div>
+
+      <div>
+        {current ? (
+          <div className="pt-shot-frame">
+            <div className="pt-shot-chrome">
+              {[0, 1, 2].map((n) => (
+                <span key={n} className="pt-shot-dot" />
+              ))}
+              <span>{current.label}</span>
+            </div>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={current.src} alt={current.label} className="pt-shot-img" />
+            {cd.shots.length > 1 ? (
+              <div className="pt-shot-thumbs">
+                {cd.shots.map((s, i) => (
+                  <button
+                    key={s.src}
+                    type="button"
+                    className={i === shot ? "is-on" : ""}
+                    onClick={() => setShot(i)}
+                    aria-label={s.label}
+                  >
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={s.src} alt="" />
+                  </button>
+                ))}
+              </div>
+            ) : null}
+          </div>
+        ) : (
+          <div className="pt-shot-empty">
+            <p className="pt-lab-kicker">{cd.shotLabel}</p>
+            <p>No product screens — this one is still a design.</p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function CaseBlock({ label, text }: { label: string; text: string }) {
+  return (
+    <div className="pt-case-block">
+      <div className="pt-lab-kicker">{label}</div>
+      <p>{text}</p>
+    </div>
   );
 }
 

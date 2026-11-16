@@ -50,10 +50,10 @@ export function getColors(theme: ColorScheme): ThemeColors {
 
   return {
     ...base,
-    neon1: theme === "light" ? "#00c2d6" : "#3df4ff",
-    neon2: theme === "light" ? "#d61e97" : "#ff3fd8",
-    neon3: theme === "light" ? "#c7a800" : "#e8ff5c",
-    neon4: theme === "light" ? "#e0650a" : "#ff9d3d",
+    neon1: theme === "light" ? "#5b6fd6" : "#8b9cff",
+    neon2: theme === "light" ? "#7c5cbf" : "#b9a4ff",
+    neon3: theme === "light" ? "#6d5fd6" : "#9b82ff",
+    neon4: theme === "light" ? "#8257f5" : "#c4b5fd",
   };
 }
 
