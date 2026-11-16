@@ -6,12 +6,16 @@ export const PERSONAS = [
 
 export type CaseShot = { src: string; label: string };
 
+export type CaseDiagram = "integration" | "incident" | "relive" | "commerce" | "piku";
+
 export type CaseStudy = {
   id: string;
   numLabel: string;
   kicker: string;
   title: string;
   status: string;
+  transferred?: boolean;
+  flagship?: boolean;
   context: string;
   problem: string;
   role: string;
@@ -25,7 +29,8 @@ export type CaseStudy = {
   shots: CaseShot[];
   shot: string | null;
   shotLabel: string;
-  diagramType?: "flow" | "trace";
+  diagram?: CaseDiagram;
+  showScaiLayer?: boolean;
   docHref?: string;
   githubHref?: string | null;
   liveHref?: string | null;
@@ -65,6 +70,9 @@ export const CASES: CaseStudy[] = [
     shots: [{ src: "/shots/salescode-coke-buddy.png", label: "Coke Buddy · Thailand" }],
     shot: "/shots/salescode-coke-buddy.png",
     shotLabel: "Coke Buddy · Thailand",
+    diagram: "integration",
+    showScaiLayer: true,
+    flagship: true,
     docHref: "/work/salescode",
     githubHref: null,
     liveHref: null,
@@ -72,21 +80,40 @@ export const CASES: CaseStudy[] = [
   {
     id: "relivecure",
     numLabel: "02",
-    kicker: "Freelance · transferred",
+    kicker: "Freelance · call & lead intelligence",
     title: "ReliveCure",
     status: "Transferred to their team",
-    context: "ReliveCure. A platform I built, then transferred to the client's team. I do not operate it now.",
-    problem: "",
-    role: "Independent builder, then handover.",
-    architecture: "",
-    implementation: [],
-    did: [],
+    transferred: true,
+    context:
+      "Freelance build: a call-intelligence and lead-lifecycle platform for a client whose new business arrived through Meta Ads, WhatsApp, voice IVR, rep dialling and recordings — all in different tools. I designed and shipped the system, then transferred it to their internal team. I do not operate it now.",
+    problem:
+      "The same person could exist as three leads, two call logs and one WhatsApp thread with no shared identity. Reps could not see whether someone had already been contacted, and leadership could not read the timeline without opening five tabs.",
+    role:
+      "Independent developer end to end: data model, ingestion and matching, AI-assisted processing at the application layer, operator dashboard, and handover documentation. I did not build Gemini; I integrated it.",
+    architecture:
+      "Multi-channel intake (ads, messaging, telephony, rep calls) → ingestion and identity resolution (dedupe, match raw call rows to leads) → AI-assisted processing (transcription, qualification signals, follow-up context) → unified timeline and dashboard. One system of record for leads, calls, transcripts and events.",
+    implementation: [
+      "PostgreSQL schema tying leads, calls, recordings, transcripts, WhatsApp threads, AI analysis rows and timeline events.",
+      "Matching and deduplication so raw telephony rows resolve to unique calls and the correct lead record.",
+      "Node services for ingestion and APIs; React dashboard for operators; Kotlin/Android surfaces where the field needed mobile.",
+      "Gemini-assisted flows for conversational routing and analysis — prompts, guardrails and fallbacks at the application layer.",
+      "Handover: runbooks, schema notes and transfer to the client's team. No production URL published here.",
+    ],
+    did: [
+      "PostgreSQL schema tying leads, calls, recordings, transcripts, WhatsApp threads, AI analysis rows and timeline events.",
+      "Matching and deduplication so raw telephony rows resolve to unique calls and the correct lead record.",
+      "Node services for ingestion and APIs; React dashboard for operators; Kotlin/Android surfaces where the field needed mobile.",
+      "Gemini-assisted flows for conversational routing and analysis — prompts, guardrails and fallbacks at the application layer.",
+      "Handover: runbooks, schema notes and transfer to the client's team. No production URL published here.",
+    ],
     stack: ["Kotlin", "Node.js", "PostgreSQL", "React", "Gemini"],
-    outcome: "Transferred to their team.",
-    tags: ["Kotlin", "Postgres", "React"],
-    shots: [{ src: "/shots/relive-analytics.png", label: "Dashboard" }],
+    outcome:
+      "Built and transferred. The portfolio shows the name and a real dashboard shot (identifiers redacted). Operating metrics, ad spend and production links are not published.",
+    tags: ["PostgreSQL", "Matching", "Gemini", "React"],
+    shots: [{ src: "/shots/relive-analytics.png", label: "Operator dashboard" }],
     shot: "/shots/relive-analytics.png",
-    shotLabel: "Dashboard",
+    shotLabel: "Operator dashboard",
+    diagram: "relive",
     docHref: "/work/relivecure",
     githubHref: "https://github.com/jaskiringg/relive-cure",
     liveHref: null,
@@ -120,6 +147,7 @@ export const CASES: CaseStudy[] = [
     shots: [],
     shot: null,
     shotLabel: "In progress · no product shots",
+    diagram: "piku",
     docHref: "/work/piku",
     githubHref: "https://github.com/jaskiringg/piku",
     liveHref: null,
@@ -127,9 +155,10 @@ export const CASES: CaseStudy[] = [
   {
     id: "mandibhai",
     numLabel: "04",
-    kicker: "Freelance · transferred",
+    kicker: "Freelance · wholesale commerce",
     title: "Mandi Bhai",
     status: "Transferred to their team",
+    transferred: true,
     context:
       "Early version of a B2B wholesale marketplace: inventory, pricing and ordering APIs, plus the retailer-facing UI. Freelance. I do not operate the current marketplace.",
     problem:
@@ -160,10 +189,37 @@ export const CASES: CaseStudy[] = [
     ],
     shot: "/shots/mandibhai-ui-home.jpg",
     shotLabel: "Retailer home",
+    diagram: "commerce",
     docHref: "/work/mandibhai",
     githubHref: "https://github.com/jaskiringg/mandibhai",
     liveHref: null,
   },
+];
+
+export const RELIVE_LIFECYCLE_FLOW = [
+  { label: "Meta Ads", sub: "lead capture" },
+  { label: "WhatsApp", sub: "inbound threads" },
+  { label: "Voice IVR", sub: "automated calls" },
+  { label: "Rep calls", sub: "manual dial" },
+  { label: "Ingest + match", sub: "dedupe · identity", accent: true },
+  { label: "AI assist", sub: "transcripts · routing" },
+  { label: "Timeline", sub: "single record", accent: true },
+];
+
+export const MANDI_COMMERCE_FLOW = [
+  { label: "Wholesaler", sub: "catalog · stock · price" },
+  { label: "Marketplace APIs", sub: "inventory · orders", accent: true },
+  { label: "Compare SKUs", sub: "cross-supplier" },
+  { label: "Split cart", sub: "MOQ per wholesaler" },
+  { label: "Place order", sub: "stock reserve", accent: true },
+];
+
+export const PIKU_STACK_FLOW = [
+  { label: "UI", sub: "React · Tauri" },
+  { label: "Orchestration", sub: "Rust · tools", accent: true },
+  { label: "Memory + RAG", sub: "local knowledge" },
+  { label: "Agents", sub: "workflows (design)" },
+  { label: "Ollama", sub: "local models" },
 ];
 
 /** Visual for voice essay tile — not a product screenshot. */
@@ -437,9 +493,9 @@ export const PRINCIPLES = [
 
 export const NAV_ITEMS = [
   { id: "overview", label: "Overview" },
-  { id: "work", label: "Work" },
+  { id: "work", label: "Selected Work" },
   { id: "capabilities", label: "Capabilities" },
-  { id: "lab", label: "Lab" },
+  { id: "lab", label: "Engineering Lab" },
   { id: "approach", label: "Approach" },
   { id: "experience", label: "Experience" },
   { id: "contact", label: "Contact" },

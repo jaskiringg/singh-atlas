@@ -120,14 +120,14 @@ export const aiFlow: PNode[] = [
   { label: "Deployment guide", sub: "ready to ship", kind: "fixed" },
 ];
 
-/** Relive Cure — a lead becomes a patient. */
+/** Relive Cure — lead lifecycle (portfolio-safe labels). */
 export const reliveFlow: PNode[] = [
   { label: "WhatsApp lead", sub: "inbound, any hour" },
   { label: "AI operator", sub: "Gemini · fallback chains", kind: "gateway" },
   { label: "Lead score", sub: "SLA bands · weighting" },
   { label: "Rep assignment", sub: "routed, not dropped" },
   { label: "CRM + follow-up", sub: "shadow-mode safe" },
-  { label: "Appointment booked", sub: "patient in chair", kind: "fixed" },
+  { label: "Qualified outcome", sub: "single timeline", kind: "fixed" },
 ];
 
 /** Scroll-triggered terminal flourish. */

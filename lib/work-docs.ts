@@ -74,7 +74,7 @@ export const WORK_INDEX: {
   github?: string | null;
 }[] = [
   { slug: "salescode", title: "Salescode AI × Coca-Cola", blurb: "Flagship. Enterprise implementations + SCAI application layer.", lane: "consult", github: null },
-  { slug: "relivecure", title: "ReliveCure", blurb: "Transferred to their team.", lane: "operate", github: "https://github.com/jaskiringg/relive-cure" },
+  { slug: "relivecure", title: "ReliveCure", blurb: "Call intelligence · transferred.", lane: "operate", github: "https://github.com/jaskiringg/relive-cure" },
   { slug: "piku", title: "Eko / PIKU", blurb: "In progress. Local-first AI workspace — designed, not shipped.", lane: "build", github: "https://github.com/jaskiringg/piku" },
   { slug: "mandibhai", title: "Mandi Bhai", blurb: "Early marketplace. Transferred to their team.", lane: "build", github: "https://github.com/jaskiringg/mandibhai" },
 ];

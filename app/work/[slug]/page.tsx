@@ -34,9 +34,14 @@ export default async function WorkPage({ params }: Props) {
       <div className="work-page__grid" aria-hidden />
       <MermaidBoot />
       <header className="work-header">
-        <Link href="/work" className="work-back">
-          ← Work map
-        </Link>
+        <div className="work-back-row">
+          <Link href="/" className="work-back">
+            ← Home
+          </Link>
+          <Link href="/work" className="work-back">
+            Work map
+          </Link>
+        </div>
         <p className="work-kicker">{meta.kicker}</p>
         <h1 className="work-title">{meta.title}</h1>
         <div className="work-actions">

@@ -65,18 +65,31 @@ SCAI sits beside this as an application-layer voice agent on managed speech, LLM
 
 SIT can pass on the happy path. UAT is where hierarchy, promo stacking and legacy aliases fail.
 
+## Production debugging (pattern)
+
+When a field sync fails, the trace usually looks like:
+
+1. Order or master sync fails in the field client.
+2. API gateway timeout or upstream rejection.
+3. Kafka consumer lag on a affected partition.
+4. SQL shows a stale foreign key against product or outlet master.
+5. Root cause: a delta sync missed or dropped a master update.
+6. Fix mapping or replay the event stream, then verify reconciliation queries.
+
+This is the shape of work in hypercare — not a promise that every incident resolves in one hour.
+
 ## SCAI — application layer
 
 Salescode's enterprise AI voice agent. I worked at the **application layer**.
 
-| What I owned | |
-|---|---|
-| **Integration planning** | What it reads, where outcomes land |
-| **Expected call outcomes** | Qualified, escalated, handed to a human, or closed |
-| **Guardrails** | What the agent may and may not say |
-| **Knowledge for RAG** | Section-wise chunking |
-| **Context management** | What is carried turn to turn |
-| **Validation** | UAT before voice features go live |
+| Area | What I owned |
+| --- | --- |
+| Integration planning | What the agent reads, where outcomes land |
+| Call outcomes | Qualified, escalated, human handoff, or closed |
+| Guardrails | What may be said on a live call |
+| RAG knowledge | Section-wise chunking and retrieval context |
+| Context | What persists turn to turn |
+| Validation | UAT before voice features go live |
 
 I worked against managed STT/TTS, LLM and retrieval services. I did not build those engines.
 

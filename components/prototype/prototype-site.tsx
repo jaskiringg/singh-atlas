@@ -191,7 +191,6 @@ export default function PrototypeSite() {
               <a
                 key={item.id}
                 href={`#${item.id}`}
-                title={item.id === "work" ? "Selected Work" : item.id === "lab" ? "Engineering Lab" : item.label}
                 className={`pt-nav-link ${activeSection === item.id ? "pt-nav-link--active" : ""}`}
               >
                 {item.label}
