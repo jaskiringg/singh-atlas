@@ -119,8 +119,11 @@ export const CASES: CaseStudy[] = [
       "Built and transferred. The portfolio shows the name and a real dashboard shot (identifiers redacted). Operating metrics, ad spend and production links are not published.",
     tags: ["PostgreSQL", "Matching", "Gemini", "React"],
     shots: [
-      { src: "/shots/relive-pulse-web.png", label: "Pulse · ops dashboard (redacted)" },
-      { src: "/shots/relive-analytics.png", label: "Analytics view (redacted)" },
+      { src: "/shots/relive-pulse-web.png", label: "Pulse · ops dashboard" },
+      { src: "/shots/relive-analytics-web.png", label: "Analytics · health & campaigns" },
+      { src: "/shots/relive-marketing-web.png", label: "Marketing · Meta Ads" },
+      { src: "/shots/relive-leads-web.png", label: "Leads · timeline drawer" },
+      { src: "/shots/relive-call-pipeline-web.png", label: "Call pipeline · jobs" },
     ],
     shot: "/shots/relive-pulse-web.png",
     shotLabel: "Pulse · ops dashboard",

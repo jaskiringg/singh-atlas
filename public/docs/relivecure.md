@@ -56,6 +56,13 @@ Meta Ads · WhatsApp · Voice IVR · Rep calls · Recordings
 
 The sidebar tied the same data model to Pipeline, WhatsApp chat backlog, Tasks, Analytics, Bot Lab, IVR, rep app and settings — one product, not a pile of sheets.
 
+## Other surfaces
+
+- **Analytics** — lead health, SLA tiles, paid campaign list, operational “look at these” queues and flow tips.
+- **Marketing** — Meta spend, CPL, campaign list and spend/leads trend.
+- **Leads** — website funnel, lead table, and detail drawer (chat, calls, lore, captured fields).
+- **Call pipeline** — Drive → transcribe → summarise → attach to lead, job ledger and backlog controls.
+
 ## Implementation
 
 **Data architecture.** PostgreSQL tying leads, calls, recordings, transcripts, WhatsApp threads, AI analysis rows and timeline events.
@@ -74,14 +81,26 @@ Kotlin · Node.js · PostgreSQL · React · Gemini
 
 ## Outcomes
 
-Built and transferred. This page shows real UI captures with **identifiers, rep names, lead names, locations and the production hostname removed**. Operating metrics, ad spend and response-time claims are not published as portfolio figures.
+Built and transferred. Portfolio shots use **Gaussian blur on names, phones, URLs, outlet-style ids and rep labels** only — the rest of the UI stays readable. No production links. Operating metrics and ad-spend claims are not published as portfolio figures.
 
-## Screenshots (redacted)
+## Screenshots
 
-![ReliveCure Pulse dashboard](/shots/relive-pulse-web.png)
+![Pulse](/shots/relive-pulse-web.png)
 
-*Pulse — same-day ops view. Rep/lead columns and handoff labels masked.*
+*Pulse — same-day ops.*
 
-![ReliveCure analytics](/shots/relive-analytics.png)
+![Analytics](/shots/relive-analytics-web.png)
 
-*Analytics view — identifiers redacted.*
+*Analytics — health, queues, campaigns.*
+
+![Marketing](/shots/relive-marketing-web.png)
+
+*Marketing — Meta Ads cockpit.*
+
+![Leads](/shots/relive-leads-web.png)
+
+*Leads — list + detail drawer (sensitive fields blurred).*
+
+![Call pipeline](/shots/relive-call-pipeline-web.png)
+
+*Call pipeline — transcription / summary jobs.*

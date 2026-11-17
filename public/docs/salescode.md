@@ -105,6 +105,6 @@ Production rollouts reached go-live across three countries, with field and back-
 
 ![Coke Buddy product browse — Thailand bottler rollout](/shots/salescode-coke-buddy-products-web.png)
 
-*Coke Buddy — delivery windows, search, and pack-type / pack-size entry. Outlet ID, store name and address masked; status bar and system nav stripped for the portfolio.*
+*Coke Buddy — delivery windows, search, and pack-type / pack-size entry. Gaussian blur on outlet id, store name, address line, status bar and system nav only.*
 
 Same capture at full resolution: `/shots/salescode-coke-buddy-products.png` (redacted).
