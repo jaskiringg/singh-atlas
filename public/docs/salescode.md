@@ -1,128 +1,110 @@
 ---
-title: Salescode — Enterprise Implementation & SCAI Voice Agent
+title: Salescode AI × Coca-Cola
 slug: salescode
-kicker: Consulting · integrations · SCAI voice agent
+kicker: Flagship · integrations · SCAI application layer
 github: null
 live: null
 download: /docs/salescode.md
 ---
 
-# Salescode — Enterprise Implementation
+# Salescode AI × Coca-Cola
 
 **Senior Technical Project Development Associate, Salescode.ai — July 2024 to now.**
 
-Salescode builds ordering and field-sales software for brands like Coca-Cola. My job is making it work for each customer: I sit between the customer's business and our engineers, and I own the technical arc from the first workshop to production support.
+Salescode builds ordering and field-sales software for brands like Coca-Cola. I implement it for each customer: I sit between the customer's business and engineering, and I own the technical arc from the first workshop to production support.
+
+I did **not** build the Salescode platform, its Kafka infrastructure, or the STT / TTS / LLM engines.
 
 Rollouts across **Thailand, the Philippines and North India.** The Thailand bottler accounts for roughly **20% of Coca-Cola consumption in Thailand** — that's the bottler's share of the market, and the scale of the engagement.
 
 ---
 
-## The problem
+## Context
 
-The failure mode on an enterprise rollout is almost never "the REST call returned 500."
+Enterprise ordering, distribution and field-sales implementations. One major project was a wholesaler-to-retailer ordering platform for that Thai bottler.
 
-1. **Everyone has a different mental model.** Operations, sales, IT and the vendor each describe the same order step differently, using the same words for different things.
-2. **Master data drifts after cutover.** Product, outlet, hierarchy and pricing records stop agreeing between the customer's systems and the platform.
-3. **Integrations break weeks later, not on day one.** Event backlogs and non-idempotent consumers surface long after go-live.
-4. **SIT passes, UAT breaks.** Happy paths work; real outlet hierarchies, promo stacking and legacy SKU aliases don't.
-5. **Hypercare turns into heroics** when there are no runbooks.
+## Problem
 
----
+What had to stay consistent across systems:
 
-## What I do
+- Product and outlet masters
+- Distributor and sales hierarchies
+- Pricing and discounts
+- Stock
+- Retailer and wholesaler orders
+- Incremental changes from source systems
 
-**Discovery.** I run requirement-gathering and workshops with business, sales, operations and IT — including onsite in Thailand. The Thailand engagement is where I learned the lesson that shaped everything after: the delays were alignment problems, not API bugs. Different teams used identical field names for different concepts. Workflow first, pipes second.
+Disconnected workflows and hand-moved data are how those records drift.
 
-**Design and documentation.** I turn unclear requirements into designs both the customer and the engineers agree on — system flows, API contracts, data mappings, rollout plans. I write the BRDs and FRDs, change requests, user stories with acceptance criteria, and gap and impact analysis.
+## Role
 
-**Integrations.** I designed and implemented integrations with customers' ERP, DMS and field-sales systems over REST APIs, Kafka and SQL, including delta syncs and scheduled jobs for pricing, master data and stock.
+Discovery, mappings, integrations **on** the Salescode platform, SIT/UAT, go-live, hypercare. Customer-facing technical point of contact.
 
-**SIT, UAT, go-live, hypercare.** I own these as the customer's technical point of contact. I coordinate UAT, triage defects, run the cutover, and stay through stabilisation — tracing production failures to root cause with SQL, logs and AWS CloudWatch.
+## Architecture
 
-**Leaving it repeatable.** Runbooks and playbooks, so the next rollout isn't a rediscovery.
+```
+Customer ERP / DMS / field-sales
+        ↓
+REST · Kafka-based flows · scheduled jobs
+        ↓
+Integration and transformation
+field mapping · customer rules · delta sync · validation
+        ↓
+Salescode ordering and distribution platform
+```
 
----
+SCAI sits beside this as an application-layer voice agent on managed speech, LLM and retrieval services.
 
-## SCAI voice agent
+## Implementation
 
-**SCAI is Salescode's enterprise AI voice agent.** I worked on deploying it at the **application layer** — not on the speech or LLM engines.
+**Discovery.** Requirement-gathering and workshops with business, sales, operations and IT — including onsite in Thailand. Existing and target workflows. Implementation plans. Dependencies, field mappings, transformation rules, validation scenarios.
 
-| What I owned | |
-|---|---|
-| **Integration planning** | How SCAI connects to the customer's systems — what it reads, where its outcomes land |
-| **Expected call outcomes** | What a call is supposed to produce: qualified, escalated, handed to a human, or closed |
-| **Guardrails** | What the agent may and may not say on a live call — the boundary that makes it safe to point at real customers |
-| **Knowledge for RAG** | Section-wise chunking, so retrieval returns the right passage rather than the right document |
-| **Context management** | What the agent carries turn to turn, and what gets re-retrieved |
-| **Validation** | UAT and customer-readiness checks before voice features go live |
+**Integrations on the platform.** REST, Kafka-based flows, SQL validation and reconciliation, source-to-destination mapping, delta sync, scheduled jobs, customer-specific transformation.
 
-I worked against managed STT/TTS, LLM and retrieval services.
+**SIT, UAT, go-live, hypercare.** Postman, SQL validation, defect triage, cutover, CloudWatch and application logs, runbooks, SOPs, knowledge transfer.
 
-### Rent the infrastructure, own the application
+SIT can pass on the happy path. UAT is where hierarchy, promo stacking and legacy aliases fail.
 
-Most teams treat "voice AI" as a vendor-selection problem. It isn't. The stack splits cleanly, and only one half decides whether the agent converts or burns leads:
+## Production debugging (pattern)
 
-| Layer | Own or rent |
-|-------|-------------|
-| Telephony / SIP | **Rent** — carrier physics and regulation |
-| Speech-to-text | **Rent** — commodity, not a moat |
-| LLM inference | **Rent** the inference; **own** the application design |
-| Text-to-speech | **Rent** — quality-sensitive, not proprietary |
-| Expected outcomes, guardrails, retrieval context, escalation, CRM writeback | **Own** — this is the work |
+When a field sync fails, the trace usually looks like:
 
-The hard meetings are never "which STT API." They are: who owns the qualification fields, what happens on partial capture, when does the agent escalate, and how does a call write back to the same record the other channels use. Those are application decisions, and those are the ones I was in.
+1. Order or master sync fails in the field client.
+2. API gateway timeout or upstream rejection.
+3. Kafka consumer lag on a affected partition.
+4. SQL shows a stale foreign key against product or outlet master.
+5. Root cause: a delta sync missed or dropped a master update.
+6. Fix mapping or replay the event stream, then verify reconciliation queries.
 
-The engines themselves — telephony, speech, the foundation models — are platform-managed. My work was the layer above them, which is the layer that decides whether the thing is safe to put in front of a customer.
+This is the shape of work in hypercare — not a promise that every incident resolves in one hour.
 
----
+## SCAI — application layer
 
-## What it resolved
+Salescode's enterprise AI voice agent. I worked at the **application layer**.
 
-| Before | After |
-|--------|-------|
-| Teams describing the same workflow four different ways | One agreed set of flows, contracts and mappings signed off by business and engineering |
-| Pricing, master data and stock moved by hand between systems | Delta syncs and scheduled jobs over REST, Kafka and SQL — **manual intervention cut ~35%** |
-| Production issues handled as one-off heroics | Root-cause tracing through SQL, logs and CloudWatch, written up as runbooks |
-| Every rollout rediscovering the same ground | Playbooks and validation checklists that carried across three countries |
-| Voice features shipped on vibes | Defined call outcomes, explicit guardrails and UAT before anything reached a live customer |
+| Area | What I owned |
+| --- | --- |
+| Integration planning | What the agent reads, where outcomes land |
+| Call outcomes | Qualified, escalated, human handoff, or closed |
+| Guardrails | What may be said on a live call |
+| RAG knowledge | Section-wise chunking and retrieval context |
+| Context | What persists turn to turn |
+| Validation | UAT before voice features go live |
 
----
+I worked against managed STT/TTS, LLM and retrieval services. I did not build those engines.
 
-## How much it helped
+## Stack
 
-| | |
-|---|---|
-| Countries live | **3** — Thailand, Philippines, North India |
-| Manual intervention on integrated workflows | **Cut ~35%** |
-| Scope of the Thailand engagement | A bottler accounting for **~20% of Coca-Cola consumption in Thailand** |
-| SCAI | **Deployed** — integration, outcomes, guardrails, RAG context, UAT |
+REST · Kafka (platform bus) · SQL · Postman · CloudWatch · SCAI application layer
 
-"Live across three countries" means production rollouts reached go-live with field and back-office teams working on the platform — not that every module is identical across regions.
+## Outcomes
 
----
+Production rollouts reached go-live across three countries, with field and back-office teams working on the platform. Percentage reductions in manual intervention are **not published here** until a figure is tied to one implementation.
 
-## How I debug
+## Field surface — product browse
 
-| Domain | How I work it |
-|--------|---------------|
-| **REST** | Reproduce, compare the contract against the actual payload, check auth and context, fix the mapping or the upstream |
-| **Kafka** | Lag metrics, then consumer logs, find the non-idempotent handler, replay from a safe offset after the fix |
-| **SQL** | Row-level diff against the source, trace the last successful sync, fix the transform or schedule a catch-up |
-| **Payload mapping** | Golden-file comparison against known-good samples, then regression in SIT |
-| **CloudWatch / logs** | Time-boxed query around the incident, correlate API → bus → DB timestamps, find the bottleneck layer |
+![Coke Buddy product browse — Thailand bottler rollout](/shots/salescode-coke-buddy-products-web.png)
 
-**A typical incident:** a field rep can't sync an order. The symptom is an API timeout. Underneath it is consumer lag, and underneath that a stale master record from a dropped delta update. The fix is patch, replay, and make the failure mode impossible to recur silently. The bug was a design decision from months earlier, not a one-line mistake — that's usually how it goes.
+*Coke Buddy — delivery windows, search, and pack-type / pack-size entry. Gaussian blur on outlet id, store name, address line, status bar and system nav only.*
 
----
-
-## The field surface
-
-![Coke Buddy field-sales screen from Thailand rollout](/shots/salescode-coke-buddy.png)
-
-*Coke Buddy — the field-rep surface in a bottler retail-execution rollout.*
-
----
-
-## How I work
-
-I use Claude Code and ChatGPT across requirements analysis, data-mapping drafts, SQL validation, test scenarios and documentation. They make the work faster; the decisions and the customer outcome stay mine, and I review every output.
+Same capture at full resolution: `/shots/salescode-coke-buddy-products.png` (redacted).

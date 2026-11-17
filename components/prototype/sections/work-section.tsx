@@ -1,9 +1,19 @@
 "use client";
 
-import { memo } from "react";
+import { memo, useState } from "react";
 import Reveal from "@/components/prototype/reveal";
+import FlowRail from "@/components/prototype/flow-rail";
+import SectionHead from "@/components/prototype/section-head";
 import SwitchingPanel from "@/components/prototype/switching-panel";
-import { CASES } from "@/lib/prototype-data";
+import {
+  CASES,
+  INCIDENT_TRACE,
+  INTEGRATION_FLOW,
+  MANDI_COMMERCE_FLOW,
+  PIKU_STACK_FLOW,
+  RELIVE_LIFECYCLE_FLOW,
+  VOICE_LAYER_FLOW,
+} from "@/lib/prototype-data";
 
 type WorkSectionProps = {
   revealed: boolean;
@@ -16,250 +26,274 @@ function WorkSection({ revealed, activeCase, pickCase }: WorkSectionProps) {
     <section className="pt-section" id="work">
       <div className="pt-section-num">02</div>
       <Reveal id="work" visible={revealed} sectionId="work">
-        <div className="pt-wrap pt-center">
-          <span className="pt-kicker">Selected work</span>
-          <h2 className="pt-h2" style={{ maxWidth: "20ch" }}>
-            What that looks like in practice.
-          </h2>
-          <p className="pt-body" style={{ margin: "14px auto 0" }}>
-            Case studies with Docs / GitHub / Live — click a title to switch.{" "}
-            <a href="/work" style={{ color: "var(--accent)" }}>
-              Full system map →
-            </a>
-          </p>
-
-          <div data-work-tabs style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: 8, marginTop: 30 }}>
-            {CASES.map((c, i) => (
-              <button
-                key={c.id}
-                type="button"
-                className={`pt-tab pt-hover-lift ${i === activeCase ? "pt-tab--active" : ""}`}
-                style={{ padding: "11px 18px", display: "inline-flex", alignItems: "center", gap: 10 }}
-                onClick={() => pickCase(i)}
-              >
-                <span
-                  style={{
-                    fontFamily: "var(--font-mono)",
-                    fontSize: 11,
-                    color: i === activeCase ? "var(--accent)" : "var(--ink3)",
-                  }}
-                >
-                  {c.numLabel}
-                </span>
-                <span style={{ fontSize: "13.5px", color: i === activeCase ? "var(--ink)" : "var(--ink2)" }}>
-                  {c.title}
-                </span>
-              </button>
-            ))}
-          </div>
+        <div className="pt-wrap">
+          <SectionHead
+            kicker="Selected work"
+            title="Salescode first. The rest by name."
+            lede="Flagship is Coca-Cola on Salescode. ReliveCure and Mandi Bhai were transferred. PIKU is in progress. Screens are only files already in this repo."
+          />
 
           <SwitchingPanel
             index={activeCase}
             total={CASES.length}
-            style={{ marginTop: 34, textAlign: "left" }}
-            render={(caseIndex) => {
-              const cd = CASES[caseIndex];
-              return (
-                <div
-                  className="pt-switch-stagger"
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "repeat(auto-fit,minmax(380px,1fr))",
-                    gap: 40,
-                    alignItems: "start",
-                  }}
-                >
-                  <div>
-                    <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--accent)" }}>
-                      {cd.kicker}
-                    </div>
-                    <h3 style={{ fontFamily: "var(--font-display)", fontWeight: 700, fontSize: "clamp(22px,2.6vw,30px)", margin: "10px 0 0" }}>
-                      {cd.docHref ? (
-                        <a href={cd.docHref} style={{ color: "inherit", textDecoration: "none" }}>
-                          {cd.title}
-                        </a>
-                      ) : (
-                        cd.title
-                      )}
-                    </h3>
-                    <p style={{ fontSize: "15.5px", color: "var(--ink2)", lineHeight: 1.62, marginTop: 14, maxWidth: "56ch" }}>
-                      {cd.context}
-                    </p>
-                    <div style={{ display: "flex", flexDirection: "column", marginTop: 20 }}>
-                      {cd.did.map((text, i) => (
-                        <div
-                          key={text}
-                          style={{
-                            display: "grid",
-                            gridTemplateColumns: "26px 1fr",
-                            gap: 14,
-                            padding: "12px 0",
-                            borderBottom: "1px solid var(--line)",
-                          }}
-                        >
-                          <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--accent)" }}>
-                            {String(i + 1).padStart(2, "0")}
-                          </div>
-                          <div style={{ fontSize: "14.5px", color: "var(--ink2)", lineHeight: 1.55 }}>{text}</div>
-                        </div>
-                      ))}
-                    </div>
-                    <div className="pt-outcome-box">
-                      <div style={{ fontFamily: "var(--font-mono)", fontSize: "10.5px", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--accent)", marginBottom: 6 }}>
-                        Outcome
-                      </div>
-                      <div style={{ fontSize: "14.5px", color: "var(--ink)", lineHeight: 1.5 }}>{cd.outcome}</div>
-                    </div>
-                    <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 16 }}>
-                      {cd.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="pt-hover-lift"
-                          style={{
-                            fontFamily: "var(--font-mono)",
-                            fontSize: 11,
-                            color: "var(--ink2)",
-                            border: "1px solid var(--line2)",
-                            padding: "5px 10px",
-                            borderRadius: 16,
-                            display: "inline-block",
-                          }}
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                    {(cd.docHref || cd.githubHref || cd.liveHref) && (
-                      <div style={{ display: "flex", flexWrap: "wrap", gap: 10, marginTop: 20 }}>
-                        {cd.docHref ? (
-                          <a
-                            href={cd.docHref}
-                            className="pt-hover-lift"
-                            style={{
-                              fontFamily: "var(--font-mono)",
-                              fontSize: 12,
-                              color: "var(--bg)",
-                              background: "var(--accent)",
-                              padding: "9px 14px",
-                              borderRadius: 8,
-                              textDecoration: "none",
-                            }}
-                          >
-                            Docs
-                          </a>
-                        ) : null}
-                        {cd.githubHref ? (
-                          <a
-                            href={cd.githubHref}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="pt-hover-lift"
-                            style={{
-                              fontFamily: "var(--font-mono)",
-                              fontSize: 12,
-                              color: "var(--ink2)",
-                              border: "1px solid var(--line2)",
-                              padding: "9px 14px",
-                              borderRadius: 8,
-                              textDecoration: "none",
-                            }}
-                          >
-                            GitHub
-                          </a>
-                        ) : null}
-                        {cd.liveHref ? (
-                          <a
-                            href={cd.liveHref}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="pt-hover-lift"
-                            style={{
-                              fontFamily: "var(--font-mono)",
-                              fontSize: 12,
-                              color: "var(--ink2)",
-                              border: "1px solid var(--line2)",
-                              padding: "9px 14px",
-                              borderRadius: 8,
-                              textDecoration: "none",
-                            }}
-                          >
-                            Live
-                          </a>
-                        ) : null}
-                        {cd.docHref ? (
-                          <a
-                            href={`/docs/${cd.id}.md`}
-                            download
-                            className="pt-hover-lift"
-                            style={{
-                              fontFamily: "var(--font-mono)",
-                              fontSize: 12,
-                              color: "var(--ink2)",
-                              border: "1px solid var(--line2)",
-                              padding: "9px 14px",
-                              borderRadius: 8,
-                              textDecoration: "none",
-                            }}
-                          >
-                            Download
-                          </a>
-                        ) : null}
-                      </div>
-                    )}
-                  </div>
-
-                  <div>
-                    {cd.shot ? (
-                      <div style={{ border: "1px solid var(--line2)", borderRadius: 16, overflow: "hidden", background: "var(--bg2)" }}>
-                        <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "9px 12px", borderBottom: "1px solid var(--line)" }}>
-                          {[0, 1, 2].map((n) => (
-                            <span key={n} style={{ width: 7, height: 7, borderRadius: "50%", background: "var(--line2)", display: "inline-block" }} />
-                          ))}
-                          <span style={{ marginLeft: 6, fontFamily: "var(--font-mono)", fontSize: "10.5px", color: "var(--ink3)" }}>
-                            {cd.shotLabel}
-                          </span>
-                        </div>
-                        <div
-                          style={{
-                            backgroundImage: `url(${cd.shot})`,
-                            backgroundSize: "contain",
-                            backgroundRepeat: "no-repeat",
-                            backgroundColor: "var(--bg3)",
-                            backgroundPosition: "center",
-                            width: "100%",
-                            aspectRatio: "16/10",
-                          }}
-                        />
-                      </div>
-                    ) : (
-                      <div
-                        style={{
-                          border: "1px dashed var(--line2)",
-                          borderRadius: 16,
-                          background: "var(--bg2)",
-                          padding: "26px 22px",
-                          display: "grid",
-                          gap: 10,
-                          alignContent: "center",
-                          minHeight: 180,
-                        }}
-                      >
-                        <p style={{ margin: 0, fontFamily: "var(--font-mono)", fontSize: 10, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--ink3)" }}>
-                          {cd.shotLabel}
-                        </p>
-                        <p style={{ margin: 0, fontSize: 14, color: "var(--ink2)", lineHeight: 1.6 }}>
-                          Nothing to screenshot — this one lives as a design, not a product.
-                        </p>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              );
-            }}
+            className="pt-work-panel"
+            render={(caseIndex) => <CasePanel index={caseIndex} />}
           />
+
+          <div data-work-tabs className="pt-work-picks" role="tablist" aria-label="Switch case study">
+            {CASES.map((c, i) => (
+              <button
+                key={c.id}
+                type="button"
+                role="tab"
+                aria-selected={i === activeCase}
+                className={`pt-work-pick${c.flagship ? " pt-work-pick--flagship" : " pt-work-pick--sibling"}${
+                  i === activeCase ? " pt-work-pick--active" : ""
+                }`}
+                onClick={() => pickCase(i)}
+              >
+                <span className="pt-work-pick__icon" aria-hidden>
+                  {caseIcon(c.id)}
+                </span>
+                <span className="pt-work-pick__text">
+                  <span className="pt-work-pick__kicker">
+                    {c.numLabel} · {c.kicker.replace(/^Flagship ·\s*/i, "").split("·")[0]?.trim() ?? c.kicker}
+                  </span>
+                  <span className="pt-work-pick__title">{c.title}</span>
+                  <span className="pt-work-pick__sub">{c.status}</span>
+                </span>
+                <span className="pt-work-pick__chev" aria-hidden>
+                  →
+                </span>
+              </button>
+            ))}
+          </div>
         </div>
       </Reveal>
     </section>
+  );
+}
+
+function caseIcon(id: string) {
+  switch (id) {
+    case "salescode":
+      return "◆";
+    case "relivecure":
+      return "▣";
+    case "piku":
+      return "≡";
+    case "mandibhai":
+      return "⌂";
+    default:
+      return "·";
+  }
+}
+
+function diagramFor(caseId: string) {
+  const c = CASES.find((x) => x.id === caseId);
+  if (!c?.diagram) return null;
+  switch (c.diagram) {
+    case "integration":
+      return INTEGRATION_FLOW.map((s) => ({ label: s.label, sub: s.sub }));
+    case "relive":
+      return RELIVE_LIFECYCLE_FLOW;
+    case "commerce":
+      return MANDI_COMMERCE_FLOW;
+    case "piku":
+      return PIKU_STACK_FLOW;
+    default:
+      return null;
+  }
+}
+
+function CasePanel({ index }: { index: number }) {
+  const cd = CASES[index];
+  const [shot, setShot] = useState(0);
+  const current = cd.shots[shot] ?? null;
+  const flow = diagramFor(cd.id);
+  const rootClass = `pt-switch-stagger pt-work-stage pt-case${cd.flagship ? " pt-work-stage--hero pt-case--flagship" : " pt-work-stage--detail"}`;
+
+  return (
+    <div className={rootClass}>
+      <div className="pt-case-copy">
+        {cd.transferred ? (
+          <p className="pt-transfer-notice" role="note">
+            Transferred to their team. I do not operate this product now. No production URL on this page.
+          </p>
+        ) : null}
+        <div className="pt-case-kicker">
+          {cd.kicker}
+          <em>{cd.status}</em>
+        </div>
+        <h3 className="pt-case-title">
+          {cd.docHref ? (
+            <a href={cd.docHref} className="pt-case-title-link">
+              {cd.title}
+            </a>
+          ) : (
+            cd.title
+          )}
+        </h3>
+
+        <CaseBlock label="Context" text={cd.context} required />
+        <CaseBlock label="Problem" text={cd.problem} required />
+        <CaseBlock label="Role" text={cd.role} required />
+        <CaseBlock label="Architecture" text={cd.architecture} required />
+
+        {flow ? (
+          <div className="pt-case-block">
+            <div className="pt-lab-kicker">Flow</div>
+            <FlowRail steps={flow} />
+          </div>
+        ) : null}
+
+        {cd.showScaiLayer ? <ScaiLayer /> : null}
+
+        {cd.diagram === "integration" ? (
+          <div className="pt-case-block">
+            <div className="pt-lab-kicker">Incident trace (example)</div>
+            <p className="pt-case-muted">
+              How a field sync failure is usually debugged on a rollout — illustrative pattern, not a customer ticket ID.
+            </p>
+            <FlowRail
+              steps={INCIDENT_TRACE.map((s) => ({
+                label: s.label,
+                sub: s.sub,
+                accent: s.kind === "root" || s.kind === "fixed",
+              }))}
+            />
+          </div>
+        ) : null}
+
+        {cd.implementation.length ? (
+          <div className="pt-case-block">
+            <div className="pt-lab-kicker">Implementation</div>
+            <ol className="pt-case-list">
+              {cd.implementation.map((text) => (
+                <li key={text}>{text}</li>
+              ))}
+            </ol>
+          </div>
+        ) : null}
+
+        {cd.stack.length ? (
+          <div className="pt-case-block">
+            <div className="pt-lab-kicker">Stack</div>
+            <div className="pt-tag-row">
+              {cd.stack.map((tag) => (
+                <span key={tag} className="pt-chip">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          </div>
+        ) : null}
+
+        <div className="pt-outcome-box">
+          <div className="pt-lab-kicker">Outcomes</div>
+          <p className="pt-case-outcome">{cd.outcome}</p>
+        </div>
+
+        {(cd.docHref || cd.githubHref) && (
+          <div className="pt-lab-actions pt-case-actions">
+            {cd.docHref ? (
+              <a href={cd.docHref} className="pt-cta pt-cta--primary">
+                Full case study
+              </a>
+            ) : null}
+            {cd.githubHref ? (
+              <a href={cd.githubHref} target="_blank" rel="noreferrer" className="pt-cta">
+                GitHub
+              </a>
+            ) : null}
+          </div>
+        )}
+      </div>
+
+      <CaseShotColumn cd={cd} current={current} shot={shot} setShot={setShot} />
+    </div>
+  );
+}
+
+function CaseShotColumn({
+  cd,
+  current,
+  shot,
+  setShot,
+}: {
+  cd: (typeof CASES)[number];
+  current: (typeof CASES)[number]["shots"][number] | null;
+  shot: number;
+  setShot: (n: number) => void;
+}) {
+  return (
+    <div className="pt-case-visual">
+      {current ? (
+        <div className="pt-shot-frame">
+          <div className="pt-shot-chrome">
+            {[0, 1, 2].map((n) => (
+              <span key={n} className="pt-shot-dot" />
+            ))}
+            <span>{current.label}</span>
+          </div>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={current.src} alt={current.label} className="pt-shot-img" />
+          {cd.shots.length > 1 ? (
+            <div className="pt-shot-thumbs">
+              {cd.shots.map((s, i) => (
+                <button
+                  key={s.src}
+                  type="button"
+                  className={i === shot ? "is-on" : ""}
+                  onClick={() => setShot(i)}
+                  aria-label={s.label}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={s.src} alt="" />
+                </button>
+              ))}
+            </div>
+          ) : null}
+        </div>
+      ) : (
+        <div className="pt-shot-empty">
+          <p className="pt-lab-kicker">{cd.shotLabel}</p>
+          <p>No product screens — direction and architecture only until there is a shipped surface worth showing.</p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ScaiLayer() {
+  return (
+    <div className="pt-case-block pt-scai-block">
+      <div className="pt-lab-kicker">SCAI — application layer</div>
+      <p className="pt-case-muted">
+        Managed telephony, STT, TTS and LLM services on rent. Conversation design, RAG chunking, guardrails, qualification and
+        writeback on own.
+      </p>
+      <div className="pt-scai-grid">
+        {VOICE_LAYER_FLOW.map((step) => (
+          <div key={step.label} className={`pt-scai-cell pt-scai-cell--${step.kind}`}>
+            <span className="pt-scai-kind">{step.kind}</span>
+            <strong>{step.label}</strong>
+            <span>{step.sub}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function CaseBlock({ label, text, required }: { label: string; text: string; required?: boolean }) {
+  if (!text && required) return null;
+  if (!text) return null;
+  return (
+    <div className="pt-case-block">
+      <div className="pt-lab-kicker">{label}</div>
+      <p>{text}</p>
+    </div>
   );
 }
 

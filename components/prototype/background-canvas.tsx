@@ -53,16 +53,15 @@ type MotifData = {
 type Label = { text: string; xr: number; y: number; color: string; drift: number };
 
 const NAV_CLEAR_PX = 78;
-const STARS_COUNT = 55;
+const STARS_COUNT = 18;
 const DOM_REFRESH_MS = 5000;
 const HERO_RECT_MS = 500;
 const HOVER_RECT_MS = 220;
-/** Per-frame px at ~60fps */
-const MOTIF_DRIFT = [0.32, 0.35, 0.33, 0.37];
-const LABEL_DRIFT = [0.26, 0.24, 0.28];
-/** ~2× original HTML bounce — snappy but not frantic */
-const BALL_VX = [0.3, 0.36, 0.42];
-const BALL_VY = [0.2, 0.23, 0.26];
+/** Per-frame px at ~60fps — calmed */
+const MOTIF_DRIFT = [0.14, 0.16, 0.15, 0.17];
+const LABEL_DRIFT = [0.1, 0.09, 0.11];
+const BALL_VX = [0.16, 0.2, 0.22];
+const BALL_VY = [0.1, 0.12, 0.14];
 const THROW_SCALE = 0.55;
 const BURST_SPEED_MUL = 2.1;
 const BOOST_BOUNCES = 2;
@@ -80,24 +79,9 @@ const PERSONA_KIND: Record<PersonaKey, MotifKind> = {
   operator: "pulse",
 };
 
-const LABEL_SET = [
-  "87%",
-  "UAT ✓",
-  "3.4×",
-  "SLA 99.9%",
-  "go-live",
-  "42ms",
-  "cross-functional",
-  "99.2%",
-  "P1 → P0",
-  "1.2M",
-  "root cause",
-  "+18%",
-  "3 countries",
-  "128k",
-];
+const LABEL_SET = ["SIT", "UAT", "delta", "map", "go-live", "hypercare", "RAG", "writeback"];
 
-const NEON_LABELS = ["#3df4ff", "#ff3fd8", "#e8ff5c", "#7ba0ff", "#2cd6b8", "#c08bff"];
+const NEON_LABELS = ["#8b9cff", "#9b82ff", "#7b8fd4", "#a78bfa", "#6d7ab8", "#c4b5fd"];
 
 function genMotifData(kind: MotifKind): MotifData {
   if (kind === "bars") {
@@ -131,15 +115,14 @@ function drawMotif(ctx: CanvasRenderingContext2D, m: Motif, dataAlpha: number, t
     const phases = m.data.barPhase ?? bars.map((_, i) => i * 0.9);
     const bw = box.w / bars.length;
     const baseline = box.y + box.h;
-    const disco = m.pulse > 0.06;
-    const colorShift = Math.floor(t / 140);
+      const disco = m.pulse > 0.12;
 
-    for (let i = 0; i < bars.length; i++) {
-      const v = bars[i];
-      const wobble = disco ? 0.14 * Math.sin(t / 95 + phases[i]) : 0;
-      const vAnim = Math.min(1, Math.max(0.1, v + wobble));
-      const bh = vAnim * box.h;
-      const barColor = disco ? NEON_LABELS[(i + colorShift) % NEON_LABELS.length] : m.color;
+      for (let i = 0; i < bars.length; i++) {
+        const v = bars[i];
+        const wobble = disco ? 0.06 * Math.sin(t / 160 + phases[i]) : 0;
+        const vAnim = Math.min(1, Math.max(0.1, v + wobble));
+        const bh = vAnim * box.h;
+        const barColor = m.color;
       ctx.fillStyle = barColor;
       ctx.globalAlpha = dataAlpha * (0.55 + vAnim * 0.45) + (disco ? m.pulse * 0.62 : extra);
       ctx.fillRect(box.x + i * bw + 1.5, baseline - bh, bw - 3, bh);
@@ -503,14 +486,17 @@ export default function BackgroundCanvas({ theme }: BackgroundCanvasProps) {
     };
     window.addEventListener("mousemove", onMouseMove, { passive: true });
 
+    const isMobile = w < 768;
+    const light0 = themeRef.current === "light";
+    const starBudget = isReduced || light0 ? 0 : isMobile ? 8 : STARS_COUNT;
     const stars: { xr: number; yr: number; r: number; phase: number; speed: number }[] = [];
-    for (let i = 0; i < STARS_COUNT; i++) {
+    for (let i = 0; i < starBudget; i++) {
       stars.push({
         xr: Math.random(),
         yr: Math.random() * 0.86,
-        r: Math.random() * 1.3 + 0.4,
+        r: Math.random() * 1.1 + 0.3,
         phase: Math.random() * Math.PI * 2,
-        speed: 0.6 + Math.random() * 1.2,
+        speed: 0.4 + Math.random() * 0.7,
       });
     }
 
@@ -529,7 +515,6 @@ export default function BackgroundCanvas({ theme }: BackgroundCanvasProps) {
       r: 7 + i * 1.8,
     }));
 
-    const light0 = themeRef.current === "light";
     const motifSeeds = [
       { xr: 0.06, wr: 0.16, hPx: 70, startKind: "bars" as const },
       { xr: 0.56, wr: 0.16, hPx: 70, startKind: "bars" as const },
@@ -540,14 +525,14 @@ export default function BackgroundCanvas({ theme }: BackgroundCanvasProps) {
       ...m,
       y: 90 + i * 190 + Math.random() * 90,
       kind: m.startKind,
-      color: light0 ? "#6d5fd6" : "#9fb0ff",
+      color: light0 ? "#8b6ce8" : "#9fb0ff",
       drift: MOTIF_DRIFT[i] ?? 0.65,
       shapedBy: null,
       pulse: 0,
       data: genMotifData(m.startKind),
     }));
 
-    const labels: Label[] = LABEL_SET.map((text, i) => ({
+    const labels: Label[] = (isMobile || isReduced || light0 ? [] : LABEL_SET).map((text, i) => ({
       text,
       xr: (i % 4) * 0.24 + 0.05,
       y: 110 + i * 78 + Math.random() * 50,
@@ -683,7 +668,22 @@ export default function BackgroundCanvas({ theme }: BackgroundCanvasProps) {
     let raf = 0;
     const loop = (t: number) => {
       raf = requestAnimationFrame(loop);
-      if (paused || isReduced || w < 2 || h < 2) return;
+      if (paused || w < 2 || h < 2) return;
+      if (isReduced) {
+        const light = themeRef.current === "light";
+        const sky = ctx.createLinearGradient(0, 0, 0, h);
+        if (light) {
+          sky.addColorStop(0, "#F4F3EF");
+          sky.addColorStop(1, "#EEEDE8");
+        } else {
+          sky.addColorStop(0, "#060712");
+          sky.addColorStop(1, "#0d1224");
+        }
+        ctx.fillStyle = sky;
+        ctx.fillRect(0, 0, w, h);
+        for (const b of balls) drawBall(ctx, b, light, false);
+        return;
+      }
 
       const light = themeRef.current === "light";
       const dragIndex = dragRef.current?.index ?? null;
@@ -692,8 +692,8 @@ export default function BackgroundCanvas({ theme }: BackgroundCanvasProps) {
 
       const sky = ctx.createLinearGradient(0, 0, 0, h);
       if (light) {
-        sky.addColorStop(0, "#eef1f8");
-        sky.addColorStop(1, "#e4e8f2");
+        sky.addColorStop(0, "#f3efe6");
+        sky.addColorStop(1, "#ebe6dc");
       } else {
         sky.addColorStop(0, "#060712");
         sky.addColorStop(1, "#0d1224");
@@ -711,7 +711,7 @@ export default function BackgroundCanvas({ theme }: BackgroundCanvasProps) {
       }
       ctx.globalAlpha = 1;
 
-      const dataAlpha = light ? 0.4 : 0.55;
+      const dataAlpha = light ? 0.16 : 0.55;
 
       if (t - lastDomRefresh > DOM_REFRESH_MS) {
         lastDomRefresh = t;
@@ -753,7 +753,7 @@ export default function BackgroundCanvas({ theme }: BackgroundCanvasProps) {
         if (m.y - m.hPx > h) {
           m.y = NAV_CLEAR_PX + Math.random() * 40;
           m.kind = m.startKind;
-          m.color = light ? "#6d5fd6" : "#9fb0ff";
+          m.color = light ? "#8b6ce8" : "#9fb0ff";
           m.data = genMotifData(m.startKind);
           m.shapedBy = null;
           m.touch = {};

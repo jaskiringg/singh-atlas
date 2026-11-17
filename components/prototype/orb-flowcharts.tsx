@@ -127,9 +127,9 @@ function IntegrationFlow() {
 
 function ProjectsFlow() {
   const items = [
-    ["PIKU", "building · local AI OS"],
-    ["Relive Cure", "live · clinic CRM"],
-    ["MandiBhai", "wholesale commerce"],
+    ["PIKU", "in progress"],
+    ["ReliveCure", "transferred"],
+    ["Mandi Bhai", "transferred"],
   ];
   return (
     <svg viewBox="0 0 260 90" width="100%" style={{ maxWidth: 260, display: "block" }}>

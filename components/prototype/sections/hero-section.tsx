@@ -9,12 +9,10 @@ type HeroSectionProps = {
   personaTick: number;
 };
 
-const ROTATION_RATES = [0.5, 0.6, 0.7];
-
 function HeroSection({ revealed, personaTick }: HeroSectionProps) {
   return (
-    <header className="pt-hero">
-      <Reveal id="hero" visible={revealed} sectionId="hero">
+    <header className="pt-hero" id="overview">
+      <Reveal id="overview" visible={revealed} sectionId="overview">
         <div style={{ position: "relative" }}>
           <div className="pt-hero-blob" />
           <div className="pt-wrap pt-center">
@@ -31,17 +29,8 @@ function HeroSection({ revealed, personaTick }: HeroSectionProps) {
                 gap: 10,
               }}
             >
-              <span
-                style={{
-                  width: 7,
-                  height: 7,
-                  borderRadius: "50%",
-                  background: "var(--neon1)",
-                  boxShadow:
-                    "0 0 8px color-mix(in srgb, var(--neon1) 85%, transparent), 0 0 16px color-mix(in srgb, var(--neon1) 40%, transparent)",
-                }}
-              />
-              Jaskirat Singh · Consultant, Systems Builder &amp; Forward-Deployed Engineer — Gurugram, India
+              <span className="pt-live-dot" />
+              Jaskirat Singh · Consultant, Systems Builder &amp; Forward-Deployed Engineer — Gurugram
             </span>
             <h1 className="pt-hero-h1" data-hero-block>
               I don&apos;t ask how to build it.
@@ -58,10 +47,19 @@ function HeroSection({ revealed, personaTick }: HeroSectionProps) {
                 margin: "22px auto 0",
               }}
             >
-              Companies bring me in after they&apos;ve already bought the platform, when it&apos;s time to make it
-              actually work — the workshops, the integration, the go-live, and the fix at 2am when it breaks.
-              I&apos;ve done all four for the same account.
+              I sit between the customer&apos;s operations and the platform — mapping how data should move, how it should
+              be validated, and how the business should run on it. Then I stay through SIT, UAT and go-live until it
+              does.
             </p>
+
+            <div data-hero-block className="pt-hero-ctas">
+              <a href="#work" className="pt-cta pt-cta--primary">
+                Explore selected work
+              </a>
+              <a href="#capabilities" className="pt-cta">
+                Explore capabilities
+              </a>
+            </div>
 
             <div
               data-hero-block
@@ -112,19 +110,6 @@ function HeroSection({ revealed, personaTick }: HeroSectionProps) {
               <div className="pt-recruiter-card" data-hero-block>
                 <div
                   style={{
-                    position: "absolute",
-                    top: 14,
-                    right: 14,
-                    width: 7,
-                    height: 7,
-                    borderRadius: "50%",
-                    background: "var(--neon2)",
-                    boxShadow:
-                      "0 0 0 3px color-mix(in srgb, var(--neon2) 20%, transparent), 0 0 6px color-mix(in srgb, var(--neon2) 60%, transparent)",
-                  }}
-                />
-                <div
-                  style={{
                     fontFamily: "var(--font-mono)",
                     fontSize: 10,
                     letterSpacing: "0.14em",
@@ -143,7 +128,7 @@ function HeroSection({ revealed, personaTick }: HeroSectionProps) {
                     lineHeight: 1.4,
                   }}
                 >
-                  Consultant &amp; Systems Builder — discovery, implementation, integration, AI-assisted delivery
+                  Salescode.ai — Coca-Cola implementations, then the application layer of SCAI
                 </div>
                 <div style={{ height: 1, background: "var(--line)", margin: "14px 0" }} />
                 <ul style={{ listStyle: "none", margin: 0, padding: 0, display: "flex", flexDirection: "column", gap: 8 }}>

@@ -1,56 +1,62 @@
 ---
-title: PIKU — Local-First AI Workspace Concept
+title: PIKU
 slug: piku
-kicker: Concept · passion project
+kicker: In progress · local-first AI workspace
 github: https://github.com/jaskiringg/piku
 live: null
 download: /docs/piku.md
 ---
 
-# PIKU — Local-First AI Workspace
+# PIKU
 
-**Status: concept and passion project.** PIKU is not shipped, not live, and not in production. It's an idea I keep coming back to, and a design I've prototyped far enough to learn where it breaks.
+**Status: in progress / concept.** Not shipped. Not a production system.
 
-There's no product to show yet — a thesis, an architecture, and the parts I've built far enough to learn from.
-
----
-
-## The thesis
-
-**The model is replaceable; the understanding should not be.**
-
-Every assistant I use optimises for how good a single answer sounds. None of them optimise for knowing me in six months. Each session starts cold. Context gets re-explained. The reasoning behind a decision I made in March lives in a chat log I'll never find again.
-
-That's backwards. The model is the part that will be obsolete in a year. The accumulated understanding — what I'm working on, who I work with, what I already decided and why — is the part that should compound. PIKU is what it looks like if you build for that instead.
+A local-first personal AI workspace: persistent memory, retrieval, context assembly, agent workflows. The model is replaceable; the understanding should not be.
 
 ---
 
-## What I'm designing
+## Context
 
-Not a chat window with memory bolted on. A workspace where the memory *is* the product and inference is a swappable engine.
+Cloud assistants forget between sessions. Notes, tasks and reference material sit in different apps. PIKU is the workspace I am building so context, memory and tools stay on the machine unless I choose otherwise.
 
-| Idea | Why it matters |
-|------|----------------|
-| **A world model, not a transcript** | Structured understanding of projects, people and decisions — queryable, not a pile of past messages |
-| **Local-first by default** | The understanding lives on your machine. Capability shouldn't cost you custody of your own context. |
-| **Ambient, not a destination** | Invoked in a keystroke from wherever you are, instead of a tab you go and visit |
-| **A swappable brain** | Local model for most things, a bigger one when the question earns it — and a switch that turns the second one off entirely |
-| **Observation with consent** | It learns from what you actually do, and nothing enters the model without you agreeing to it |
+## Problem
 
----
+- Assistants drop thread state when a session ends.
+- Retrieval without memory does not behave like a working set of knowledge.
+- Cloud-only tools trade away custody for convenience.
 
-## Where it stands
+## Role
 
-| | |
-|---|---|
-| **Prototyped** | Persistent memory and retrieval, a knowledge graph over it, the context pipeline that assembles a turn, local inference and embeddings, and connectors that pull in real work signals |
-| **Designed only** | The observation loop's consent surface, document ingestion, personality-as-data, relationship history |
-| **Decided and written up** | Why local-first, why a graph rather than flat recall, why embeddings get pinned, and when a cloud model is allowed in at all |
+Product designer and developer — personal project. No customer deployment, no production SLA.
 
-What the prototype taught me: retrieval quality collapses if you let weak extractions into the graph, so anything uncertain has to stay quarantined until it earns its place. That constraint shaped the whole design.
+## Architecture (direction, not a verified deployment)
 
----
+```
+User interface — React · TypeScript · Tauri
+        ↓
+Application and orchestration — Rust, tools, agent workflows
+        ↓
+Memory · Retrieval · World model (design) · Agents (design)
+        ↓
+Local model runtime — Ollama · local LLMs
+```
 
-## The principle underneath it
+This drawing is a direction. It is not a claim that the world model, the memory system, or autonomous agents are production-ready.
 
-Decide what compounds, make that the durable part, and treat everything else — including the model — as replaceable. That's how I approach systems generally; PIKU is the clearest version of it.
+## Designed capabilities
+
+1. **Persistent memory** across sessions.
+2. **RAG** over local knowledge bases.
+3. **Context assembly** for the task at hand, not a single chat window.
+4. **Agent workflows** beyond Q&A — tools, steps, checkpoints.
+5. **Local-first execution** with a swappable model runtime.
+
+Present these as current design and build areas, not shipped features.
+
+## Stack (documented)
+
+Tauri · Rust · React · TypeScript · Ollama and local models
+
+## Outcomes
+
+In progress. The portfolio links the GitHub repo for architecture direction; there are no product screenshots because nothing is released yet.
