@@ -422,7 +422,10 @@ export const BUILDS = [
     name: "Relive Cure",
     status: "Freelance · handed over",
     body: "ReliveCure. Transferred to their team. I do not operate it now.",
-    shots: [{ label: "Lead dashboard", src: "/shots/relive-analytics.png" }],
+    shots: [
+      { label: "Pulse (redacted)", src: "/shots/relive-pulse-web.png" },
+      { label: "Analytics (redacted)", src: "/shots/relive-analytics.png" },
+    ],
     docHref: "/work/relivecure",
     githubHref: "https://github.com/jaskiringg/relive-cure",
   },
