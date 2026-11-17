@@ -487,7 +487,8 @@ export default function BackgroundCanvas({ theme }: BackgroundCanvasProps) {
     window.addEventListener("mousemove", onMouseMove, { passive: true });
 
     const isMobile = w < 768;
-    const starBudget = isReduced ? 0 : isMobile ? 8 : STARS_COUNT;
+    const light0 = themeRef.current === "light";
+    const starBudget = isReduced || light0 ? 0 : isMobile ? 8 : STARS_COUNT;
     const stars: { xr: number; yr: number; r: number; phase: number; speed: number }[] = [];
     for (let i = 0; i < starBudget; i++) {
       stars.push({
@@ -514,7 +515,6 @@ export default function BackgroundCanvas({ theme }: BackgroundCanvasProps) {
       r: 7 + i * 1.8,
     }));
 
-    const light0 = themeRef.current === "light";
     const motifSeeds = [
       { xr: 0.06, wr: 0.16, hPx: 70, startKind: "bars" as const },
       { xr: 0.56, wr: 0.16, hPx: 70, startKind: "bars" as const },
@@ -525,14 +525,14 @@ export default function BackgroundCanvas({ theme }: BackgroundCanvasProps) {
       ...m,
       y: 90 + i * 190 + Math.random() * 90,
       kind: m.startKind,
-      color: light0 ? "#6d5fd6" : "#9fb0ff",
+      color: light0 ? "#8b6ce8" : "#9fb0ff",
       drift: MOTIF_DRIFT[i] ?? 0.65,
       shapedBy: null,
       pulse: 0,
       data: genMotifData(m.startKind),
     }));
 
-    const labels: Label[] = (isMobile || isReduced ? [] : LABEL_SET).map((text, i) => ({
+    const labels: Label[] = (isMobile || isReduced || light0 ? [] : LABEL_SET).map((text, i) => ({
       text,
       xr: (i % 4) * 0.24 + 0.05,
       y: 110 + i * 78 + Math.random() * 50,
@@ -673,8 +673,8 @@ export default function BackgroundCanvas({ theme }: BackgroundCanvasProps) {
         const light = themeRef.current === "light";
         const sky = ctx.createLinearGradient(0, 0, 0, h);
         if (light) {
-          sky.addColorStop(0, "#eef1f8");
-          sky.addColorStop(1, "#e4e8f2");
+          sky.addColorStop(0, "#f3efe6");
+          sky.addColorStop(1, "#ebe6dc");
         } else {
           sky.addColorStop(0, "#060712");
           sky.addColorStop(1, "#0d1224");
@@ -692,8 +692,8 @@ export default function BackgroundCanvas({ theme }: BackgroundCanvasProps) {
 
       const sky = ctx.createLinearGradient(0, 0, 0, h);
       if (light) {
-        sky.addColorStop(0, "#eef1f8");
-        sky.addColorStop(1, "#e4e8f2");
+        sky.addColorStop(0, "#f3efe6");
+        sky.addColorStop(1, "#ebe6dc");
       } else {
         sky.addColorStop(0, "#060712");
         sky.addColorStop(1, "#0d1224");
@@ -711,7 +711,7 @@ export default function BackgroundCanvas({ theme }: BackgroundCanvasProps) {
       }
       ctx.globalAlpha = 1;
 
-      const dataAlpha = light ? 0.4 : 0.55;
+      const dataAlpha = light ? 0.22 : 0.55;
 
       if (t - lastDomRefresh > DOM_REFRESH_MS) {
         lastDomRefresh = t;
@@ -753,7 +753,7 @@ export default function BackgroundCanvas({ theme }: BackgroundCanvasProps) {
         if (m.y - m.hPx > h) {
           m.y = NAV_CLEAR_PX + Math.random() * 40;
           m.kind = m.startKind;
-          m.color = light ? "#6d5fd6" : "#9fb0ff";
+          m.color = light ? "#8b6ce8" : "#9fb0ff";
           m.data = genMotifData(m.startKind);
           m.shapedBy = null;
           m.touch = {};

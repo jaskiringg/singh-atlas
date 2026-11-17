@@ -120,7 +120,7 @@ export const aiFlow: PNode[] = [
   { label: "Deployment guide", sub: "ready to ship", kind: "fixed" },
 ];
 
-/** Relive Cure — lead lifecycle (portfolio-safe labels). */
+/** ReliveCure — lead lifecycle (portfolio-safe labels). */
 export const reliveFlow: PNode[] = [
   { label: "WhatsApp lead", sub: "inbound, any hour" },
   { label: "AI operator", sub: "Gemini · fallback chains", kind: "gateway" },
@@ -391,7 +391,7 @@ export const builds: Build[] = [
   },
   {
     index: "X-02",
-    name: "Relive Cure",
+    name: "ReliveCure",
     status: "Freelance · handed over",
     live: true,
     tagline: "Transferred to their team.",

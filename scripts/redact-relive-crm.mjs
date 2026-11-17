@@ -65,16 +65,21 @@ function marketingBoxes() {
     ...kpiDetail,
     S([1388, 1188, 90, 580], w, h, BW, BH), // chart rupee y-axis
     S([1388, 2058, 1980, 52], w, h, BW, BH), // footer benchmark
+    S([1395, 432, 880, 200], w, h, BW, BH), // campaign metrics grid (₹)
+    S([468, 248, 320, 92], w, h, BW, BH), // top spend / account KPI
   ];
 }
 
 function leadsBoxes() {
   return [
     ...chrome(),
-    S([1960, 158, 1460, 2060], w, h, BW, BH), // drawer (PII dense)
-    S([445, 828, 1510, 1260], w, h, BW, BH), // leads table body
+    S([2120, 250, 780, 120], w, h, BW, BH), // drawer title / contact header
+    S([2120, 400, 780, 420], w, h, BW, BH), // drawer identity block
+    S([2120, 880, 780, 520], w, h, BW, BH), // drawer notes / timeline
+    S([2120, 1420, 780, 700], w, h, BW, BH), // drawer lower fields
+    ...rowStrips(468, 858, 42, 8, 1488, 52, BW, BH, w, h), // table name/phone columns
     S([445, 158, 1510, 88], w, h, BW, BH), // filters / search row
-    ...kpiNumberRow([478, 648, 818, 988], 248, 160, 88, BW, BH, w, h), // KPI counts if sensitive
+    ...kpiNumberRow([478, 648, 818, 988], 248, 160, 88, BW, BH, w, h),
   ];
 }
 

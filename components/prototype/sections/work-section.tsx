@@ -33,32 +33,60 @@ function WorkSection({ revealed, activeCase, pickCase }: WorkSectionProps) {
             lede="Flagship is Coca-Cola on Salescode. ReliveCure and Mandi Bhai were transferred. PIKU is in progress. Screens are only files already in this repo."
           />
 
-          <div data-work-tabs className="pt-work-tabs" role="tablist" aria-label="Selected work">
+          <SwitchingPanel
+            index={activeCase}
+            total={CASES.length}
+            className="pt-work-panel"
+            render={(caseIndex) => <CasePanel index={caseIndex} />}
+          />
+
+          <div data-work-tabs className="pt-work-picks" role="tablist" aria-label="Switch case study">
             {CASES.map((c, i) => (
               <button
                 key={c.id}
                 type="button"
                 role="tab"
                 aria-selected={i === activeCase}
-                className={`pt-tab pt-tab--calm ${i === activeCase ? "pt-tab--active" : ""}`}
+                className={`pt-work-pick${c.flagship ? " pt-work-pick--flagship" : " pt-work-pick--sibling"}${
+                  i === activeCase ? " pt-work-pick--active" : ""
+                }`}
                 onClick={() => pickCase(i)}
               >
-                <span className="pt-lab-tab-num">{c.numLabel}</span>
-                {c.title}
+                <span className="pt-work-pick__icon" aria-hidden>
+                  {caseIcon(c.id)}
+                </span>
+                <span className="pt-work-pick__text">
+                  <span className="pt-work-pick__kicker">
+                    {c.numLabel} · {c.kicker.replace(/^Flagship ·\s*/i, "").split("·")[0]?.trim() ?? c.kicker}
+                  </span>
+                  <span className="pt-work-pick__title">{c.title}</span>
+                  <span className="pt-work-pick__sub">{c.status}</span>
+                </span>
+                <span className="pt-work-pick__chev" aria-hidden>
+                  →
+                </span>
               </button>
             ))}
           </div>
-
-          <SwitchingPanel
-            index={activeCase}
-            total={CASES.length}
-            style={{ marginTop: 34 }}
-            render={(caseIndex) => <CasePanel index={caseIndex} />}
-          />
         </div>
       </Reveal>
     </section>
   );
+}
+
+function caseIcon(id: string) {
+  switch (id) {
+    case "salescode":
+      return "◆";
+    case "relivecure":
+      return "▣";
+    case "piku":
+      return "≡";
+    case "mandibhai":
+      return "⌂";
+    default:
+      return "·";
+  }
 }
 
 function diagramFor(caseId: string) {
@@ -83,7 +111,7 @@ function CasePanel({ index }: { index: number }) {
   const [shot, setShot] = useState(0);
   const current = cd.shots[shot] ?? null;
   const flow = diagramFor(cd.id);
-  const rootClass = `pt-switch-stagger pt-case${cd.flagship ? " pt-case--flagship" : ""}`;
+  const rootClass = `pt-switch-stagger pt-work-stage pt-case${cd.flagship ? " pt-work-stage--hero pt-case--flagship" : " pt-work-stage--detail"}`;
 
   return (
     <div className={rootClass}>

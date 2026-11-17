@@ -7,7 +7,7 @@ live: null
 download: /docs/piku.md
 ---
 
-# Eko / PIKU
+# PIKU
 
 **Status: in progress / concept.** Not shipped. Not a production system.
 

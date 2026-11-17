@@ -424,7 +424,7 @@ export const BUILDS = [
     githubHref: "https://github.com/jaskiringg/piku",
   },
   {
-    name: "Relive Cure",
+    name: "ReliveCure",
     status: "Freelance · handed over",
     body: "ReliveCure. Transferred to their team. I do not operate it now.",
     shots: [

@@ -9,14 +9,15 @@ const BW = 746;
 const BH = 1600;
 const { width: w = BW, height: h = BH } = await sharp(SRC).metadata();
 
-const priceYs = [318, 518, 718, 918, 1118];
+const priceYs = [268, 318, 418, 518, 618, 718, 818, 918, 1018, 1118, 1218];
 
 const boxes = [
   S([0, 0, BW, 50], w, h, BW, BH),
   S([95, 86, 640, 44], w, h, BW, BH),
   S([0, 1535, BW, 65], w, h, BW, BH),
-  ...priceYs.map((y) => S([248, y, 480, 46], w, h, BW, BH)),
-  S([0, 1288, BW, 118], w, h, BW, BH), // cart total + min order ฿
+  S([520, 260, 210, 900], w, h, BW, BH), // product price column
+  ...priceYs.map((y) => S([220, y, 510, 56], w, h, BW, BH)),
+  S([0, 1288, BW, 118], w, h, BW, BH), // cart total + min order 
   // pack-browse screen (delivery MOQ row)
   S([32, 248, 688, 72], w, h, BW, BH),
 ];
