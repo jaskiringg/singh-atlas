@@ -42,13 +42,27 @@ Meta Ads · WhatsApp · Voice IVR · Rep calls · Recordings
    Unified CRM timeline — leads · calls · events · analysis
 ```
 
+## Pulse — live operations
+
+**Pulse** is the day-of command view operators actually used:
+
+- **KPI strip** — calls, connect rate, missed, pipeline, winback, needs-you count, floor attendance.
+- **Health pills** — CRM push, bot status, model quota, sync latency (so ops know the pipes are alive).
+- **Call activity** — intraday bars (1h / 30m / 15m) coloured by connected vs missed.
+- **By rep** — calls, unique leads, talk time, connect %, flags (names redacted in portfolio shots).
+- **Needs you** — priority queue with idle-time and follow-up debt, not a static export.
+- **The flow — today** — live funnel: WhatsApp in → bot → qualified → pushed → follow-up → consulted → closed.
+- **Recent signals** — score jumps, call raised, new concern flags on the timeline.
+
+The sidebar tied the same data model to Pipeline, WhatsApp chat backlog, Tasks, Analytics, Bot Lab, IVR, rep app and settings — one product, not a pile of sheets.
+
 ## Implementation
 
 **Data architecture.** PostgreSQL tying leads, calls, recordings, transcripts, WhatsApp threads, AI analysis rows and timeline events.
 
 **Matching and deduplication.** Raw telephony rows resolved to unique calls and associated with the correct lead — the engineering core of the platform.
 
-**Services and UI.** Node.js APIs for ingestion and operations; React dashboard (screenshot below); Kotlin/Android where the field needed mobile.
+**Services and UI.** Node.js APIs for ingestion and operations; React dashboard (screenshots below); Kotlin/Android where the field needed mobile.
 
 **AI at the application layer.** Gemini for conversational routing and analysis — prompts, fallbacks and guardrails. Not a claim that I trained the model.
 
@@ -60,10 +74,14 @@ Kotlin · Node.js · PostgreSQL · React · Gemini
 
 ## Outcomes
 
-Built and transferred. This page shows the name and a real dashboard capture from the portfolio. Operating metrics, ad spend, response-time claims and production links are intentionally not published.
+Built and transferred. This page shows real UI captures with **identifiers, rep names, lead names, locations and the production hostname removed**. Operating metrics, ad spend and response-time claims are not published as portfolio figures.
 
-## Dashboard
+## Screenshots (redacted)
 
-![ReliveCure operator dashboard](/shots/relive-analytics.png)
+![ReliveCure Pulse dashboard](/shots/relive-pulse-web.png)
 
-*Operator dashboard — identifiers redacted.*
+*Pulse — same-day ops view. Rep/lead columns and handoff labels masked.*
+
+![ReliveCure analytics](/shots/relive-analytics.png)
+
+*Analytics view — identifiers redacted.*
