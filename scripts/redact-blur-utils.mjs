@@ -8,7 +8,6 @@ export function clampBox(box, w, h) {
   return { left, top, width, height };
 }
 
-/** Scale [left, top, width, height] from a reference canvas size. */
 export function S([l, t, wd, ht], w, h, bw, bh) {
   const fx = w / bw;
   const fy = h / bh;
@@ -20,7 +19,6 @@ export function S([l, t, wd, ht], w, h, bw, bh) {
   };
 }
 
-/** Horizontal list rows (names / phones). */
 export function rowStrips(x, y0, rowH, count, width, step, bw, bh, w, h) {
   const strips = [];
   for (let i = 0; i < count; i++) {
@@ -29,7 +27,18 @@ export function rowStrips(x, y0, rowH, count, width, step, bw, bh, w, h) {
   return strips;
 }
 
-export async function applyBlurs(src, boxes, sigma = 36) {
+/** KPI card number zones (keep label row above). */
+export function kpiNumberRow(xs, y, wBox, hBox, bw, bh, w, h) {
+  return xs.map((x) => S([x, y, wBox, hBox], w, h, bw, bh));
+}
+
+async function heavyPatch(src, r, sigma = 48) {
+  let patch = await sharp(src).extract(r).blur(sigma).toBuffer();
+  patch = await sharp(patch).blur(sigma).toBuffer();
+  return patch;
+}
+
+export async function applyBlurs(src, boxes, sigma = 48) {
   const meta = await sharp(src).metadata();
   const w = meta.width ?? 1;
   const h = meta.height ?? 1;
@@ -37,8 +46,11 @@ export async function applyBlurs(src, boxes, sigma = 36) {
   for (const box of boxes) {
     const r = clampBox(box, w, h);
     if (r.width < 6 || r.height < 6) continue;
-    const patch = await sharp(src).extract(r).blur(sigma).toBuffer();
-    composites.push({ input: patch, left: r.left, top: r.top });
+    composites.push({
+      input: await heavyPatch(src, r, sigma),
+      left: r.left,
+      top: r.top,
+    });
   }
   return sharp(src).composite(composites).png({ compressionLevel: 8 });
 }

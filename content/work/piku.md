@@ -1,5 +1,5 @@
 ---
-title: Eko / PIKU
+title: PIKU
 slug: piku
 kicker: In progress · local-first AI workspace
 github: https://github.com/jaskiringg/piku

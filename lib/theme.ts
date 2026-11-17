@@ -13,9 +13,9 @@ export function setTheme(scheme: ColorScheme) {
   localStorage.setItem(STORAGE_KEY, scheme);
 }
 
+/** Default site theme when nothing is stored — light first. */
 export function getPreferredTheme(): ColorScheme {
-  if (typeof window === "undefined") return "dark";
-  return window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+  return "light";
 }
 
 export function initTheme() {

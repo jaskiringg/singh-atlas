@@ -30,7 +30,7 @@ function WorkSection({ revealed, activeCase, pickCase }: WorkSectionProps) {
           <SectionHead
             kicker="Selected work"
             title="Salescode first. The rest by name."
-            lede="Flagship is Coca-Cola on Salescode. ReliveCure and Mandi Bhai were transferred. Eko / PIKU is in progress. Screens are only files already in this repo."
+            lede="Flagship is Coca-Cola on Salescode. ReliveCure and Mandi Bhai were transferred. PIKU is in progress. Screens are only files already in this repo."
           />
 
           <div data-work-tabs className="pt-work-tabs" role="tablist" aria-label="Selected work">

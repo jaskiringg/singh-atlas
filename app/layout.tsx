@@ -45,7 +45,7 @@ export default function RootLayout({
       <head>
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var k='atlas-theme',s=localStorage.getItem(k),d=window.matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';document.documentElement.dataset.colorScheme=s==='light'||s==='dark'?s:d;}catch(e){document.documentElement.dataset.colorScheme='dark';}})();`,
+            __html: `(function(){try{var k='atlas-theme',s=localStorage.getItem(k),d='light';document.documentElement.dataset.colorScheme=s==='light'||s==='dark'?s:d;}catch(e){document.documentElement.dataset.colorScheme='light';}})();`,
           }}
         />
       </head>

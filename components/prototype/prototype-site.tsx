@@ -22,7 +22,7 @@ const TAB_PAUSE_MS = 16000;
 const REVEAL_IDS = ["overview", "work", "capabilities", "lab", "approach", "experience", "contact"] as const;
 
 export default function PrototypeSite() {
-  const [theme, setThemeState] = useState<ColorScheme>("dark");
+  const [theme, setThemeState] = useState<ColorScheme>("light");
   const [activeCase, setActiveCase] = useState(0);
   const [revealed, setRevealed] = useState<Record<string, boolean>>({});
   const [activeSection, setActiveSection] = useState("overview");

@@ -135,8 +135,8 @@ export const CASES: CaseStudy[] = [
   {
     id: "piku",
     numLabel: "03",
-    kicker: "Eko · in progress",
-    title: "Eko / PIKU",
+    kicker: "In progress · concept",
+    title: "PIKU",
     status: "In progress · concept",
     context:
       "A local-first personal AI workspace: persistent memory, retrieval, context assembly, agent workflows. Documented direction is Tauri, Rust, React, TypeScript, Ollama and local models. The architecture drawing is a direction, not a verified deployment.",
@@ -428,8 +428,10 @@ export const BUILDS = [
     status: "Freelance · handed over",
     body: "ReliveCure. Transferred to their team. I do not operate it now.",
     shots: [
-      { label: "Pulse (redacted)", src: "/shots/relive-pulse-web.png" },
-      { label: "Analytics (redacted)", src: "/shots/relive-analytics.png" },
+      { label: "Pulse", src: "/shots/relive-pulse-web.png" },
+      { label: "Analytics", src: "/shots/relive-analytics-web.png" },
+      { label: "Marketing", src: "/shots/relive-marketing-web.png" },
+      { label: "Leads", src: "/shots/relive-leads-web.png" },
     ],
     docHref: "/work/relivecure",
     githubHref: "https://github.com/jaskiringg/relive-cure",
