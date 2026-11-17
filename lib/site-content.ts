@@ -298,7 +298,7 @@ export const cases: CaseStudy[] = [
     outcome: "Live across three countries, with field-sales and back-office systems finally speaking the same language.",
     tags: ["SQL", "REST", "Kafka", "Postman", "Jira", "Confluence"],
     shotLabel: "Coke Buddy · Thailand",
-    shot: "/shots/salescode-coke-buddy.png",
+    shot: "/shots/salescode-coke-buddy-products-web.png",
   },
   {
     id: "integration",

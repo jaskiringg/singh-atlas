@@ -101,8 +101,10 @@ REST · Kafka (platform bus) · SQL · Postman · CloudWatch · SCAI application
 
 Production rollouts reached go-live across three countries, with field and back-office teams working on the platform. Percentage reductions in manual intervention are **not published here** until a figure is tied to one implementation.
 
-## The field surface
+## Field surface — product browse
 
-![Coke Buddy field-sales screen from Thailand rollout](/shots/salescode-coke-buddy.png)
+![Coke Buddy product browse — Thailand bottler rollout](/shots/salescode-coke-buddy-products-web.png)
 
-*Coke Buddy — the field-rep surface in a bottler retail-execution rollout.*
+*Coke Buddy — delivery windows, search, and pack-type / pack-size entry. Outlet ID, store name and address masked; status bar and system nav stripped for the portfolio.*
+
+Same capture at full resolution: `/shots/salescode-coke-buddy-products.png` (redacted).
