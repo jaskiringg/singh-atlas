@@ -673,8 +673,8 @@ export default function BackgroundCanvas({ theme }: BackgroundCanvasProps) {
         const light = themeRef.current === "light";
         const sky = ctx.createLinearGradient(0, 0, 0, h);
         if (light) {
-          sky.addColorStop(0, "#f3efe6");
-          sky.addColorStop(1, "#ebe6dc");
+          sky.addColorStop(0, "#F4F3EF");
+          sky.addColorStop(1, "#EEEDE8");
         } else {
           sky.addColorStop(0, "#060712");
           sky.addColorStop(1, "#0d1224");
@@ -711,7 +711,7 @@ export default function BackgroundCanvas({ theme }: BackgroundCanvasProps) {
       }
       ctx.globalAlpha = 1;
 
-      const dataAlpha = light ? 0.22 : 0.55;
+      const dataAlpha = light ? 0.16 : 0.55;
 
       if (t - lastDomRefresh > DOM_REFRESH_MS) {
         lastDomRefresh = t;

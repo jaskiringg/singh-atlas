@@ -22,17 +22,17 @@ export function getColors(theme: ColorScheme): ThemeColors {
   const base =
     theme === "light"
       ? {
-          bg: "#f3efe6",
-          bg2: "#fffdf9",
-          bg3: "#e8e2d8",
-          line: "#ddd6ca",
-          line2: "#cfc6b8",
-          ink: "#111111",
-          ink2: "#333333",
-          ink3: "#666666",
-          accent: "#6d4ed6",
-          accent2: "#5a3fc0",
-          accent3: "#8b6ce8",
+          bg: "#F4F3EF",
+          bg2: "#FFFFFF",
+          bg3: "#EEEDE8",
+          line: "#E2E0D9",
+          line2: "#E2E0D9",
+          ink: "#201F2A",
+          ink2: "#201F2A",
+          ink3: "#777783",
+          accent: "#7955E8",
+          accent2: "#7955E8",
+          accent3: "#7955E8",
         }
       : {
           bg: "#0a0b14",
@@ -50,10 +50,10 @@ export function getColors(theme: ColorScheme): ThemeColors {
 
   return {
     ...base,
-    neon1: theme === "light" ? "#6d4ed6" : "#8b9cff",
-    neon2: theme === "light" ? "#8b6ce8" : "#b9a4ff",
-    neon3: theme === "light" ? "#5a3fc0" : "#9b82ff",
-    neon4: theme === "light" ? "#6d4ed6" : "#c4b5fd",
+    neon1: theme === "light" ? "#7955E8" : "#8b9cff",
+    neon2: theme === "light" ? "#7955E8" : "#b9a4ff",
+    neon3: theme === "light" ? "#7955E8" : "#9b82ff",
+    neon4: theme === "light" ? "#7955E8" : "#c4b5fd",
   };
 }
 
